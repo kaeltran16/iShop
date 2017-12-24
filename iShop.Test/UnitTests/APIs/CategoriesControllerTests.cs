@@ -8,6 +8,6 @@ namespace iShop.Test.UnitTests.APIs
 {
     public class CategoriesControllerTests
     {
-      
+       [Fact]
     }
 }
