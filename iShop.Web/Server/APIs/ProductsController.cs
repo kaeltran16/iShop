@@ -19,7 +19,7 @@ namespace iShop.Web.Server.APIs
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProductsController(IMapper mapper, IProductRepository repository, IUnitOfWork unitOfWork)
+        public ProductsController(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -36,7 +36,7 @@ namespace iShop.Web.Server.APIs
 
              await _unitOfWork.ProductRepository.AddAsync(product);
             await _unitOfWork.CompleteAsync();
-
+                
             product = await _unitOfWork.ProductRepository.GetProductId(product.Id);
 
             var result = _mapper.Map<Product, ProductResource>(product);
