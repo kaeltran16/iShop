@@ -11,14 +11,14 @@ namespace iShop.Web.Server.Core.Models
     {
         [Key]
         public int Id { get; set; }
-      
-        
+
         public DateTime PlacedDate { get; set; }
         public ICollection<Cart> Carts { get; set; }
-
+        public string UserId  { get; set; }
+        public ApplicationUser User { get; set; }
         public ShoppingCart()
         {
-            Carts=new Collection<Cart>();
+            Carts = new Collection<Cart>();
         }
     }
 }

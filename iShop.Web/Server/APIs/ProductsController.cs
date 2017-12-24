@@ -16,34 +16,30 @@ namespace iShop.Web.Server.APIs
     public class ProductsController : Controller
     {
 
-        private readonly IMapper mapper;
-        private readonly IProductRepository repository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ProductsController(IMapper mapper, IProductRepository repository, IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
-            this.repository = repository;
-            this.mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody] ProductResourceSave productResources)
         {
-
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var product = mapper.Map<ProductResourceSave, Product>(productResources);
+            var product = _mapper.Map<ProductResourceSave, Product>(productResources);
 
 
-            repository.Add(product);
-            await unitOfWork.CompleteAsync();
+             await _unitOfWork.ProductRepository.AddAsync(product);
+            await _unitOfWork.CompleteAsync();
 
-            product = await repository.GetProductId(product.Id);
+            product = await _unitOfWork.ProductRepository.GetProductId(product.Id);
 
-            var result = mapper.Map<Product, ProductResource>(product);
+            var result = _mapper.Map<Product, ProductResource>(product);
 
             return Ok(result);
         }
@@ -54,18 +50,18 @@ namespace iShop.Web.Server.APIs
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var product = await repository.GetProductId(id);
+            var product = await _unitOfWork.ProductRepository.GetProductId(id);
 
             if (product == null)
                 return NotFound();
 
-            mapper.Map<ProductResourceSave, Product>(productResource, product);
+            _mapper.Map<ProductResourceSave, Product>(productResource, product);
 
 
-            await unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync();
 
-            product = await repository.GetProductId(product.Id);
-            var result = mapper.Map<Product, ProductResourceSave>(product);
+            product = await _unitOfWork.ProductRepository.GetProductId(product.Id);
+            var result = _mapper.Map<Product, ProductResourceSave>(product);
 
             return Ok(result);
         }
@@ -73,13 +69,13 @@ namespace iShop.Web.Server.APIs
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            var product = await repository.GetProductId(id);
+            var product = await _unitOfWork.ProductRepository.GetProductId(id);
 
             if (product == null)
                 return NotFound();
 
-            repository.Remove(product);
-            await unitOfWork.CompleteAsync();
+            _unitOfWork.ProductRepository.Remove(product);
+            await _unitOfWork.CompleteAsync();
 
             return Ok(id);
         }
@@ -88,12 +84,12 @@ namespace iShop.Web.Server.APIs
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductID(int id)
         {
-            var product = await repository.GetProductId(id);
+            var product = await _unitOfWork.ProductRepository.GetProductId(id);
 
             if (product == null)
                 return NotFound();
 
-            var productResource = mapper.Map<Product, ProductResource>(product);
+            var productResource = _mapper.Map<Product, ProductResource>(product);
 
             return Ok(productResource);
         }
@@ -101,13 +97,13 @@ namespace iShop.Web.Server.APIs
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deleteproduct(int id)
         {
-            var product = await repository.GetProductId(id, includeRelated: false);
+            var product = await _unitOfWork.ProductRepository.GetProductId(id, includeRelated: false);
 
             if (product == null)
                 return NotFound();
 
-            repository.Remove(product);
-            await unitOfWork.CompleteAsync();
+            _unitOfWork.ProductRepository.Remove(product);
+            await _unitOfWork.CompleteAsync();
 
             return Ok(id);
         }
@@ -117,12 +113,12 @@ namespace iShop.Web.Server.APIs
         [HttpGet]
         public async Task<IActionResult> GetProduct()
         {
-            var products = await repository.GetProduct();
+            var products = await _unitOfWork.ProductRepository.GetProduct();
 
             if (products == null)
                 return NotFound();
 
-            var productResources = mapper.Map<IEnumerable<Product>, IEnumerable<ProductResource>>(products);
+            var productResources = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductResource>>(products);
 
 
             return Ok(productResources);

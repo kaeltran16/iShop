@@ -16,7 +16,7 @@ namespace iShop.Web.Server.Core.Commons
         {
             _context = context;
         }
-        public async void AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
             await _context.AddAsync(entity);
         }
