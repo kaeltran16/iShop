@@ -170,7 +170,7 @@ namespace iShop.Web.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Product", b =>
@@ -212,7 +212,11 @@ namespace iShop.Web.Migrations
 
                     b.Property<DateTime>("PlacedDate");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -338,6 +342,13 @@ namespace iShop.Web.Migrations
                         .WithMany()
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("iShop.Web.Server.Core.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("iShop.Web.Server.Core.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

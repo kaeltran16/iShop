@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace iShop.Web.Migrations
 {
-    public partial class InitialModel : Migration
+    public partial class InitalModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -77,19 +77,6 @@ namespace iShop.Web.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShoppingCarts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PlacedDate = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,6 +186,26 @@ namespace iShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PlacedDate = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -231,7 +238,7 @@ namespace iShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Order",
+                name: "Orders",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -240,15 +247,15 @@ namespace iShop.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => new { x.UserId, x.ShoppingCartId });
+                    table.PrimaryKey("PK_Orders", x => new { x.UserId, x.ShoppingCartId });
                     table.ForeignKey(
-                        name: "FK_Order_ShoppingCarts_ShoppingCartId",
+                        name: "FK_Orders_ShoppingCarts_ShoppingCartId",
                         column: x => x.ShoppingCartId,
                         principalTable: "ShoppingCarts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Order_AspNetUsers_UserId",
+                        name: "FK_Orders_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -332,8 +339,8 @@ namespace iShop.Web.Migrations
                 column: "ShoppingCartId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_ShoppingCartId",
-                table: "Order",
+                name: "IX_Orders_ShoppingCartId",
+                table: "Orders",
                 column: "ShoppingCartId");
 
             migrationBuilder.CreateIndex(
@@ -345,6 +352,11 @@ namespace iShop.Web.Migrations
                 name: "IX_Products_ImageId",
                 table: "Products",
                 column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_UserId",
+                table: "ShoppingCarts",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -368,7 +380,7 @@ namespace iShop.Web.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -380,13 +392,13 @@ namespace iShop.Web.Migrations
                 name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

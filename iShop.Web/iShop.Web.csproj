@@ -28,9 +28,12 @@
     <Compile Remove="Migrations\20171220184847_InitialModel.Designer.cs" />
     <Compile Remove="Migrations\20171220185120_InitialModel.cs" />
     <Compile Remove="Migrations\20171220185120_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171220185247_InitialModel.cs" />
+    <Compile Remove="Migrations\20171220185247_InitialModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Server\Core\ViewModels\" />
   </ItemGroup>
 
