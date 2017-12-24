@@ -20,6 +20,7 @@ namespace iShop.Web.Server.Mapping
             CreateMap<Cart, CartResource>();
             CreateMap<Category, CategoryResource>();
             CreateMap<Order, OrderResource>();
+            CreateMap<Order, OrderResourceSave>();
             CreateMap<Product, ProductResourceSave>();
             CreateMap<ShoppingCart, ShoppingCartResourceSave>()
                 .ForMember(vr => vr.Carts, opt => opt.MapFrom(v => v.Carts.Select(Carts => new CartResourceSave { Id = Carts.Id, Quantity = Carts.Quantity, ProductId = Carts.ProductId })));
@@ -45,9 +46,10 @@ namespace iShop.Web.Server.Mapping
                     foreach (var f in addedFeatures)
                         v.Carts.Add(f);
                 });
-
-
-
+            CreateMap<OrderResource,Order >();
+            CreateMap<OrderResourceSave, Order>();
+            CreateMap<ShoppingCartResource,ShoppingCart>();
+            CreateMap<ProductResource, Product>();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Contracts
     {
         Task<ShoppingCart> GetShoppingCart(int id, bool includeRelated = true);
         Task<IEnumerable<ShoppingCart>> GetShoppingCarts();
-        Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(string UserId);
+        Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(string userId);
 
     }
 }
