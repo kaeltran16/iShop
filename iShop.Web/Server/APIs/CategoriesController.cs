@@ -15,22 +15,22 @@ namespace iShop.Web.Server.APIs
     [Route("/api/Category")]
     public class CategoriesController : Controller
     {
-        private readonly IMapper mapper;
-        private readonly ICategoryRepository repository;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public CategoriesController(IMapper mapper, ICategoryRepository repository)
+        public CategoriesController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            this.repository = repository;
-            this.mapper = mapper;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var category = await repository.GetCategories();
+            var category = await _unitOfWork.CategoryRepository.GetCategories();
             if (category == null)
                 return NotFound();
-            var categoryResource = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(category);
+            var categoryResource = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(category);
             return Ok(categoryResource);
 
         }
@@ -39,10 +39,10 @@ namespace iShop.Web.Server.APIs
         public async Task<IActionResult> GetCategory(int id)
         {
 
-            var category = await repository.GetCategory(id);
+            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
             if (category == null)
                 return NotFound();
-            var categoryResource = mapper.Map<Category, CategoryResource>(category);
+            var categoryResource = _mapper.Map<Category, CategoryResource>(category);
             return Ok(categoryResource);
         }
 
