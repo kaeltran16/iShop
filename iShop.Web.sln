@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iShop.Web", "iShop.Web\iShop.Web.csproj", "{021E6EE0-879E-4D93-AF98-1C597A0852D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iShop.Web", "iShop.Web\iShop.Web.csproj", "{021E6EE0-879E-4D93-AF98-1C597A0852D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iShop.Test", "iShop.Test\iShop.Test.csproj", "{02CB6326-7CA6-4B25-B623-A4E0406E472B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iShop.Tests", "iShop.Tests\iShop.Tests.csproj", "{D771FC53-5C99-4B85-A430-341BD84D7738}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{021E6EE0-879E-4D93-AF98-1C597A0852D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{021E6EE0-879E-4D93-AF98-1C597A0852D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{021E6EE0-879E-4D93-AF98-1C597A0852D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02CB6326-7CA6-4B25-B623-A4E0406E472B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02CB6326-7CA6-4B25-B623-A4E0406E472B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02CB6326-7CA6-4B25-B623-A4E0406E472B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02CB6326-7CA6-4B25-B623-A4E0406E472B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D771FC53-5C99-4B85-A430-341BD84D7738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D771FC53-5C99-4B85-A430-341BD84D7738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D771FC53-5C99-4B85-A430-341BD84D7738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D771FC53-5C99-4B85-A430-341BD84D7738}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

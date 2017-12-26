@@ -10,6 +10,6 @@ namespace iShop.Web.Server.Persistent.Repositories.Contracts
     public interface IProductRepository: IDataRepository<Product>
     {
         Task<Product> GetProductId(int id, bool includeRelated = true);
-        Task<IEnumerable<Product>> GetProduct();
+        Task<IEnumerable<Product>> GetProducts();
     }
 }

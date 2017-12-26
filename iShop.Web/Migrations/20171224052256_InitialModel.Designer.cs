@@ -11,8 +11,8 @@ using System;
 namespace iShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171224044437_InitalModel")]
-    partial class InitalModel
+    [Migration("20171224052256_InitialModel")]
+    partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

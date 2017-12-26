@@ -21,13 +21,13 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         }
 
 
-        public async Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(string UserId)
+        public async Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(string userId)
         {
             return await _context.ShoppingCarts
                 .Include(c => c.Carts)
                 .ThenInclude(p => p.Product)
                 .Include(u => u.UserId)
-                .Where(s => s.UserId == UserId).ToListAsync();
+                .Where(s => s.UserId == userId).ToListAsync();
         }
 
         public async Task<ShoppingCart> GetShoppingCart(int id, bool includeRelated = true)
