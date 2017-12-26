@@ -7,10 +7,13 @@ using iShop.Web.Server.Core.Models;
 
 namespace iShop.Web.Server.Persistent.Repositories.Contracts
 {
-    public interface ICategoryRepository: IDataRepository<Category>
+    public interface IOrderRepository : IDataRepository<Order>
     {
-        Task<Category> GetCategory(int id);
-        Task<IEnumerable<Category>> GetCategories();
+
+        Task<Order> GetOrder(int shoppingCartId, bool includeRelated = true);
+        Task<IEnumerable<Order>> GetOrders();
+        Task<IEnumerable<Order>> GetOrderOfUser(string userId);
+
 
     }
 }

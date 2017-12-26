@@ -28,6 +28,10 @@
     <Compile Remove="Migrations\20171220184847_InitialModel.Designer.cs" />
     <Compile Remove="Migrations\20171220185120_InitialModel.cs" />
     <Compile Remove="Migrations\20171220185120_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171220185247_InitialModel.cs" />
+    <Compile Remove="Migrations\20171220185247_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171224044437_InitalModel.cs" />
+    <Compile Remove="Migrations\20171224044437_InitalModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

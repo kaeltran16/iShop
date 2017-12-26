@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace iShop.Web.Server.Core.Resources
 {
-    public class OrderRersourceSave
+    public class OrderResourceSave
     {
         public string UserId { get; set; }
       
@@ -15,7 +15,7 @@ namespace iShop.Web.Server.Core.Resources
       
         public DateTime PlacedDate { get; set; }
 
-        public OrderRersourceSave()
+        public OrderResourceSave()
         {
             PlacedDate = DateTime.Now;
         }
