@@ -15,7 +15,6 @@ namespace iShop.Web.Server.APIs
     [Route("/api/Product")]
     public class ProductsController : Controller
     {
-
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -100,7 +99,7 @@ namespace iShop.Web.Server.APIs
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _unitOfWork.ProductRepository.GetProduct();
+            var products = await _unitOfWork.ProductRepository.GetProducts();
 
             if (products == null)
                 return NotFound();
