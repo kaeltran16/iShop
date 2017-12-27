@@ -77,7 +77,7 @@ namespace iShop.Web
             }
 
             app.UseAuthentication();
-            app.UseWelcomePage();
+//            app.UseWelcomePage();
 
             app.UseStaticFiles();
 

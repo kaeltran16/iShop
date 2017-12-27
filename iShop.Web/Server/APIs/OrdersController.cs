@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace iShop.Web.Server.APIs
 {
     [Route("/api/Order")]
-    public class OrdersController : Controller
+    public class OrdersController : Microsoft.AspNetCore.Mvc.Controller
     {
 
         private readonly IMapper _mapper;
