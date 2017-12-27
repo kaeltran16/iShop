@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace iShop.Web.Server.APIs
 {
     [Route("/api/shoppingcart")]
-    public class ShoppingCartsController : Controller
+    public class ShoppingCartsController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;

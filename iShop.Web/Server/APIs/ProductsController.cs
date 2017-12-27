@@ -13,7 +13,7 @@ namespace iShop.Web.Server.APIs
 {
 
     [Route("/api/Product")]
-    public class ProductsController : Controller
+    public class ProductsController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;

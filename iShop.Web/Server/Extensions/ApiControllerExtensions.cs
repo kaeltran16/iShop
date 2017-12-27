@@ -12,7 +12,7 @@ namespace iShop.Web.Server.Extensions
     {
         // pretend a User
         // a helper method for testing purposes
-        public static void MockUser(this Controller controller, string userId, string userName)
+        public static void MockUser(this Microsoft.AspNetCore.Mvc.Controller controller, string userId, string userName)
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {

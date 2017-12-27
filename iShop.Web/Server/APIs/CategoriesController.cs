@@ -13,7 +13,7 @@ namespace iShop.Web.Server.APIs
 {
 
     [Route("/api/Category")]
-    public class CategoriesController : Controller
+    public class CategoriesController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
