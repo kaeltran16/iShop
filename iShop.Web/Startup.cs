@@ -1,3 +1,5 @@
+using System;
+using AspNet.Security.OpenIdConnect.Primitives;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Persistent;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +37,53 @@ namespace iShop.Web
             //services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Default"));
 
+                // Use OpenIddict
+                options.UseOpenIddict();
+            });
+            // Configure Identity to use the same JWT claims as OpenIddict instead
+            // of the legacy WS-Federation claims it uses by default (ClaimTypes),
+            services.Configure<IdentityOptions>(options =>
+                {
+                    options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+                    options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                    options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+                });
+
+
+            services.AddOpenIddict(options =>
+            {
+                options.AddEntityFrameworkCoreStores<ApplicationDbContext>();
+
+                options.AddMvcBinders();
+                // Enable the token endpoint.
+                // Form password flow (used in username/password login requests)
+                options.EnableTokenEndpoint("/connect/token")
+
+                    // Enable the authorization endpoint.
+                    // Form implicit flow (used in social login redirects)
+                    .EnableAuthorizationEndpoint("/connect/authorize")
+
+                    .EnableTokenEndpoint("/connect/token")
+                    .EnableUserinfoEndpoint("/api/userinfo");
+
+                // Enable the password and the refresh token flows.
+                options.AllowPasswordFlow()
+                    .AllowRefreshTokenFlow()
+                    // To enable external logins to authenticate
+                    .AllowImplicitFlow();
+
+                options.RequireClientIdentification();
+                    
+                options.SetAccessTokenLifetime(TimeSpan.FromMinutes(30));
+                options.SetIdentityTokenLifetime(TimeSpan.FromMinutes(30));
+                options.SetRefreshTokenLifetime(TimeSpan.FromMinutes(60));
+
+                options.AllowPasswordFlow();
+            });
 
             // Add the custome Identity for specify User and Role
             services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
@@ -51,13 +99,14 @@ namespace iShop.Web
                 // Add token for reseting password, email..
                 .AddDefaultTokenProviders();
 
-          
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Default")));
-           
+            // Register the OAuth validation handler
+            services.AddAuthentication()
+                .AddOAuthValidation();
+
+
             services.AddAutoMapper();
             services.AddMvc();
-       
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,9 +126,10 @@ namespace iShop.Web
             }
 
             app.UseAuthentication();
-            app.UseWelcomePage();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
+
 
             app.UseMvc(routes =>
             {
