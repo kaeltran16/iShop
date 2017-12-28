@@ -13,7 +13,7 @@ import { HomeComponent } from './components/home/home.component';
     declarations: [
         AppComponent,
         NavMenuComponent,
-      
+    
         HomeComponent
     ],
     imports: [
@@ -23,7 +23,7 @@ import { HomeComponent } from './components/home/home.component';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-          
+      
             { path: '**', redirectTo: 'home' }
         ])
     ]
