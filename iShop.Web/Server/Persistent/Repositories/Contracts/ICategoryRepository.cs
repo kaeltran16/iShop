@@ -9,7 +9,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Contracts
 {
     public interface ICategoryRepository: IDataRepository<Category>
     {
-        Task<Category> GetCategory(int id);
+        Task<Category> GetCategory(Guid id);
         Task<IEnumerable<Category>> GetCategories();
 
     }

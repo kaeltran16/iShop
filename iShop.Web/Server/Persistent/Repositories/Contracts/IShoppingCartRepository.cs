@@ -9,9 +9,9 @@ namespace iShop.Web.Server.Persistent.Repositories.Contracts
 {
     public interface IShoppingCartRepository: IDataRepository<ShoppingCart>
     {
-        Task<ShoppingCart> GetShoppingCart(int id, bool includeRelated = true);
+        Task<ShoppingCart> GetShoppingCart(Guid id, bool includeRelated = true);
         Task<IEnumerable<ShoppingCart>> GetShoppingCarts();
-        Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(string userId);
+        Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(Guid userId);
 
     }
 }

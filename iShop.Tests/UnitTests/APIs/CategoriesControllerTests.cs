@@ -40,25 +40,26 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void GetCategories_Existed_ShouldReturnOkResultWithListOfCategoryResource()
         {
-            _mockRepository.Setup(g => g.GetCategories()).ReturnsAsync(new List<Category>() { new Category() { Id = 1 } });
+            var id = Guid.NewGuid();
+            _mockRepository.Setup(g => g.GetCategories()).ReturnsAsync(new List<Category>() { new Category() { Id = id } });
             _mockMapper.Setup(m => m.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(It.IsAny<IEnumerable<Category>>()))
-                .Returns(new List<CategoryResource>() { new CategoryResource() { Id = 1 } });
+                .Returns(new List<CategoryResource>() { new CategoryResource() { Id = id } });
 
             var result = await _controller.GetCategories();
 
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
 
             var categoryResource = okResult.Value.Should().BeAssignableTo<IEnumerable<CategoryResource>>().Subject;
-            categoryResource.ElementAt(0).Id.Should().Be(1);
+            categoryResource.ElementAt(0).Id.Should().Be(id);
         }
 
         [Fact]
         public async void GetCategory_NotExisted_ShouldReturnNotFound()
         {
-            var categoryId = 1;
-            _mockRepository.Setup(g => g.GetCategory(categoryId)).ReturnsAsync((Category)null);
+            var id = Guid.NewGuid();
+            _mockRepository.Setup(g => g.GetCategory(id)).ReturnsAsync((Category)null);
 
-            var result = await _controller.GetCategory(categoryId);
+            var result = await _controller.GetCategory(id);
 
             result.Should().BeOfType<NotFoundResult>();
         }
@@ -66,15 +67,16 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void GetCategory_Existed_ShouldReturnOKWithCategoryResource()
         {
-            var categoryId = 1;
-            _mockRepository.Setup(g => g.GetCategory(categoryId)).ReturnsAsync(new Category() {Id=1});
+            var categoryId = Guid.NewGuid();
+            
+            _mockRepository.Setup(g => g.GetCategory(categoryId)).ReturnsAsync(new Category() {Id=categoryId});
             _mockMapper.Setup(m => m.Map<Category, CategoryResource>(It.IsAny<Category>()))
-                .Returns(new CategoryResource(){Id =1 });
+                .Returns(new CategoryResource(){Id =categoryId });
              var result = await _controller.GetCategory(categoryId);
 
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             var categoryResource = okResult.Value.Should().BeAssignableTo<CategoryResource>().Subject;
-            categoryResource.Id.Should().Be(1);
+            categoryResource.Id.Should().Be(categoryId);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace iShop.Web
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
 
                 // Use OpenIddict
-                options.UseOpenIddict();
+                options.UseOpenIddict<Guid>();
             });
             // Configure Identity to use the same JWT claims as OpenIddict instead
             // of the legacy WS-Federation claims it uses by default (ClaimTypes),
@@ -84,6 +84,7 @@ namespace iShop.Web
                 options.SetRefreshTokenLifetime(TimeSpan.FromMinutes(60));
 
                 options.AllowPasswordFlow();
+                options.UseJsonWebTokens();
                 options.AddEphemeralSigningKey();
             });
 

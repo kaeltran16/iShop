@@ -8,7 +8,7 @@ namespace iShop.Web.Server.Core.Resources
 {
     public class ShoppingCartResourceSave
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string UserId { get; set; }
         public DateTime PlacedDate { get; set; }
         public ICollection<CartResourceSave> Carts { get; set; }

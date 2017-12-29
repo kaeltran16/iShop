@@ -32,6 +32,16 @@
     <Compile Remove="Migrations\20171220185247_InitialModel.Designer.cs" />
     <Compile Remove="Migrations\20171224044437_InitalModel.cs" />
     <Compile Remove="Migrations\20171224044437_InitalModel.Designer.cs" />
+    <Compile Remove="Migrations\20171224052256_InitialModel.cs" />
+    <Compile Remove="Migrations\20171224052256_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171224073453_updateShoppingCart.cs" />
+    <Compile Remove="Migrations\20171224073453_updateShoppingCart.Designer.cs" />
+    <Compile Remove="Migrations\20171229190643_ChangeIdTypeToGuid.cs" />
+    <Compile Remove="Migrations\20171229190643_ChangeIdTypeToGuid.Designer.cs" />
+    <Compile Remove="Migrations\20171229190820_ChangeIdTypeToGuid.cs" />
+    <Compile Remove="Migrations\20171229190820_ChangeIdTypeToGuid.Designer.cs" />
+    <Compile Remove="Migrations\20171229191425_AddOpenIddict.cs" />
+    <Compile Remove="Migrations\20171229191425_AddOpenIddict.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

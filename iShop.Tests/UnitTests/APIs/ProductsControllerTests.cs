@@ -46,7 +46,9 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void CreateProduct_ModelStateInvalid_ShouldReturnBadRequest()
         {
-            var newProduct = new ProductResourceSave() { Id = 1 };
+            var productId = Guid.NewGuid();
+
+            var newProduct = new ProductResourceSave() { Id = productId };
 
             _controller.ModelState.AddModelError("Error", "error");
 
@@ -58,10 +60,12 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void CreateProduct_ValidProduct_ShouldReturnOkObjectResult()
         {
-            var newProduct = new ProductResourceSave() { Id = 1 };
+            var productId = Guid.NewGuid();
+
+            var newProduct = new ProductResourceSave() { Id = productId };
 
             _mockMapper.Setup(m => m.Map<ProductResourceSave, Product>(It.IsAny<ProductResourceSave>()))
-                .Returns(new Product() { Id = 1 });
+                .Returns(new Product() { Id = productId });
 
             var result = await _controller.CreateProduct(newProduct);
 
@@ -74,7 +78,9 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void UpdateProduct_ModelStateInvalid_ShouldReturnBadRequest()
         {
-            var newProduct = new ProductResourceSave() {Id = 1};
+            var productId = Guid.NewGuid();
+
+            var newProduct = new ProductResourceSave() { Id = productId };
 
             _controller.ModelState.AddModelError("Error", "error");
 
@@ -87,11 +93,13 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void UpdateProduct_NotExisted_ShouldReturnNotFoundResult()
         {
-            var newProduct = new ProductResourceSave() {Id = 1};
-            _mockRepository.Setup(g => g.GetProductId(1, true)).ReturnsAsync((Product)null);
+            var productId = Guid.NewGuid();
+
+            var newProduct = new ProductResourceSave() { Id = productId };
+            _mockRepository.Setup(g => g.GetProductId(productId, true)).ReturnsAsync((Product)null);
 
 
-            var result = await _controller.UpdateProduct(1, newProduct);
+            var result = await _controller.UpdateProduct(productId, newProduct);
 
             result.Should().BeOfType<NotFoundResult>();
         }
@@ -99,23 +107,26 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void UpdateProduct_ValidProduct_ShouldReturnOkObjectResult()
         {
-            var newProductResource = new ProductResourceSave() { Id = 1 };
-            var newProduct = new Product() {Id = 1};
-            _mockRepository.Setup(g => g.GetProductId(1,true)).ReturnsAsync(newProduct);
+            var productId = Guid.NewGuid();
+
+            var newProductResource = new ProductResourceSave() { Id = productId };
+            var newProduct = new Product() { Id = productId };
+            _mockRepository.Setup(g => g.GetProductId(productId, true)).ReturnsAsync(newProduct);
             _mockMapper.Setup(m => m.Map<ProductResourceSave, Product>(It.IsAny<ProductResourceSave>()))
                 .Returns(newProduct);
 
-            var result = await _controller.UpdateProduct(1, newProductResource);
-            
-            
+            var result = await _controller.UpdateProduct(productId, newProductResource);
+
+
             result.Should().BeOfType<OkObjectResult>();
         }
 
         [Fact]
         public async void DeleteProduct_NotExisted_ShouldReturnNotFoundResult()
         {
+            var productId = Guid.NewGuid();
 
-            var result = await _controller.DeleteProduct(1);
+            var result = await _controller.DeleteProduct(productId);
 
             result.Should().BeOfType<NotFoundResult>();
         }
@@ -123,13 +134,14 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void DeleteProduct_ValidProduct_ShouldReturnOkObjectResult()
         {
-            var newProductResource = new ProductResource() { Id = 1 };
-            var newProduct = new Product() { Id = 1 };
-            _mockRepository.Setup(g => g.GetProductId(1, true)).ReturnsAsync(newProduct);
+            var productId = Guid.NewGuid();
+            var newProductResource = new ProductResource() { Id = productId };
+            var newProduct = new Product() { Id = productId };
+            _mockRepository.Setup(g => g.GetProductId(productId, true)).ReturnsAsync(newProduct);
             _mockMapper.Setup(m => m.Map<Product, ProductResource>(It.IsAny<Product>()))
                 .Returns(newProductResource);
 
-            var result = await _controller.DeleteProduct(1);
+            var result = await _controller.DeleteProduct(productId);
 
 
             result.Should().BeOfType<OkObjectResult>();
@@ -139,8 +151,8 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void GetProduct_NotExisted_ShouldReturnNotFoundResult()
         {
-
-            var result = await _controller.GetProduct(1);
+            var productId = Guid.NewGuid();
+            var result = await _controller.GetProduct(productId);
 
             result.Should().BeOfType<NotFoundResult>();
         }
@@ -148,29 +160,32 @@ namespace iShop.Tests.UnitTests.APIs
         [Fact]
         public async void GetProduct_ValidProduct_ShouldReturnOkObjectResult()
         {
-            var newProductResource = new ProductResource() { Id = 1 };
-            var newProduct = new Product() { Id = 1 };
-            _mockRepository.Setup(g => g.GetProductId(1, true)).ReturnsAsync(newProduct);
+            var productId = Guid.NewGuid();
+
+            var newProductResource = new ProductResource() { Id = productId };
+            var newProduct = new Product() { Id = productId };
+            _mockRepository.Setup(g => g.GetProductId(productId, true)).ReturnsAsync(newProduct);
 
             _mockMapper.Setup(m => m.Map<Product, ProductResource>(It.IsAny<Product>()))
                 .Returns(newProductResource);
 
-            var result = await _controller.GetProduct(1);
+            var result = await _controller.GetProduct(productId);
 
 
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             var productResult = okResult.Value.Should().BeAssignableTo<ProductResource>().Subject;
 
-            productResult.Id.Should().Be(1);
+            productResult.Id.Should().Be(productId);
         }
 
-       
+
 
         [Fact]
         public async void GetProducts_Valid_ShouldReturnOkObjectResultWithListOfProductResource()
         {
-            var newProductResources = new List<ProductResource>() {new ProductResource() {Id = 1}};
-            var newProducts = new List<Product>() {new Product() {Id = 1}};
+            var productId = Guid.NewGuid();
+            var newProductResources = new List<ProductResource>() { new ProductResource() { Id = productId } };
+            var newProducts = new List<Product>() { new Product() { Id = productId } };
 
             _mockRepository.Setup(g => g.GetProducts()).ReturnsAsync(newProducts);
 
@@ -184,7 +199,7 @@ namespace iShop.Tests.UnitTests.APIs
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             var productResult = okResult.Value.Should().BeAssignableTo<IEnumerable<ProductResource>>().Subject;
 
-            productResult.ElementAt(0).Id.Should().Be(1);
+            productResult.ElementAt(0).Id.Should().Be(productId);
         }
 
 
