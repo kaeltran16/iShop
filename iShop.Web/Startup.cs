@@ -14,6 +14,7 @@ using iShop.Web.Server.Persistent.Repositories.Commons;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
 using iShop.Web.Server.Persistent.UnitOfWork.Commons;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
+using Microsoft.AspNetCore.Http;
 
 namespace iShop.Web
 {
@@ -123,7 +124,15 @@ namespace iShop.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                // Instead of redirect to Home/Error, we will responce a error message
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("An unexpected error occured. Try again later.");
+                    });
+                });
             }
 
             app.UseAuthentication();
@@ -142,6 +151,8 @@ namespace iShop.Web
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+      
+
         }
     }
 }
