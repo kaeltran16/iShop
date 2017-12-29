@@ -83,6 +83,7 @@ namespace iShop.Web
                 options.SetRefreshTokenLifetime(TimeSpan.FromMinutes(60));
 
                 options.AllowPasswordFlow();
+                options.AddEphemeralSigningKey();
             });
 
             // Add the custome Identity for specify User and Role
