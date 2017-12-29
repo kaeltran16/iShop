@@ -20,7 +20,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
             _context = context;
         }
 
-        public async Task<Category> GetCategory(int id)
+        public async Task<Category> GetCategory(Guid id)
         {
             return await _context.Categories.FindAsync(id);
         }

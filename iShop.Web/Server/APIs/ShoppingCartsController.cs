@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using iShop.Web.Server.Core.Models;
@@ -35,14 +36,14 @@ namespace iShop.Web.Server.APIs
 
         //update a shopping cart
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateShoppingCart(int id, [FromBody]ShoppingCartResourceSave ShoppingCartResource)
+        public async Task<IActionResult> UpdateShoppingCart(Guid id, [FromBody]ShoppingCartResourceSave shoppingCartResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(id);
             if (shoppingCarts == null)
                 return NotFound();
-            _mapper.Map<ShoppingCartResourceSave, ShoppingCart>(ShoppingCartResource, shoppingCarts);
+            _mapper.Map<ShoppingCartResourceSave, ShoppingCart>(shoppingCartResource, shoppingCarts);
             await _unitOfWork.CompleteAsync();
             shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCarts.Id);
             var result = _mapper.Map<ShoppingCart, ShoppingCartResourceSave>(shoppingCarts);
@@ -52,7 +53,7 @@ namespace iShop.Web.Server.APIs
 
        
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetShoppingCart(int id)
+        public async Task<IActionResult> GetShoppingCart(Guid id)
         {
             var shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(id);
             if (shoppingCart == null)
@@ -63,10 +64,10 @@ namespace iShop.Web.Server.APIs
 
         //delete a shopping cart with id 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShoppingCart(int id)
+        public async Task<IActionResult> DeleteShoppingCart(Guid id)
         {
             // just false is enough =))
-            var shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(id, /*includeRelated: */false);
+            var shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(id, false);
             if (shoppingCart == null)
                 return NotFound();
             _unitOfWork.ShoppingCartRepository.Remove(shoppingCart);
@@ -90,7 +91,7 @@ namespace iShop.Web.Server.APIs
 
         // get shopping cart   of current user 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetShoppingCartOfUser(string userId)
+        public async Task<IActionResult> GetShoppingCartOfUser(Guid userId)
         {
             var shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetShoppingCartOfUser(userId);
             if (shoppingCarts == null)

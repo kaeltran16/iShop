@@ -8,7 +8,7 @@ namespace iShop.Web.Server.Core.Resources
     public class ProductResource
     {
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
        
         public string Title { get; set; }
         public double Price { get; set; }

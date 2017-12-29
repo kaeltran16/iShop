@@ -13,6 +13,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-rc2" />
     <PackageReference Include="OpenIddict" Version="2.0.0-rc2-0785" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0-rc2-0785" />
     <PackageReference Include="OpenIddict.Mvc" Version="2.0.0-rc2-0785" />
@@ -31,11 +32,27 @@
     <Compile Remove="Migrations\20171220185247_InitialModel.Designer.cs" />
     <Compile Remove="Migrations\20171224044437_InitalModel.cs" />
     <Compile Remove="Migrations\20171224044437_InitalModel.Designer.cs" />
+    <Compile Remove="Migrations\20171224052256_InitialModel.cs" />
+    <Compile Remove="Migrations\20171224052256_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171224073453_updateShoppingCart.cs" />
+    <Compile Remove="Migrations\20171224073453_updateShoppingCart.Designer.cs" />
+    <Compile Remove="Migrations\20171229190643_ChangeIdTypeToGuid.cs" />
+    <Compile Remove="Migrations\20171229190643_ChangeIdTypeToGuid.Designer.cs" />
+    <Compile Remove="Migrations\20171229190820_ChangeIdTypeToGuid.cs" />
+    <Compile Remove="Migrations\20171229190820_ChangeIdTypeToGuid.Designer.cs" />
+    <Compile Remove="Migrations\20171229191425_AddOpenIddict.cs" />
+    <Compile Remove="Migrations\20171229191425_AddOpenIddict.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Server\Services\Commons\" />
     <Folder Include="Server\Services\Contracts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

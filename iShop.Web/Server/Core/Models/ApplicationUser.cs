@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace iShop.Web.Server.Core.Models
 {
-    public class ApplicationUser: IdentityUser<string>
+    public class ApplicationUser: IdentityUser<Guid>
     {
         [Required]
         [StringLength(155)]

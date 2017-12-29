@@ -41,7 +41,7 @@ namespace iShop.Web.Server.APIs
 
         // /api/Category/id  get category of  value id
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory(int id)
+        public async Task<IActionResult> GetCategory(Guid id)
         {
 
             var category = await _unitOfWork.CategoryRepository.GetCategory(id);
@@ -77,7 +77,7 @@ namespace iShop.Web.Server.APIs
 
         // /api/Category Use  to delete a category with id of us and return this id 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(Guid id)
         {
             var category = await _unitOfWork.CategoryRepository.GetCategory(id);
 
@@ -94,7 +94,7 @@ namespace iShop.Web.Server.APIs
 
         // /api/Category/id   Use to update a category 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryResource categoryResource)
+        public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryResource categoryResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

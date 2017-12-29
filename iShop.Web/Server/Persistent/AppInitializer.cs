@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iShop.Web.Server.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,16 +18,16 @@ namespace iShop.Web.Server.Persistent
 
         public async Task Seed()
         {
-            // Sample
-            //if (!_context.GenreSet.Any())
+
+            // SAMPLE
+            //if (!_context.Images.Any())
             //{
-            //    var genres = new List<Genre>()
-            //    {  
-            //        new Genre() {Name = "Romantic"},
-            //        new Genre() {Name = "Advanture"}
+            //    var images = new List<Image>()
+            //    {
+            //        new Image() {FileName = "this is test"},
+            //        new Image() {FileName = "This is TEST"}
             //    };
-            //
-            //    _context.AddRange(genres);
+            //    await _context.AddRangeAsync(images);
             //    await _context.SaveChangesAsync();
             //}
         }

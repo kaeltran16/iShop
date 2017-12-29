@@ -9,8 +9,9 @@ namespace iShop.Web.Server.Core.Models
 {
     public class Product
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         [StringLength(155)]
         public string Title { get; set; }
