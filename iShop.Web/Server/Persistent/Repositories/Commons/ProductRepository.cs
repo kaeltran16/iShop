@@ -29,7 +29,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
                 .Include(p => p.Image)
                 .SingleOrDefaultAsync(v => v.Id == id);
         }
-        public async Task<IEnumerable<Product>> GetProduct()
+        public async Task<IEnumerable<Product>> GetProducts()
         {
             return await _context.Products
                 .Include(c => c.Category)

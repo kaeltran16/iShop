@@ -15,11 +15,10 @@ namespace iShop.Web.Server.APIs
     [Route("/api/Product")]
     public class ProductsController : Microsoft.AspNetCore.Mvc.Controller
     {
-
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProductsController(IMapper mapper, IProductRepository repository, IUnitOfWork unitOfWork)
+        public ProductsController(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -36,7 +35,7 @@ namespace iShop.Web.Server.APIs
 
              await _unitOfWork.ProductRepository.AddAsync(product);
             await _unitOfWork.CompleteAsync();
-
+                
             product = await _unitOfWork.ProductRepository.GetProductId(product.Id);
 
             var result = _mapper.Map<Product, ProductResource>(product);
@@ -100,7 +99,7 @@ namespace iShop.Web.Server.APIs
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _unitOfWork.ProductRepository.GetProduct();
+            var products = await _unitOfWork.ProductRepository.GetProducts();
 
             if (products == null)
                 return NotFound();

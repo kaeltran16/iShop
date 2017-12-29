@@ -24,7 +24,7 @@ namespace iShop.Web.Server.APIs
             _mapper = mapper;
         }
 
-        //create  a Order 
+        // /api/Order create  a Order 
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] OrderResourceSave orderResources)
         {
@@ -38,7 +38,7 @@ namespace iShop.Web.Server.APIs
             return Ok(result);
         }
 
-        //update a order
+        // /api/Order/id update a order
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOrder(int shoppingCartId, [FromBody]OrderResourceSave orderResource)
         {
@@ -55,7 +55,7 @@ namespace iShop.Web.Server.APIs
         }
 
 
-        // get order  with shopping cart id 
+        ///api/Order/id  get order  with shopping cart id 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrder(int shoppingCartId)
         {
@@ -66,7 +66,7 @@ namespace iShop.Web.Server.APIs
             return Ok(orderResource);
         }
 
-        //delete a order with id 
+        // /api/Order/id   delete a order with id 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int shoppingCartId)
         {
@@ -80,7 +80,7 @@ namespace iShop.Web.Server.APIs
         }
 
 
-        //get  all Order 
+        // /api/Order get  all Order 
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
@@ -93,7 +93,7 @@ namespace iShop.Web.Server.APIs
         }
 
 
-        // get order   of current user 
+        // /api/Order/userId get order   of current user 
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetOrderOfUser(string userId)
         {

@@ -8,19 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.Validation" Version="2.0.0-rc1-final" />
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
+    <PackageReference Include="OpenIddict" Version="2.0.0-rc2-0785" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0-rc2-0785" />
+    <PackageReference Include="OpenIddict.Mvc" Version="2.0.0-rc2-0785" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
-    <Content Remove="ClientApp\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +29,8 @@
     <Compile Remove="Migrations\20171220185120_InitialModel.Designer.cs" />
     <Compile Remove="Migrations\20171220185247_InitialModel.cs" />
     <Compile Remove="Migrations\20171220185247_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171224044437_InitalModel.cs" />
+    <Compile Remove="Migrations\20171224044437_InitalModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

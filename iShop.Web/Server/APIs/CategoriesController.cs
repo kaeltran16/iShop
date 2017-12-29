@@ -30,8 +30,9 @@ namespace iShop.Web.Server.APIs
         public async Task<IActionResult> GetCategories()
         {
             var category = await _unitOfWork.CategoryRepository.GetCategories();
-            if (category == null)
-                return NotFound();
+            // you dont need to check for null over here, because if there is nothing in the database, it will return a list of empty, which is totally fine
+            //if (category == null)
+            //    return NotFound();
             var categoryResource = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(category);
             return Ok(categoryResource);
 

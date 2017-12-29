@@ -1,17 +1,20 @@
 ﻿
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+ 
+    Layout = "~/Views/Shares/_layout.cshtml";
 }
 
 
-
-<app asp-prerender-module="ClientApp/dist/main-server">Loading...</app>
-
-<script src="~/dist/vendor.js" asp-append-version="true"></script>
-@section scripts {
+ <app asp-prerender-module="ClientApp/dist/main-server">Loading...</app>
+ 
+ <script src="~/dist/vendor.js" asp-append-version="true"></script>
+ @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>
-}
+    }
+ 
 
 
 
+
+ 
