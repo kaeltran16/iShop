@@ -9,7 +9,7 @@ namespace iShop.Web.Server.Core.Resources
     {
 
    
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public ApplicationUserResources User { get; set; }
   
 

@@ -44,7 +44,7 @@ namespace iShop.Web.Server.APIs
         }
         // /api/Product/id   Use to update a product 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductResourceSave productResource)
+        public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductResourceSave productResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -66,7 +66,7 @@ namespace iShop.Web.Server.APIs
         }   
         // /api/Product Use  to delete a product with id of us and return this id 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(Guid id)
         {
             var product = await _unitOfWork.ProductRepository.GetProductId(id);
 
@@ -81,7 +81,7 @@ namespace iShop.Web.Server.APIs
 
         // /api/Product/id get product by ID :))
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct(int id)
+        public async Task<IActionResult> GetProduct(Guid id)
         {
             var product = await _unitOfWork.ProductRepository.GetProductId(id);
 

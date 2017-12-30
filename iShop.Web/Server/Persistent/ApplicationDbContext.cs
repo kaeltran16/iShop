@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iShop.Web.Server.Persistent
 {
-    public class ApplicationDbContext: IdentityDbContext<ApplicationUser, ApplicationRole, string>
+    public class ApplicationDbContext: IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }

@@ -9,7 +9,7 @@ namespace iShop.Web.Server.Core.Resources
 {
     public class CartResource
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
    
         public int Quantity { get; set; }
         public ProductResource Product { get; set; }

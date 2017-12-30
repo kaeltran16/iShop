@@ -21,7 +21,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         }
 
 
-        public async Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(string userId)
+        public async Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(Guid userId)
         {
             return await _context.ShoppingCarts
                 .Include(c => c.Carts)
@@ -30,7 +30,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
                 .Where(s => s.UserId == userId).ToListAsync();
         }
 
-        public async Task<ShoppingCart> GetShoppingCart(int id, bool includeRelated = true)
+        public async Task<ShoppingCart> GetShoppingCart(Guid id, bool includeRelated = true)
         {
             if (!includeRelated)
                 return await _context.ShoppingCarts.FindAsync(id);

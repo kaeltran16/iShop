@@ -19,7 +19,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
             _context = context;
         }
 
-        public async Task<Product> GetProductId(int id, bool includeRelated = true)
+        public async Task<Product> GetProductId(Guid id, bool includeRelated = true)
         {
             if (!includeRelated)
                 return await _context.Products.FindAsync(id);
