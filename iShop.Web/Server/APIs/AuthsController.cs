@@ -30,7 +30,7 @@ namespace iShop.Web.Server.APIs
             _userManager = userManager;
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("~/connect/authorize")]
         public async Task<IActionResult> Authorize(OpenIdConnectRequest request)
         {

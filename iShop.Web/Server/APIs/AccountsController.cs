@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using iShop.Web.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace iShop.Web.Server.APIs
 {
@@ -17,29 +13,32 @@ namespace iShop.Web.Server.APIs
     [Route("/api/[controller]")]
     public class AccountsController : Microsoft.AspNetCore.Mvc.Controller
     {
-        private readonly IOptions<IdentityOptions> _identityOptions;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<AccountsController> _logger;
 
         public AccountsController(
             UserManager<ApplicationUser> userManager,
-            IOptions<IdentityOptions> identityOptions,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<AccountsController> logger)
         {
             _userManager = userManager;
-            _identityOptions = identityOptions;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
+                _logger.LogInformation(LoggingEvents.Success, model.Email + " signs in");
                 return Ok(model.Email);
             }
             // send code for two factor validation
@@ -54,15 +53,17 @@ namespace iShop.Web.Server.APIs
             //    return BadRequest(new ApiError("Lockout"));
             //}
 
-            return BadRequest("Invalid login attempt.");
-
-
+            _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to loggin");
+            return BadRequest(model.Email);
         }
 
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody]RegisterViewModel model, string returnUrl = null)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+           
             var currentUser = new ApplicationUser
             {
                 UserName = model.Email,
@@ -74,26 +75,26 @@ namespace iShop.Web.Server.APIs
             var result = await _userManager.CreateAsync(currentUser, model.Password);
             if (result.Succeeded)
             {
-                // Add to roles
-                var roleAddResult = await _userManager.AddToRoleAsync(currentUser, "User");
-                if (roleAddResult.Succeeded)
-                {
+                //// Add to roles
+                //var roleAddResult = await _userManager.AddToRoleAsync(currentUser, "User");
+                //if (roleAddResult.Succeeded)
+                //{
+                    _logger.LogInformation(LoggingEvents.Success, model.Email + " created");
                     // NOTE:
                     // call the email services for confirm the account or do whatever you wanna do here
-                }
+                //}
             }
-
-            return BadRequest("Can not create your account.");
+            _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to create");
+            return BadRequest(model.Email);
         }
 
         [HttpGet("ConfirmEmail")]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
-            {
-                return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+           
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -101,7 +102,12 @@ namespace iShop.Web.Server.APIs
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
+            {
+                _logger.LogInformation(LoggingEvents.Success, userId + " confirm email successfully");
                 return Ok();
+            }
+
+            _logger.LogWarning(userId + " failed to confirm email");
             return BadRequest();
         }
 
@@ -109,23 +115,26 @@ namespace iShop.Web.Server.APIs
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordViewModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var currentUser = await _userManager.FindByNameAsync(model.Email);
             if (currentUser == null || !(await _userManager.IsEmailConfirmedAsync(currentUser)))
             {
                 // Don't reveal that the user does not exist or is not confirmed
                 return NoContent();
             }
-            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-            // Send an email with this link
+           
             // Call the email service to generate token for reseting the password
             
-            return NoContent(); // sends 204
+            return NoContent(); 
         }
 
         [HttpPost("resetpassword")]
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordViewModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var user = await _userManager.FindByNameAsync(model.Email);
 
             if (user == null)
@@ -136,28 +145,15 @@ namespace iShop.Web.Server.APIs
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return Ok("Reset confirmed"); ;
+                _logger.LogInformation(LoggingEvents.Success, model.Email + " reset password");
+                return Ok(); ;
             }
             
             return BadRequest();
         }
 
-        [HttpGet("SendCode")]
-        [AllowAnonymous]
-        public async Task<ActionResult> SendCode(string returnUrl = null, bool rememberMe = false)
-        {
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                return BadRequest();
-            }
-            var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            var result = new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe };
-            return Ok(result);
-        }
 
-        [HttpPost]
+        [HttpGet("SendCode")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendCode(SendCodeViewModel model)
@@ -193,10 +189,12 @@ namespace iShop.Web.Server.APIs
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        [HttpGet]
+        [HttpGet("VerifyCode")]
         [AllowAnonymous]
         public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string returnUrl = null)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             // Require that the user has already logged in via username/password or external login
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
@@ -212,34 +210,36 @@ namespace iShop.Web.Server.APIs
         [AllowAnonymous]
         public async Task<IActionResult> VerifyCode(VerifyCodeViewModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             // The following code protects for brute force attacks against the two factor codes.
             // If a user enters incorrect codes for a specified amount of time then the user account
             // will be locked out for a specified amount of time.
             var result = await _signInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
             if (result.Succeeded)
             {
+    
                 return Ok();
             }
             if (result.IsLockedOut)
             {
+                _logger.LogWarning(LoggingEvents.Fail, "User account locked out.");
+                return BadRequest();
+            }
 
-                return BadRequest();
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Invalid code.");
-                return BadRequest();
-            }
+            ModelState.AddModelError(string.Empty, "Invalid code.");
+            return BadRequest();
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
-           
+            _logger.LogInformation(LoggingEvents.Success, "User logged out.");
             return NoContent();
         }
 
 
     }
 }
+
