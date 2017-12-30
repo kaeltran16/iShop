@@ -50,6 +50,7 @@ namespace iShop.Web.Server.Mapping
             CreateMap<OrderResourceSave, Order>();
             CreateMap<ShoppingCartResource,ShoppingCart>();
             CreateMap<ProductResource, Product>();
+            CreateMap<CategoryResource, Category>();
         }
     }
 }

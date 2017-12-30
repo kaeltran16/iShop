@@ -31,9 +31,9 @@ namespace iShop.Web.Server.Persistent.UnitOfWork.Commons
         public IOrderRepository OrderRepository =>
             _orderRepository ?? (_orderRepository = new OrderRepository(_context));
         // Complete current unit of work, save changes to the database
-        public async Task CompleteAsync()
+        public async Task<bool> CompleteAsync()
         {
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Dispose()

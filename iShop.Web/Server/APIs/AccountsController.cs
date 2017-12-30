@@ -15,16 +15,16 @@ namespace iShop.Web.Server.APIs
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger _logger;
+        private readonly ILogger<AccountsController> _logger;
 
         public AccountsController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILoggerFactory loggerFactory)
+            ILogger<AccountsController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = loggerFactory.CreateLogger<AccountsController>();
+            _logger = logger;
         }
 
         [HttpPost("login")]
