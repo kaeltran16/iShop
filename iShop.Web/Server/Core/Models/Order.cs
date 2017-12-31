@@ -9,11 +9,11 @@ namespace iShop.Web.Server.Core.Models
     public class Order
     {
         [Required]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public ApplicationUser User { get; set; }
         [Required]      
-        public int ShoppingCartId { get; set; }
+        public Guid ShoppingCartId { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
 
         public DateTime PlacedDate { get; set; }

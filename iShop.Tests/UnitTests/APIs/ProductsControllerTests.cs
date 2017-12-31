@@ -48,7 +48,7 @@ namespace iShop.Tests.UnitTests.APIs
         {
             var productId = Guid.NewGuid();
 
-            var newProduct = new ProductResourceSave() { Id = productId };
+            var newProduct = new SavedProductResource() { Id = productId };
 
             _controller.ModelState.AddModelError("Error", "error");
 
@@ -62,9 +62,9 @@ namespace iShop.Tests.UnitTests.APIs
         {
             var productId = Guid.NewGuid();
 
-            var newProduct = new ProductResourceSave() { Id = productId };
+            var newProduct = new SavedProductResource() { Id = productId };
 
-            _mockMapper.Setup(m => m.Map<ProductResourceSave, Product>(It.IsAny<ProductResourceSave>()))
+            _mockMapper.Setup(m => m.Map<SavedProductResource, Product>(It.IsAny<SavedProductResource>()))
                 .Returns(new Product() { Id = productId });
 
             var result = await _controller.CreateProduct(newProduct);
@@ -80,7 +80,7 @@ namespace iShop.Tests.UnitTests.APIs
         {
             var productId = Guid.NewGuid();
 
-            var newProduct = new ProductResourceSave() { Id = productId };
+            var newProduct = new SavedProductResource() { Id = productId };
 
             _controller.ModelState.AddModelError("Error", "error");
 
@@ -95,7 +95,7 @@ namespace iShop.Tests.UnitTests.APIs
         {
             var productId = Guid.NewGuid();
 
-            var newProduct = new ProductResourceSave() { Id = productId };
+            var newProduct = new SavedProductResource() { Id = productId };
             _mockRepository.Setup(g => g.GetProductId(productId, true)).ReturnsAsync((Product)null);
 
 
@@ -109,10 +109,10 @@ namespace iShop.Tests.UnitTests.APIs
         {
             var productId = Guid.NewGuid();
 
-            var newProductResource = new ProductResourceSave() { Id = productId };
+            var newProductResource = new SavedProductResource() { Id = productId };
             var newProduct = new Product() { Id = productId };
             _mockRepository.Setup(g => g.GetProductId(productId, true)).ReturnsAsync(newProduct);
-            _mockMapper.Setup(m => m.Map<ProductResourceSave, Product>(It.IsAny<ProductResourceSave>()))
+            _mockMapper.Setup(m => m.Map<SavedProductResource, Product>(It.IsAny<SavedProductResource>()))
                 .Returns(newProduct);
 
             var result = await _controller.UpdateProduct(productId, newProductResource);

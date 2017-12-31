@@ -16,6 +16,7 @@ namespace iShop.Web.Server.Core.Models
 
         public DateTime PlacedDate { get; set; }
         public ICollection<Cart> Carts { get; set; }
+        [Required]
         public Guid UserId  { get; set; }
         public ApplicationUser User { get; set; }
         public ShoppingCart()

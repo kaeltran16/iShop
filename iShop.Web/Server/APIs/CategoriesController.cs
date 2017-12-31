@@ -16,7 +16,6 @@ using Microsoft.Extensions.Logging;
 
 namespace iShop.Web.Server.APIs
 {
-
     [Route("/api/[controller]")]
     public class CategoriesController : Microsoft.AspNetCore.Mvc.Controller
     {
@@ -45,8 +44,7 @@ namespace iShop.Web.Server.APIs
 
 
         // GET
-        [HttpGet("{id}", Name = nameof(Get))]
-        
+        [HttpGet("{id}", Name = GetName.Category)]
         public async Task<IActionResult> Get(Guid id)
         {
             var category = await _unitOfWork.CategoryRepository.GetCategory(id);
@@ -63,7 +61,6 @@ namespace iShop.Web.Server.APIs
 
 
         // POST
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryResource categoryResources)
         {
@@ -102,14 +99,12 @@ namespace iShop.Web.Server.APIs
             var result = _mapper.Map<Category,CategoryResource>(category);
 
             _logger.LogInformation(LoggingEvents.Created, "item with id " + category.Id + " is created");
-            return CreatedAtRoute(nameof(Get), new {id = category.Id}, result);
+            return CreatedAtRoute(GetName.Category, new {id = category.Id}, result);
         }
-
-
 
         // DELETE
         [HttpDelete("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             var category = await _unitOfWork.CategoryRepository.GetCategory(id);
@@ -133,10 +128,10 @@ namespace iShop.Web.Server.APIs
 
 
 
-        // POST
+        // PUT
         [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryResource categoryResource)
+        //[Authorize]
+        public async Task<IActionResult> Update(Guid id, [FromBody] CategoryResource categoryResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -160,6 +155,7 @@ namespace iShop.Web.Server.APIs
             category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
 
             var result = _mapper.Map<Category, CategoryResource>(category);
+            _logger.LogInformation(LoggingEvents.Updated, "item with id " + id + " updated");
             return Ok(result);
         }
 

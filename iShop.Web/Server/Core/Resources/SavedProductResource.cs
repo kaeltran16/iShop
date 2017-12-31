@@ -1,28 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace iShop.Web.Server.Core.Resources
 {
-    public class ProductResourceSave
+    public class SavedProductResource
     {
         public Guid Id { get; set; }
-      
+        [Required]
         public string Title { get; set; }
+        [Required]
         public double Price { get; set; }
         public string Info { get; set; }
-      
+        [Required]
         public int Stock { get; set; }
         public DateTime ExpiredDate { get; set; }
         public DateTime AddedDate { get; set; }
-
+        [Required]
         public int CategoryId { get; set; }
- 
+        [Required]
         public int ImageId { get; set; }
       
 
-        public ProductResourceSave()
+        public SavedProductResource()
         {
             AddedDate = DateTime.Now;
         }

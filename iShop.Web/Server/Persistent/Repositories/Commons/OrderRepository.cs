@@ -18,9 +18,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
             _context = context;
         }
 
-
-
-        public async Task<IEnumerable<Order>> GetOrderOfUser(string userId)
+        public async Task<IEnumerable<Order>> GetUserOrders(Guid userId)
         {
             return await _context.Orders
                 .Include(c => c.ShoppingCart)
@@ -30,7 +28,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
                 .Where(s => s.UserId == userId).ToListAsync();
         }
 
-        public async Task<Order> GetOrder(int shoppingCartId, bool includeRelated = true)
+        public async Task<Order> GetOrder(Guid userId, Guid shoppingCartId, bool includeRelated = true)
         {
             if (!includeRelated)
                 return await _context.Orders.FindAsync(shoppingCartId);
@@ -50,9 +48,6 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
                 .Include(u => u.User)
                 .ToListAsync();
         }
-
-
-
 
     }
 }

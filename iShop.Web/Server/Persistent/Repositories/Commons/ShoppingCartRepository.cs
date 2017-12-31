@@ -21,7 +21,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         }
 
 
-        public async Task<IEnumerable<ShoppingCart>> GetShoppingCartOfUser(Guid userId)
+        public async Task<IEnumerable<ShoppingCart>> GetUserShoppingCarts(Guid userId)
         {
             return await _context.ShoppingCarts
                 .Include(c => c.Carts)
