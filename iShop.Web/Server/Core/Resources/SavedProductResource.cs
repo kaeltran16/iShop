@@ -13,15 +13,15 @@ namespace iShop.Web.Server.Core.Resources
         public string Title { get; set; }
         [Required]
         public double Price { get; set; }
-        public string Info { get; set; }
+        //public string Info { get; set; }
         [Required]
         public int Stock { get; set; }
-        public DateTime ExpiredDate { get; set; }
+        //public DateTime ExpiredDate { get; set; }
         public DateTime AddedDate { get; set; }
         [Required]
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         [Required]
-        public int ImageId { get; set; }
+        public Guid ImageId { get; set; }
       
 
         public SavedProductResource()

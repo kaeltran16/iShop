@@ -56,9 +56,9 @@ namespace iShop.Web.Server.APIs
         }
 
         // POST
-        [Authorize]
-        //[HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] SavedProductResource savedProductResources)
+        //[Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] SavedProductResource savedProductResources)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

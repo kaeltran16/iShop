@@ -42,9 +42,16 @@
     <Compile Remove="Migrations\20171229190820_ChangeIdTypeToGuid.Designer.cs" />
     <Compile Remove="Migrations\20171229191425_AddOpenIddict.cs" />
     <Compile Remove="Migrations\20171229191425_AddOpenIddict.Designer.cs" />
+    <Compile Remove="Migrations\20171229191555_InitialModel.cs" />
+    <Compile Remove="Migrations\20171229191555_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171231014807_ChangeFKToGuid.cs" />
+    <Compile Remove="Migrations\20171231014807_ChangeFKToGuid.Designer.cs" />
+    <Compile Remove="Migrations\20171231015628_InitialModel.cs" />
+    <Compile Remove="Migrations\20171231015628_InitialModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Server\Services\Commons\" />
     <Folder Include="Server\Services\Contracts\" />
   </ItemGroup>

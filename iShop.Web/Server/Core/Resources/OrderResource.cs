@@ -14,7 +14,7 @@ namespace iShop.Web.Server.Core.Resources
   
 
 
-        public int ShoppingCartId { get; set; }
+        public Guid ShoppingCartId { get; set; }
         public ShoppingCartResource ShoppingCart { get; set; }
         public DateTime PlacedDate { get; set; }
 

@@ -15,6 +15,7 @@ namespace iShop.Web.Server.Core.Models
         [Required]
         [StringLength(155)]
         public string Title { get; set; }
+        [Required]
         public double Price { get; set; }
         public string Info { get; set; }
         [Required]
@@ -23,11 +24,11 @@ namespace iShop.Web.Server.Core.Models
         public DateTime AddedDate { get; set; }
 
         [Required]
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         public Category Category { get; set; }
 
         [Required]
-        public int ImageId { get; set; }
+        public Guid ImageId { get; set; }
         public Image Image { get; set; }
 
         public Product()

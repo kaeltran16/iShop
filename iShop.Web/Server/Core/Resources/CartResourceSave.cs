@@ -9,7 +9,7 @@ namespace iShop.Web.Server.Core.Resources
     {
         public Guid Id { get; set; }
   
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         public int Quantity { get; set; }
         public int ShoppingCartId { get; set; }
         public ShoppingCartResourceSave ShoppingCart { get; set; }
