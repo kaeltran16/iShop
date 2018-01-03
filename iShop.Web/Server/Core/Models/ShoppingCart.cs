@@ -10,18 +10,18 @@ namespace iShop.Web.Server.Core.Models
 {
     public class ShoppingCart
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
-
-        public DateTime PlacedDate { get; set; }
         public ICollection<Cart> Carts { get; set; }
-        [Required]
-        public Guid UserId  { get; set; }
+        public Guid UserId { get; set; }
         public ApplicationUser User { get; set; }
+        public DateTime PlacedDate { get; set; }
+       
         public ShoppingCart()
         {
+            Id = Guid.NewGuid();
             Carts = new Collection<Cart>();
+            PlacedDate = DateTime.Now;     
         }
     }
 }

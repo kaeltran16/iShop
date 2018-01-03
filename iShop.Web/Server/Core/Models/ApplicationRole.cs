@@ -9,7 +9,6 @@ namespace iShop.Web.Server.Core.Models
 {
     public class ApplicationRole: IdentityRole<Guid>
     {
-        [StringLength(155)]
         public string Description { get; set; }
     }
 }

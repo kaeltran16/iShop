@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 namespace iShop.Web.Server.Core.Models
 {
     public class Category
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    {      
         [Key]
         public Guid Id { get; set; }
-        [Required]
-        [StringLength(155)]
         public string Name { get; set; }
-        [StringLength(155)]
         public string Detail { get; set; }
-      
+        public string Short { get; set; }
+        public Guid ProductId { get; set; }
+        public Product Product { get; set; }
+        public Category()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

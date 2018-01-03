@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace iShop.Web.Server.Core.Models
 {
-    public class Image
+    public class OrderedItem
     {
-        [Key]
         public Guid Id { get; set; }
-        public string FileName { get; set; }
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
-        public Image()
+        public int Quantity { get; set; }
+        public Guid OrderId { get; set; }
+        public Order Order { get; set; }
+        public OrderedItem()
         {
             Id = Guid.NewGuid();
         }

@@ -48,6 +48,8 @@
     <Compile Remove="Migrations\20171231014807_ChangeFKToGuid.Designer.cs" />
     <Compile Remove="Migrations\20171231015628_InitialModel.cs" />
     <Compile Remove="Migrations\20171231015628_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171231060544_InitialModel.cs" />
+    <Compile Remove="Migrations\20171231060544_InitialModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
