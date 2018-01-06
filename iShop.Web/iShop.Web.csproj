@@ -11,12 +11,13 @@
     <PackageReference Include="AspNet.Security.OAuth.Validation" Version="2.0.0-rc1-final" />
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="ErikEJ.EntityFrameworkCore.DgmlBuilder" Version="1.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-rc2" />
-    <PackageReference Include="OpenIddict" Version="2.0.0-rc2-0785" />
-    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0-rc2-0785" />
-    <PackageReference Include="OpenIddict.Mvc" Version="2.0.0-rc2-0785" />
+    <PackageReference Include="OpenIddict" Version="2.0.0-rc2-0789" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0-rc2-0789" />
+    <PackageReference Include="OpenIddict.Mvc" Version="2.0.0-rc2-0789" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,22 @@
     <Compile Remove="Migrations\20171229190820_ChangeIdTypeToGuid.Designer.cs" />
     <Compile Remove="Migrations\20171229191425_AddOpenIddict.cs" />
     <Compile Remove="Migrations\20171229191425_AddOpenIddict.Designer.cs" />
+    <Compile Remove="Migrations\20171229191555_InitialModel.cs" />
+    <Compile Remove="Migrations\20171229191555_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171231014807_ChangeFKToGuid.cs" />
+    <Compile Remove="Migrations\20171231014807_ChangeFKToGuid.Designer.cs" />
+    <Compile Remove="Migrations\20171231015628_InitialModel.cs" />
+    <Compile Remove="Migrations\20171231015628_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20171231060544_InitialModel.cs" />
+    <Compile Remove="Migrations\20171231060544_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20180103213716_InitalModel.cs" />
+    <Compile Remove="Migrations\20180103213716_InitalModel.Designer.cs" />
+    <Compile Remove="Migrations\20180103214003_InitalModel.cs" />
+    <Compile Remove="Migrations\20180103214003_InitalModel.Designer.cs" />
+    <Compile Remove="Migrations\20180106065513_InitialModel.cs" />
+    <Compile Remove="Migrations\20180106065513_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20180106070048_InitialModel.cs" />
+    <Compile Remove="Migrations\20180106070048_InitialModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -32,12 +32,12 @@ namespace iShop.Web
         public void ConfigureServices(IServiceCollection services)
         {
             //declare interfaces
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            //services.AddScoped<ICategoryRepository, CategoryRepository>();
+            //services.AddScoped<IProductRepository, ProductRepository>();
+            ////services.AddScoped<IOrderRepository, OrderRepository>();
             //services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            ////services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
       
             services.AddDbContext<ApplicationDbContext>(options =>
             {

@@ -9,12 +9,13 @@ namespace iShop.Web.Server.Core.Models
 {
     public class Image
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
         public Guid Id { get; set; }
-        [StringLength(155)]
         public string FileName { get; set; }
-     
-      
+        public Guid ProductId { get; set; }
+        public Product Product { get; set; }
+        public Image()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

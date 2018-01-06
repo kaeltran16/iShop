@@ -3,115 +3,154 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using iShop.Web.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace iShop.Web.Server.APIs
 {
 
-    [Route("/api/Product")]
+    [Route("/api/[controller]")]
     public class ProductsController : Microsoft.AspNetCore.Mvc.Controller
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        //private readonly IMapper _mapper;
+        //private readonly IUnitOfWork _unitOfWork;
+        //private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(IMapper mapper, IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-        // /api/Product    Use to create a product and return this product 
-        [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductResourceSave productResources)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        //public ProductsController(IMapper mapper, IUnitOfWork unitOfWork, ILogger<ProductsController> logger)
+        //{
+        //    _unitOfWork = unitOfWork;
+        //    _logger = logger;
+        //    _mapper = mapper;
+        //}
 
-            var product = _mapper.Map<ProductResourceSave, Product>(productResources);
+        //// GET
+        //[HttpGet("{id}", Name = GetName.Product)]
+        //public async Task<IActionResult> Get(Guid id)
+        //{
+        //    var product = await _unitOfWork.ProductRepository.GetProductId(id);
 
+        //    if (product == null)
+        //        return NotFound(
+        //            new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
 
-             await _unitOfWork.ProductRepository.AddAsync(product);
-            await _unitOfWork.CompleteAsync();
-                
-            product = await _unitOfWork.ProductRepository.GetProductId(product.Id);
+        //    var productResource = _mapper.Map<Product, ProductResource>(product);
 
-            var result = _mapper.Map<Product, ProductResource>(product);
+        //    return Ok(productResource);
+        //}
 
-            return Ok(result);
-        }
-        // /api/Product/id   Use to update a product 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductResourceSave productResource)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        //// GET 
+        //[HttpGet]
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    var products = await _unitOfWork.ProductRepository.GetProducts();
 
-            var product = await _unitOfWork.ProductRepository.GetProductId(id);
+        //    var productResources = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductResource>>(products);
 
-            if (product == null)
-                return NotFound();
+        //    return Ok(productResources);
+        //}
 
-            _mapper.Map<ProductResourceSave, Product>(productResource, product);
+        //// POST
+        ////[Authorize]
+        //[HttpPost]
+        //public async Task<IActionResult> Create([FromBody] SavedProductResource savedProductResources)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
 
+        //    var products = await _unitOfWork.ProductRepository.GetProducts();
+        //    foreach (var prod in products)
+        //    {
+        //        // if we do, return bad request
+        //        if (prod.Title.Equals(savedProductResources.Title))
+        //            return BadRequest(new ErrorMessage()
+        //            {
+        //                Code = 400,
+        //                Message = "category with name " + savedProductResources.Title + " exists"
+        //            }.ToString());
+        //    }
 
-            await _unitOfWork.CompleteAsync();
+        //    var product = _mapper.Map<SavedProductResource, Product>(savedProductResources);
 
-            product = await _unitOfWork.ProductRepository.GetProductId(product.Id);
-            var result = _mapper.Map<Product, ProductResourceSave>(product);
+        //    await _unitOfWork.ProductRepository.AddAsync(product);
+        //    if (!await _unitOfWork.CompleteAsync())
+        //    {
+        //        _logger.LogError(LoggingEvents.Fail, "item with id " + product.Id + " failed to saved");
+        //        return StatusCode(500,
+        //            new ErrorMessage { Code = 500, Message = "item with id " + product.Id + " failed to saved" }
+        //                .ToString());
+        //    }
 
-            return Ok(result);
-        }   
-        // /api/Product Use  to delete a product with id of us and return this id 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(Guid id)
-        {
-            var product = await _unitOfWork.ProductRepository.GetProductId(id);
+        //    product = await _unitOfWork.ProductRepository.GetProductId(product.Id);
 
-            if (product == null)
-                return NotFound();
+        //    var result = _mapper.Map<Product, ProductResource>(product);
 
-            _unitOfWork.ProductRepository.Remove(product);
-            await _unitOfWork.CompleteAsync();
+        //    _logger.LogInformation(LoggingEvents.Created, "item with id " + product.Id + " is created");
 
-            return Ok(id);
-        }
+        //    return CreatedAtRoute(GetName.Product, new { id = product.Id }, result);
+        //}
 
-        // /api/Product/id get product by ID :))
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct(Guid id)
-        {
-            var product = await _unitOfWork.ProductRepository.GetProductId(id);
+        //// PUT
+        ////[Authorize]
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Update(Guid id, [FromBody] SavedProductResource savedProductResource)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
 
-            if (product == null)
-                return NotFound();
+        //    var product = await _unitOfWork.ProductRepository.GetProductId(id);
 
-            var productResource = _mapper.Map<Product, ProductResource>(product);
+        //    if (product == null)
+        //        return NotFound(
+        //            new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
 
-            return Ok(productResource);
-        }
+        //    _mapper.Map<SavedProductResource, Product>(savedProductResource, product);
 
-       
+        //    if (!await _unitOfWork.CompleteAsync())
+        //    {
+        //        _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
+        //        return StatusCode(500,
+        //            new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
+        //                .ToString());
+        //    }
 
-      //  /api/Product  get all product  
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
-        {
-            var products = await _unitOfWork.ProductRepository.GetProducts();
+        //    product = await _unitOfWork.ProductRepository.GetProductId(product.Id);
 
-            if (products == null)
-                return NotFound();
+        //    var result = _mapper.Map<Product, SavedProductResource>(product);
 
-            var productResources = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductResource>>(products);
+        //    _logger.LogInformation(LoggingEvents.Updated, "item with id " + id + " updated");
 
+        //    return Ok(result);
+        //}
 
-            return Ok(productResources);
-        }
+        //// DELETE
+        ////[Authorize]
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteProduct(Guid id)
+        //{
+        //    var product = await _unitOfWork.ProductRepository.GetProductId(id);
 
+        //    if (product == null)
+        //        return NotFound(
+        //            new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
 
+        //    _unitOfWork.ProductRepository.Remove(product);
+        //    if (!await _unitOfWork.CompleteAsync())
+        //    {
+        //        _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
+        //        return StatusCode(500,
+        //            new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
+        //                .ToString());
+        //    }
 
+        //    _logger.LogInformation(LoggingEvents.Deleted, "item with id " + id + " is deleted");
 
+        //    return NoContent();
+        //}
     }
 }

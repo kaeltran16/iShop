@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using iShop.Web.Server.Core.Models;
+using iShop.Web.Server.Extensions;
+using iShop.Web.Server.Persistent.EntityConfigurations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,10 +31,14 @@ namespace iShop.Web.Server.Persistent
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.Entity<Order>().HasKey(g => new { g.UserId, g.ShoppingCartId });
-            base.OnModelCreating(builder);
+            modelBuilder.ApplyEntityConfigurations();
+         
+            
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ChangeIdentityTableNames();
+       
         }
     }
 }
