@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace iShop.Web.Server.Core.Models
 {
-    public class OrderedItem
+    public class ProductCategory
     {
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
-        public int Quantity { get; set; }
-        public Guid OrderId { get; set; }
-        public Order Order { get; set; }
+        public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

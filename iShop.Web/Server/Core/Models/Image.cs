@@ -9,7 +9,6 @@ namespace iShop.Web.Server.Core.Models
 {
     public class Image
     {
-        [Key]
         public Guid Id { get; set; }
         public string FileName { get; set; }
         public Guid ProductId { get; set; }

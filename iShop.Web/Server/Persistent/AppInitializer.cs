@@ -1,6 +1,7 @@
 ﻿using iShop.Web.Server.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,8 @@ namespace iShop.Web.Server.Persistent
                 await _context.AddRangeAsync(images);
                 await _context.SaveChangesAsync();
             }
+           
+
         }
     }
 }
