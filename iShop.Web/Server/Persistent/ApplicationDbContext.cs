@@ -27,18 +27,14 @@ namespace iShop.Web.Server.Persistent
         {   
         }
 
-        public ApplicationDbContext()
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyEntityConfigurations();
-         
-            
+                 
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.ChangeIdentityTableNames();
-       
         }
     }
 }

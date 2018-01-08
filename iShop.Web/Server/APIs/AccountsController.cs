@@ -41,18 +41,7 @@ namespace iShop.Web.Server.APIs
                 _logger.LogInformation(LoggingEvents.Success, model.Email + " signs in");
                 return Ok(model.Email);
             }
-            // send code for two factor validation
-            // which we dont need right now
-            //if (result.RequiresTwoFactor)
-            //{
-            //    return RedirectToAction(nameof(SendCode), new { RememberMe = model.RememberMe });
-            //}
-            //if (result.IsLockedOut)
-            //{
-            //    _logger.LogWarning(2, "User account locked out.");
-            //    return BadRequest(new ApiError("Lockout"));
-            //}
-
+         
             _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to loggin");
             return BadRequest(model.Email);
         }
