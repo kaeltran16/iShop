@@ -7,20 +7,10 @@ namespace iShop.Web.Server.Core.Resources
 {
     public class OrderResource
     {
-
-   
-        public Guid UserId { get; set; }
-        public ApplicationUserResources User { get; set; }
-  
-
-
-        public Guid ShoppingCartId { get; set; }
-        public ShoppingCartResource ShoppingCart { get; set; }
-        public DateTime PlacedDate { get; set; }
-
-        public OrderResource()
-        {
-            PlacedDate = DateTime.Now;
-        }
+        public Guid Id { get; set; }
+        public ApplicationUserResource User { get; set; }
+        public ShippingResource Shipping { get; set; }
+        public InvoiceResource Invoice { get; set; }
+        public ICollection<OrderItemResource> OrderedItems { get; set; }
     }
 }

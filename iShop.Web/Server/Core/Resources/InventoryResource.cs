@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace iShop.Web.Server.Core.Resources
 {
-    public class CartResource
+    public class InventoryResource
     {
         public ProductResource Product { get; set; }
-        public ShoppingCartResource ShoppingCart { get; set; }
+        public SupplierResource Supplier { get; set; }
         [Required]
-        public int Quantity { get; set; }
+        public int Stock { get; set; }
     }
 }

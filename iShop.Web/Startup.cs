@@ -31,14 +31,14 @@ namespace iShop.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //declare interfaces
-            //services.AddScoped<ICategoryRepository, CategoryRepository>();
-            //services.AddScoped<IProductRepository, ProductRepository>();
-            ////services.AddScoped<IOrderRepository, OrderRepository>();
-            //services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-            ////services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
-      
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));

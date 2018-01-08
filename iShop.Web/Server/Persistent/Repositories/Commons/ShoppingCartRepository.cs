@@ -12,40 +12,40 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
 {
     public class ShoppingCartRepository : DataRepositoryBase<ShoppingCart>, IShoppingCartRepository
     {
-        //private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        //public ShoppingCartRepository(ApplicationDbContext context)
-        //    : base(context)
-        //{
-        //    _context = context;
-        //}
+        public ShoppingCartRepository(ApplicationDbContext context)
+            : base(context)
+        {
+            _context = context;
+        }
 
 
-        //public async Task<IEnumerable<ShoppingCart>> GetUserShoppingCarts(Guid userId)
-        //{
-        //    return await _context.ShoppingCarts
-        //        .Include(c => c.Carts)
-        //        .ThenInclude(p => p.Product)
-        //        .Include(u => u.UserId)
-        //        .Where(s => s.UserId == userId).ToListAsync();
-        //}
+        public async Task<IEnumerable<ShoppingCart>> GetUserShoppingCarts(Guid userId)
+        {
+            return await _context.ShoppingCarts
+                .Include(c => c.Carts)
+                .ThenInclude(p => p.Product)
+                .Include(u => u.UserId)
+                .Where(s => s.UserId == userId).ToListAsync();
+        }
 
-        //public async Task<ShoppingCart> GetShoppingCart(Guid id, bool includeRelated = true)
-        //{
-        //    if (!includeRelated)
-        //        return await _context.ShoppingCarts.FindAsync(id);
+        public async Task<ShoppingCart> GetShoppingCart(Guid id, bool includeRelated = true)
+        {
+            if (!includeRelated)
+                return await _context.ShoppingCarts.FindAsync(id);
 
-        //    return await _context.ShoppingCarts.Include(c => c.Carts).ThenInclude(p => p.Product).Include(u => u.User)
-        //        .SingleOrDefaultAsync(v => v.Id == id);
-        //}
-        //public async Task<IEnumerable<ShoppingCart>> GetShoppingCarts()
-        //{
-        //    return await _context.ShoppingCarts
-        //        .Include(c => c.Carts)
-        //        .ThenInclude(p => p.Product)
-        //        .Include(u => u.User)
-        //        .ToListAsync();
-        //}
+            return await _context.ShoppingCarts.Include(c => c.Carts).ThenInclude(p => p.Product).Include(u => u.User)
+                .SingleOrDefaultAsync(v => v.Id == id);
+        }
+        public async Task<IEnumerable<ShoppingCart>> GetShoppingCarts()
+        {
+            return await _context.ShoppingCarts
+                .Include(c => c.Carts)
+                .ThenInclude(p => p.Product)
+                .Include(u => u.User)
+                .ToListAsync();
+        }
 
 
 
