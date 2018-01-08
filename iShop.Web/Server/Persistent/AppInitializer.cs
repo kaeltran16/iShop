@@ -1,6 +1,7 @@
 ﻿using iShop.Web.Server.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,16 +21,18 @@ namespace iShop.Web.Server.Persistent
         {
 
             // SAMPLE
-            //if (!_context.Images.Any())
-            //{
-            //    var images = new List<Image>()
-            //    {
-            //        new Image() {FileName = "this is test"},
-            //        new Image() {FileName = "This is TEST"}
-            //    };
-            //    await _context.AddRangeAsync(images);
-            //    await _context.SaveChangesAsync();
-            //}
+            if (!_context.Images.Any())
+            {
+                var images = new List<Image>()
+                {
+                    new Image() {FileName = "this is test"},
+                    new Image() {FileName = "This is TEST"}
+                };
+                await _context.AddRangeAsync(images);
+                await _context.SaveChangesAsync();
+            }
+           
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,17 +10,18 @@ namespace iShop.Web.Server.Core.Models
 {
     public class ApplicationUser: IdentityUser<Guid>
     {
-        [Required]
-        [StringLength(155)]
-        public string FirstName { get; set; }
-        [Required]
-        [StringLength(155)]
+        public string FirstName { get; set; }      
         public string LastName { get; set; }
         public DateTime CreatedDate { get; set; }
-
+        public string Street { get; set; }
+        public string City { get; set; }
+        public ICollection<ShoppingCart> ShoppingCarts { get; set; }
+        public ICollection<Order> Orders { get; set; }
         public ApplicationUser()
         {
             CreatedDate = DateTime.Now;
+            ShoppingCarts = new Collection<ShoppingCart>();
+            Orders = new Collection<Order>();
         }
     }
 }

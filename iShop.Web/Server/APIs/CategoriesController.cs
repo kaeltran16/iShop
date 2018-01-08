@@ -1,112 +1,163 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using iShop.Web.Server.Core.Models;
-using iShop.Web.Server.Core.Resources;
-using iShop.Web.Server.Persistent.Repositories.Contracts;
-using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
-using Microsoft.AspNetCore.Mvc;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading.Tasks;
+//using AutoMapper;
+//using iShop.Web.Helpers;
+//using iShop.Web.Server.Core.Models;
+//using iShop.Web.Server.Core.Resources;
+//using iShop.Web.Server.Persistent.Repositories.Contracts;
+//using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
+//using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.Azure.KeyVault.Models;
+//using Microsoft.Extensions.Logging;
 
-namespace iShop.Web.Server.APIs
-{
-
-    [Route("/api/Category")]
-    public class CategoriesController : Microsoft.AspNetCore.Mvc.Controller
-    {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-
-
-        public CategoriesController(IMapper mapper, IUnitOfWork unitOfWork)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
-
-        // /api/Category . get all categories 
-        [HttpGet]
-        public async Task<IActionResult> GetCategories()
-        {
-            var category = await _unitOfWork.CategoryRepository.GetCategories();
-            // you dont need to check for null over here, because if there is nothing in the database, it will return a list of empty, which is totally fine
-            //if (category == null)
-            //    return NotFound();
-            var categoryResource = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(category);
-            return Ok(categoryResource);
-
-        }
+//namespace iShop.Web.Server.APIs
+//{
+//    [Route("/api/[controller]")]
+//    public class CategoriesController : Microsoft.AspNetCore.Mvc.Controller
+//    {
+//        private readonly IMapper _mapper;
+//        private readonly IUnitOfWork _unitOfWork;
+//        private readonly ILogger<CategoriesController> _logger;
 
 
-        // /api/Category/id  get category of  value id
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory(Guid id)
-        {
+//        public CategoriesController(IMapper mapper, IUnitOfWork unitOfWork, ILogger<CategoriesController> logger)
+//        {
+//            _mapper = mapper;
+//            _unitOfWork = unitOfWork;
+//            _logger = logger;
+//        }
 
-            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
-            if (category == null)
-                return NotFound();
-            var categoryResource = _mapper.Map<Category, CategoryResource>(category);
-            return Ok(categoryResource);
-        }
+//        // GET
+//        [HttpGet]
+//        public async Task<IActionResult> Get()
+//        {
+//            var category = await _unitOfWork.CategoryRepository.GetCategories();
 
+//            var categoryResource = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(category);
 
-
-        // /api/Category    Use to create a Category and return this category 
-        [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] CategoryResource categoryResources)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var category = _mapper.Map<CategoryResource, Category>(categoryResources);
+//            return Ok(categoryResource);
+//        }
 
 
-            await _unitOfWork.CategoryRepository.AddAsync(category);
-            await _unitOfWork.CompleteAsync();
+//        // GET
+//        [HttpGet("{id}", Name = GetName.Category)]
+//        public async Task<IActionResult> Get(Guid id)
+//        {
+//            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
 
-            category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
+//            if (category == null)
+//                return NotFound(
+//                    new ErrorMessage {Code = 404, Message = "item with id " + id + " not existed"}.ToString());
 
-            var result = _mapper.Map<Category,CategoryResource>(category);
+//            var categoryResource = _mapper.Map<Category, CategoryResource>(category);
 
-            return Ok(result);
-        }
+//            return Ok(categoryResource);
+//        }
 
 
 
-        // /api/Category Use  to delete a category with id of us and return this id 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(Guid id)
-        {
-            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
+//        // POST
+//        [HttpPost]
+//        public async Task<IActionResult> Create([FromBody] CategoryResource categoryResources)
+//        {
+//            if (!ModelState.IsValid)
+//                return BadRequest(ModelState);
 
-            if (category == null)
-                return NotFound();
+//            // go through all categories, make sure we do not create 2 categories with the same name 
+//            var categories = await _unitOfWork.CategoryRepository.GetCategories();
+//            foreach (var cate in categories)
+//            {
+//                // if we do, return bad request
+//                if (cate.Name.Equals(categoryResources.Name))
+//                    return BadRequest(new ErrorMessage()
+//                    {
+//                        Code = 400,
+//                        Message = "category with name " + categoryResources.Name + " exists"
+//                    }.ToString());
+//            }
 
-            _unitOfWork.CategoryRepository.Remove(category);
-            await _unitOfWork.CompleteAsync();
+//            // everything is ok, create a new one
+//            var category = _mapper.Map<CategoryResource, Category>(categoryResources);
 
-            return Ok(id);
-        }
+//            await _unitOfWork.CategoryRepository.AddAsync(category);
+            
+//            // if something happens and the new item can not be saved, return the error
+//            if (!await _unitOfWork.CompleteAsync())
+//            {
+//                _logger.LogError(LoggingEvents.Fail, "item with id " + category.Id + " failed to saved");
+//                return StatusCode(500,
+//                    new ErrorMessage {Code = 500, Message = "item with id " + category.Id + " failed to saved"}
+//                        .ToString());
+//            }
+
+//            category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
+
+//            var result = _mapper.Map<Category,CategoryResource>(category);
+
+//            _logger.LogInformation(LoggingEvents.Created, "item with id " + category.Id + " is created");
+//            return CreatedAtRoute(GetName.Category, new {id = category.Id}, result);
+//        }
+
+//        // DELETE
+//        [HttpDelete("{id}")]
+//        //[Authorize]
+//        public async Task<IActionResult> Delete(Guid id)
+//        {
+//            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
+
+//            if (category == null)
+//                return NotFound(
+//                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+
+//            _unitOfWork.CategoryRepository.Remove(category);
+//            if (!await _unitOfWork.CompleteAsync())
+//            {
+//                _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
+//                return StatusCode(500,
+//                    new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
+//                        .ToString());
+//            }
+
+//            _logger.LogInformation(LoggingEvents.Deleted, "item with id " + id + " is deleted");
+//            return NoContent();
+//        }
 
 
 
-        // /api/Category/id   Use to update a category 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] CategoryResource categoryResource)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
-            if (category == null)
-                return NotFound();
-            _mapper.Map<CategoryResource, Category>(categoryResource, category);
-            await _unitOfWork.CompleteAsync();
-            category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
-            var result = _mapper.Map<Category, CategoryResource>(category);
-            return Ok(result);
-        }
+//        // PUT
+//        [HttpPut("{id}")]
+//        //[Authorize]
+//        public async Task<IActionResult> Update(Guid id, [FromBody] CategoryResource categoryResource)
+//        {
+//            if (!ModelState.IsValid)
+//                return BadRequest(ModelState);
 
-    }
-}
+//            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
+
+//            if (category == null)
+//                return NotFound(
+//                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+
+//            _mapper.Map<CategoryResource, Category>(categoryResource, category);
+
+//            if (!await _unitOfWork.CompleteAsync())
+//            {
+//                _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
+//                return StatusCode(500,
+//                    new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
+//                        .ToString());
+//            }
+
+//            category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
+
+//            var result = _mapper.Map<Category, CategoryResource>(category);
+//            _logger.LogInformation(LoggingEvents.Updated, "item with id " + id + " updated");
+//            return Ok(result);
+//        }
+
+//    }
+//}

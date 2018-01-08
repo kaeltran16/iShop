@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -8,15 +9,17 @@ using System.Threading.Tasks;
 namespace iShop.Web.Server.Core.Models
 {
     public class Category
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
+    {      
         public Guid Id { get; set; }
-        [Required]
-        [StringLength(155)]
+        public ICollection<ProductCategory> ProductCategories { get; set; }
         public string Name { get; set; }
-        [StringLength(155)]
         public string Detail { get; set; }
-      
+        public string Short { get; set; }
+
+        public Category()
+        {
+            Id = Guid.NewGuid();
+            ProductCategories = new Collection<ProductCategory>();
+        }
     }
 }

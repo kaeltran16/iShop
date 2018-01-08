@@ -15,6 +15,7 @@ using iShop.Web.Server.Persistent.Repositories.Contracts;
 using iShop.Web.Server.Persistent.UnitOfWork.Commons;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace iShop.Web
 {
@@ -31,13 +32,13 @@ namespace iShop.Web
         public void ConfigureServices(IServiceCollection services)
         {
             //declare interfaces
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            //services.AddScoped<ICategoryRepository, CategoryRepository>();
+            //services.AddScoped<IProductRepository, ProductRepository>();
+            ////services.AddScoped<IOrderRepository, OrderRepository>();
             //services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            ////services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+      
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
@@ -45,6 +46,18 @@ namespace iShop.Web
                 // Use OpenIddict
                 options.UseOpenIddict<Guid>();
             });
+            services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
+                {
+                    opt.Password.RequiredLength = 8;
+                    opt.Password.RequireUppercase = true;
+                    opt.Password.RequireNonAlphanumeric = false;
+                    opt.User.RequireUniqueEmail = true;
+                })
+                // Specify where this data will be stored
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                // Add token for reseting password, email..
+                .AddDefaultTokenProviders();
+
             // Configure Identity to use the same JWT claims as OpenIddict instead
             // of the legacy WS-Federation claims it uses by default (ClaimTypes),
             services.Configure<IdentityOptions>(options =>
@@ -53,6 +66,8 @@ namespace iShop.Web
                     options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
                     options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
                 });
+
+           
 
 
             services.AddOpenIddict(options =>
@@ -77,30 +92,17 @@ namespace iShop.Web
                     // To enable external logins to authenticate
                     .AllowImplicitFlow();
 
-                options.RequireClientIdentification();
                     
                 options.SetAccessTokenLifetime(TimeSpan.FromMinutes(30));
                 options.SetIdentityTokenLifetime(TimeSpan.FromMinutes(30));
                 options.SetRefreshTokenLifetime(TimeSpan.FromMinutes(60));
 
-                options.AllowPasswordFlow();
                 options.UseJsonWebTokens();
                 options.AddEphemeralSigningKey();
             });
 
             // Add the custome Identity for specify User and Role
-            services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
-                {
-                    opt.Password.RequiredLength = 8;
-                    opt.Password.RequireUppercase = true;
-                    opt.Password.RequireLowercase = true;
-
-                    opt.User.RequireUniqueEmail = true;
-                })
-                // Specify where this data will be stored
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                // Add token for reseting password, email..
-                .AddDefaultTokenProviders();
+           
 
             // Register the OAuth validation handler
             services.AddAuthentication()
@@ -113,8 +115,10 @@ namespace iShop.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug(LogLevel.Information);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
