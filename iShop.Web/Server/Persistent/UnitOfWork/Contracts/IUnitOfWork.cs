@@ -9,11 +9,11 @@ namespace iShop.Web.Server.Persistent.UnitOfWork.Contracts
     public interface IUnitOfWork : IDisposable
     {
         //We will not change these interfaces inside here so get is far more enough
-        ICategoryRepository CategoryRepository { get; }
-        IProductRepository ProductRepository { get; }
-        IShoppingCartRepository ShoppingCartRepository { get; }
-        IOrderRepository OrderRepository { get; }
-        Task<bool> CompleteAsync();
+        //ICategoryRepository CategoryRepository { get; }
+        //IProductRepository ProductRepository { get; }
+        //IShoppingCartRepository ShoppingCartRepository { get; }
+        //IOrderRepository OrderRepository { get; }
+        //Task<bool> CompleteAsync();
     }
 
 }
