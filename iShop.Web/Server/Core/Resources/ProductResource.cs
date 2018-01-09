@@ -11,6 +11,8 @@ namespace iShop.Web.Server.Core.Resources
         public Guid Id { get; set; }
         public ICollection<InventoryResource> Inventories { get; set; }
         public ICollection<CartResource> Carts { get; set; }
+        public ICollection<CategoryResource> Categories { get; set; }
+
         public string Sku { get; set; }
         [Required]
         public string Name { get; set; }

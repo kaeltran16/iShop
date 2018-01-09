@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using iShop.Web.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
-using iShop.Web.Server.Persistent.Repositories.Contracts;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Logging;
 
 namespace iShop.Web.Server.APIs
@@ -67,20 +62,6 @@ namespace iShop.Web.Server.APIs
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // go through all categories, make sure we do not create 2 categories with the same name 
-            var categories = await _unitOfWork.CategoryRepository.GetCategories();
-            foreach (var cate in categories)
-            {
-                // if we do, return bad request
-                if (cate.Name.Equals(categoryResources.Name))
-                    return BadRequest(new ErrorMessage()
-                    {
-                        Code = 400,
-                        Message = "category with name " + categoryResources.Name + " exists"
-                    }.ToString());
-            }
-
-            // everything is ok, create a new one
             var category = _mapper.Map<CategoryResource, Category>(categoryResources);
 
             await _unitOfWork.CategoryRepository.AddAsync(category);
