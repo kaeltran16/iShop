@@ -1,0 +1,72 @@
+﻿
+<div (click)="exit();" id="background">
+
+</div>
+
+<div class="container-child rounded card " >
+
+        <h4 class=" text-center text-success mt-3" style="font-family: ravie">HAI LÚA</h4>
+
+
+    <div >
+        <div  class="text-danger text-center"><small>*Tên đăng nhập hoặc mật khẩu không đúng*</small></div>
+        <div class="card-body pt-3 pr-5 pl-5">
+            <form>
+                <div class="form-group">
+                    <label for="Username">Username</label>
+                    <div class="input-group">
+
+                        <input #Username="ngModel" [(ngModel)]="username" type="text" id="Username" name="Username" class="form-control" required>
+                      
+                    </div>
+                    <div class="alert alert-danger" *ngIf="Username.touched && Username.invalid"> *Bắt buộc* </div>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <div class="input-group">
+                        <input #Password="ngModel" [(ngModel)]="password" type="password" id="Password" name="Password" class="form-control" required>
+                    
+                    </div>
+                    <div class="alert alert-danger" *ngIf="Password.touched && Password.invalid"> *Bắt buộc* </div>
+                </div>
+                <div class="form-group">
+                    <label for="ConfirmPassword">Xác nhận mật khẩu</label>
+                    <div class="input-group">
+                        <input #ConfirmPassword="ngModel" [(ngModel)]="confirmpassword" type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" required>
+                    
+                    </div>
+                    <div class="alert alert-danger" *ngIf="ConfirmPassword.touched && ConfirmPassword.invalid"> *Bắt buộc* </div>
+                </div>
+                <div class="form-group">
+                    <label for="Telephone">Số điện thoại</label>
+                    <div class="input-group">
+                        <input #Telephone="ngModel" [(ngModel)]="telephone" type="text" id="Telephone" name="Telephone" class="form-control" required>
+                    
+                    </div>
+                    <div class="alert alert-danger" *ngIf="Telephone.touched && Telephone.invalid"> *Bắt buộc* </div>
+                </div>
+                <div class="form-group">
+                    <label for="Address">Địa chỉ</label>
+                    <div class="input-group">
+                        <input #Address="ngModel" [(ngModel)]="address" type="text" id="Address" name="Address" class="form-control" required>
+                    
+                    </div>
+                    <div class="alert alert-danger" *ngIf="Address.touched && Address.invalid"> *Bắt buộc* </div>
+                </div>
+                <div class="text-center">  <button class="btn btn-info col-6 ">Đăng Ký</button></div>
+                <div class="d-inline-block w-100 mt-2 mb-2" >
+                    <div class="float-left   mt-3" style="height: 1px; width: 100px;background-color: slategrey"></div>
+                    <div class="text-center float-left w-50 "><small> Hoặc</small> </div>
+                    <div class="float-right   mt-3" style="height: 1px; width: 100px;background-color: slategrey"></div>
+                </div>
+                <div class="text-center mt-1"> <button class="btn btn-success col-6" >Facebook</button></div>  
+                <div class="text-center mt-1 mb-2"><button class="btn btn-warning col-6">Google</button></div>  
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+

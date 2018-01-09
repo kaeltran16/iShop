@@ -60,6 +60,7 @@
     "zone.js": "0.8.12"
   },
   "dependencies": {
+    "ngx-bootstrap": "^2.0.0-rc.0",
     "tether": "^1.4.3"
   }
 }

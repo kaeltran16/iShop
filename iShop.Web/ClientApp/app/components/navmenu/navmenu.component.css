@@ -7,6 +7,9 @@
     padding: 10px 10px;
 }
 
+.language span {
+    padding-right: 20px;
+}
 
 .language {
     float: right;
@@ -21,11 +24,7 @@
     padding: 5px;
 }
 
-.right {
-    float: right;
-    margin-top: 10px;
-    margin-right: 5%;
-}
+
 
 
 
@@ -37,7 +36,7 @@
         list-style-type: none;
         margin: 0;
         width: 100%;
-        background-color: rgb(127, 180, 25);
+        background-color: rgb(127, 180, 40);
     }
 
         .nav ul li {
@@ -61,6 +60,14 @@
     clear: both;
 }
 
+    .search ul li input {
+        width: 400px;
+        padding-left: 20px;
+        height: 45px;
+        margin-left: 50px;
+        border-radius: 10px;
+    }
+
     .search ul {
         list-style-type: none;
         margin: 0;
@@ -78,3 +85,44 @@
                 padding: 14px 16px;
                 text-decoration: none;
             }
+
+.green {
+    color: green;
+}
+
+.height {
+    height: 20px;
+}
+
+
+
+/*.dropdown:hover>.collapse{*/
+/*    display: block;*/
+/*}*/
+
+.card-block {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 0px;
+    width: 120%;
+}
+
+#menuLogin {
+    text-decoration: none;
+}
+
+    #menuLogin a:hover {
+        background-color: rgb(127, 180, 1);
+    }
+
+    #menuLogin a {
+        display: block;
+        text-align: left;
+    }
+
+.dropdown-menu {
+    margin: 0px;
+    padding: 0px;
+}
