@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using iShop.Web.Server.Persistent.Repositories.Commons;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
-using iShop.Web.Server.Persistent.UnitOfWork.Commons;
+//using iShop.Web.Server.Persistent.UnitOfWork.Commons;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -32,12 +32,12 @@ namespace iShop.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+//            services.AddScoped<ICategoryRepository, CategoryRepository>();
+//            services.AddScoped<IProductRepository, ProductRepository>();
+//            services.AddScoped<IOrderRepository, OrderRepository>();
+//            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+//            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+//            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
