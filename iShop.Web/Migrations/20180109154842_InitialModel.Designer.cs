@@ -12,7 +12,7 @@ using System;
 namespace iShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180106070245_InitialModel")]
+    [Migration("20180109154842_InitialModel")]
     partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,7 +173,7 @@ namespace iShop.Web.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("Inventory");
+                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Invoice", b =>
@@ -190,7 +190,7 @@ namespace iShop.Web.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Invoice");
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Order", b =>
@@ -225,7 +225,7 @@ namespace iShop.Web.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderedItem");
+                    b.ToTable("OrderedItems");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Product", b =>
@@ -261,7 +261,7 @@ namespace iShop.Web.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Shipping", b =>
@@ -288,7 +288,7 @@ namespace iShop.Web.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Shipping");
+                    b.ToTable("Shippings");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.ShoppingCart", b =>
@@ -319,7 +319,7 @@ namespace iShop.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Supplier");
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

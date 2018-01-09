@@ -15,19 +15,25 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         private readonly ApplicationDbContext _context;
 
         public CategoryRepository(ApplicationDbContext context)
-            //: base(context)
+            : base(context)
         {
             _context = context;
         }
 
         public async Task<Category> GetCategory(Guid id)
         {
-            return await _context.Categories.FindAsync(id);
+            return await _context.Categories
+                .Include(g => g.ProductCategories)
+                .ThenInclude(g => g.Product)
+                .SingleOrDefaultAsync(g => g.Id == id);
         }
 
         public async Task<IEnumerable<Category>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+                .Include(g=>g.ProductCategories)
+                .ThenInclude(p=>p.Product)
+                .ToListAsync();
         }
 
 

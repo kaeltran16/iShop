@@ -10,7 +10,7 @@ namespace iShop.Web.Server.Core.Contracts
     public interface IDataRepository<T> : IDataRepository
         where T : class, new()
     {
-        //Task AddAsync(T entity);
-        //void Remove(T entity);
+        Task AddAsync(T entity);
+        void Remove(T entity);
     }
 }

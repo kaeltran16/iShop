@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iShop.Web.Server.Persistent.Repositories.Commons
 {
-    public class OrderRepository/* : DataRepositoryBase<Order>, IOrderRepository*/
+    public class OrderRepository /*:*/ /*DataRepositoryBase<Order>, IOrderRepository*/
     {
         //private readonly ApplicationDbContext _context;
 

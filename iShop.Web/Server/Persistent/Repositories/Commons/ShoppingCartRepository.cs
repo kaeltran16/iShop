@@ -15,7 +15,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         private readonly ApplicationDbContext _context;
 
         public ShoppingCartRepository(ApplicationDbContext context)
-            //: base(context)
+            : base(context)
         {
             _context = context;
         }
