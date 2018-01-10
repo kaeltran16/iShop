@@ -34,7 +34,7 @@ namespace iShop.Web
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            //services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -153,6 +153,8 @@ namespace iShop.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+        
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
