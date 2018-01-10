@@ -1,0 +1,95 @@
+﻿
+
+
+
+
+<detail-product *ngIf="exit" (onclick)="exitDetail($event)" [product]="product"></detail-product>
+
+<div class="card" style="height: 400px; margin-top: 30px;">
+    <div class="card" style="height: 45px;">
+        <div style="padding: 12px 16px; font-size: 20px; font-weight: bold;">Sản Phẩm Bán Chạy</div>
+        <button routerLink="/more-product" class="btn btn-primary" style=" position: absolute;  right: 0px; top: 2px; background-color: springgreen; ">Xem tất cả</button>
+
+    </div>
+
+    <div style="display: inline-block;">
+        <div *ngFor="let item of products |filter:'Tôm ni trắng' |fill:startPopular: endPopular  "
+             class="product">
+
+            <card (click)="onDetail(item);" [product]="item"></card>
+
+        </div>
+        <a *ngIf="!viewProduct" (click)="nextPopular();"> <img src="/image/next.png" style="position: absolute; width: 100px; top: 40%; right: -20px;" /></a>
+        <a *ngIf="startPopular!=1" (click)="prePopular();"> <img src="/image/previous.png" style="position: absolute; width: 100px; top: 40%; left: -20px;" /></a>
+        <a *ngIf="viewProduct"> <img src="/icon/xemhet.png" style="position: absolute; top: 50%; right: 10px;" /></a>
+    </div>
+
+</div>
+
+<div class="card" style="height: 400px; margin-top: 50px;">
+    <div class="card" style="height: 45px;">
+        <div style="padding: 12px 16px; font-size: 20px; font-weight: bold;">Sản Phẩm Mới</div>
+        <button class="btn btn-primary" style=" position: absolute;  right: 0px; top: 2px; background-color: springgreen; ">Xem tất cả</button>
+
+    </div>
+
+
+    <div style="display: inline-block;">
+        <span *ngFor="let item of products |filter:'Tôm ni trắng' |fill:startHot: endHot "
+              class="product">
+            <card [product]="item"></card>
+        </span>
+        <a (click)="nextHot();"> <img src="/image/next.png" style="position: absolute; width: 100px; top: 40%; right: -20px;" /></a>
+        <a (click)="preHot();"> <img src="/image/previous.png" style="position: absolute; width: 100px; top: 40%; left: -20px;" /></a>
+
+
+
+    </div>
+
+</div>
+
+<div class="card" style="height: 400px; margin-top: 50px;">
+    <div class="card" style="height: 45px;">
+        <div style="padding: 12px 16px; font-size: 20px; font-weight: bold;">Thịt Và Trứng</div>
+        <button class="btn btn-primary" style=" position: absolute;  right: 0px; top: 2px; background-color: springgreen; ">Xem tất cả</button>
+
+    </div>
+
+    <div style="display: inline-block;">
+        <span *ngFor="let item of products |filter:'Tôm ni trắng'|fill:startMeet: endMeet "
+              class="product">
+            <card [product]="item"></card>
+        </span>
+        <a (click)="nextMeet();"> <img src="/image/next.png" style="position: absolute; width: 100px; top: 40%; right: -20px;" /></a>
+        <a (click)="preMeet();"> <img src="/image/previous.png" style="position: absolute; width: 100px; top: 40%; left: -20px;" /></a>
+
+
+
+    </div>
+
+</div>
+
+
+<div class="card" style="height: 400px; margin-top: 50px;">
+    <div class="card" style="height: 45px;">
+        <div style="padding: 12px 16px; font-size: 20px; font-weight: bold;">Thủy Hải Sản</div>
+        <button class="btn btn-primary" style=" position: absolute;  right: 0px; top: 2px; background-color: springgreen; ">Xem tất cả</button>
+
+    </div>
+
+    <div style="display: inline-block;">
+        <span *ngFor="let item of products |filter:'Tôm ni trắng' |fill:startSeaFood: endSeaFood "
+              class="product">
+            <card [product]="item"></card>
+        </span>
+
+        <a (click)="nextSeaFood();"> <img src="/image/next.png" style="position: absolute; width: 100px; top: 40%; right: -20px;" /></a>
+        <a (click)="preSeaFood();"> <img src="/image/previous.png" style="position: absolute; width: 100px; top: 40%; left: -20px;" /></a>
+
+
+    </div>
+
+</div>
+
+
+

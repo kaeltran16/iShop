@@ -2,68 +2,115 @@
 
 
 <body>
-    
-        <div class="background">
-            <span>
-                <span style="font-size: 14px; vertical-align: middle; ">Đặt hàng qua số điện thoại | </span>
-                <span style="color: green;font-size: 14px; vertical-align: middle;">01665240627 </span>
-            </span>
-            <div class="language">
-                <span style="padding-right: 20px; height: 40px">Tiếng việt</span>
-                <span style="padding-right: 20px; height: 40px;">Trợ giúp?</span>
-            </div>
+
+    <login *ngIf="login" (onclick)="exitLogin($event)" @show></login>
+    <register *ngIf="register" (onclick)="exitRegister($event)" @show></register>
+    <div class="background">
+        <span>
+            <span>Đặt hàng qua số điện thoại | </span>
+            <span class="green"><a>01665240627</a> </span>
+        </span>
+        <div class="language">
+            <span>Tiếng việt</span>
+            <span>Trợ giúp?</span>
         </div>
-        <div>
+    </div>
+    <div>
 
 
-            <div class="search">
-                <ul>
-                    <li><a> <img class="cart  " src="/image/cart.png" alt="Girl" /></a></li>
-                    <li> <a>  <input type="search" style="width: 400px; padding-left: 20px;  height: 45px; margin-left: 50px;  border-radius: 10px;" placeholder="Search" /></a> </li>
-                   
+        <div class="search">
+            <ul>
+                <li><a> <img class="cart  " src="/image/cart.png" alt="Girl" /></a></li>
+                <li> <a>  <input type="text" placeholder="Search" /></a> </li>
 
-
-                    <li style="float: right; margin-right: 50px;">
-                            <a routerLink="/home" >                                                                                                                                                                                                                                                                                                                                               
-                        <div >
-                       <img class="cart  " src="/image/cart.png" alt="Girl in a jacket" />
-                       <div style="float: right">
-                           <div  >Đơn hàng</div>
-                           <div  style="padding-top: 5px;">100.000 đồng</div>
-                       </div>
+                <li class="float-right" style="margin-right: 50px;">
+                    <a class="text-success" routerLink="/home">
+                        <div>
+                            <img class="cart  " src="/image/cart.png" alt="Cart" />
+                            <div style="float: right">
+                                <div>Đơn hàng</div>
+                                <div class="pt-1">100.000 đồng</div>
+                            </div>
                         </div>
-                            </a>  
-                    </li>
-                    <li style="margin-right: 20px; float: right;">
-                        <a routerLink="/home">
+                    </a>
+                </li>
+                <li class="float-right mr-4">
+                    <div class="dropdown">
+                        <a class="text-success" id="dropdownMenuButton" routerLink="/home" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div>
                                 <img style="height: 50px;" src="/image/user.png" alt="User " />
-                                <div style="float: right; padding: 10px;">
+                                <div class="float-right " style="padding: 10px;">
                                     <div style="margin-top: -10px;">Xin Chào!</div>
-                                    <div style="padding-top: 5px;">Đăng Nhập</div>
+                                    <div class="mt-1">Đăng Nhập</div>
                                 </div>
                             </div>
                         </a>
-                    </li>
+                        <div class="dropdown-menu pos " id="menuLogin">
+                            <div class="card">
+                                <div *ngIf="hasLogin">
+                                    <a class="dropdown-item" (click)="exitLogin(true)">Đăng nhập</a>
+                                    <a class="dropdown-item" (click)="exitRegister(true)">Đăng kí</a>
+                                </div>
+                                <div *ngIf="!hasLogin">
+                                    <a class="dropdown-item">Giỏ hàng của tôi</a>
+                                    <a class="dropdown-item">Đăng Xuất</a>
+                                </div>
+                            </div>
 
-                </ul>
-            </div>
-        </div>
+                        </div>
+                    </div>
+                </li>
 
-
-        <div class="nav">
-            <ul>
-                <li><a>Trang chủ</a></li>
-                <li><a>Thịt và trứng</a></li>
-                <li><a>Thủy hải sản</a></li>
-                <li><a>Về chúng tôi</a></li>
-                <li><a>Liên hệ</a></li>
-                <li style="float: right;"><a><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
-                <li style="float: right;"><a><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
-                <li style="float: right;"><a><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
             </ul>
         </div>
-        <img src="/image/rau.jpg" style="width: 100%; height:500px;" alt="rau cu qua" />
-   
+    </div>
+
+
+    <div class="nav">
+        <ul>
+            <li><a routerLink="/home">Trang chủ</a></li>
+            <li>
+                <item-menu [title]="'Thịt và Trứng'" [categories]="meet">
+
+                </item-menu>
+            </li>
+
+
+
+            <li>
+                <item-menu [title]="'Thủy Hải Sản'" [categories]="seaFood">
+
+                </item-menu>
+            </li>
+            <li><a routerLink="/home">Về chúng tôi</a></li>
+            <li><a routerLink="/home">Liên hệ</a></li>
+            <li class="float-right"><a routerLink="/home"><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
+            <li class="float-right"><a routerLink="/home"><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
+            <li class="float-right"><a routerLink="/home"><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
+        </ul>
+    </div>
+    <carousel style="height: 1000px; background-color: aqua">
+        <slide>
+            <img @show src="/image/raulang.jpg" alt="First slide" style="display: block; width: 1200px; height: 580px;">
+            <div class="carousel-caption d-none d-md-block">
+                <h3>First slide label</h3>
+                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </div>
+        </slide>
+        <slide>
+            <img src="/image/xanh1.jpg" alt="Second slide" style="display: block; width: 1200px; height: 580px;">
+            <div class="carousel-caption d-none d-md-block">
+                <h3>Second slide label</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </slide>
+        <slide>
+            <img src="/image/xanh3.jpg" alt="Third slide" style="display: block; width: 1200px; height: 580px;">
+            <div class="carousel-caption d-none d-md-block">
+                <h3>Third slide label</h3>
+                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+            </div>
+        </slide>
+    </carousel>
 </body>
 

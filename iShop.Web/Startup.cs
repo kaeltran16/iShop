@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using iShop.Web.Server.Persistent.Repositories.Commons;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
-using iShop.Web.Server.Persistent.UnitOfWork.Commons;
+//using iShop.Web.Server.Persistent.UnitOfWork.Commons;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

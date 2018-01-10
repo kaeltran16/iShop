@@ -1,0 +1,28 @@
+textarea:focus, input:focus {
+    outline: none;
+}
+
+.container-child {
+    min-height: 500px;
+    width: 500px;
+    background-color: rgb(245,245,245)
+}
+
+#parent {
+    
+    z-index: 3;
+    position: fixed;
+    top: 10%;
+    left: 32%;
+}
+
+#background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    opacity: 0.7;
+    background-color: azure;
+    z-index: 2;
+}
