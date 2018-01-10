@@ -9,14 +9,14 @@ namespace iShop.Web.Server.Extensions
     public static class IdentityUserExtensions
     {
         // Just an extension method for getting UserId
-        public static Guid GetUserId(this ClaimsPrincipal principal)
+        public static string GetUserId(this ClaimsPrincipal principal)
         {
             if (principal == null)
                 throw new ArgumentNullException(nameof(principal));
 
-            var id = principal.FindFirst("sub")?.Value;
+            var id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return Guid.Parse(id);
+            return id;
         }
     }
 }

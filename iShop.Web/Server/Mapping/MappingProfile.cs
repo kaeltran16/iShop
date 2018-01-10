@@ -14,12 +14,8 @@ namespace iShop.Web.Server.Mapping
         {
             // Entities to Resources
 
-            CreateMap<ApplicationUser, ApplicationUserResource>();
             CreateMap<Category, CategoryResource>();
-            CreateMap<Cart, CartResource>();
-            CreateMap<Image, ImageResource>();
-            CreateMap<Inventory, InventoryResource>();
-            CreateMap<ShoppingCart, ShoppingCartResource>();
+
 
             CreateMap<Product, ProductResource>()
             .ForMember(pr => pr.Categories,
@@ -28,13 +24,9 @@ namespace iShop.Web.Server.Mapping
             .ForMember(pr => pr.Inventories, opt => opt.MapFrom(p => p.Inventories))
             .ForMember(pr => pr.Images, opt => opt.MapFrom(p => p.Images));
 
-            CreateMap<Order, OrderResource>();
 
-            CreateMap<Order, SavedOrderResource>();
 
-            CreateMap<OrderedItem, OrderedItemResource>();
-            CreateMap<Shipping, ShippingResource>();
-            CreateMap<Invoice, InvoiceResource>();
+
 
             // Resources to Entities
 
@@ -46,15 +38,6 @@ namespace iShop.Web.Server.Mapping
                 .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(d => d.ProductCategories, opt => opt.Ignore());
 
-            CreateMap<OrderResource, Order>();
-            CreateMap<SavedOrderResource, Order>()
-                .ForMember(o => o.Id, opt => opt.Ignore());
-
-            CreateMap<ApplicationUserResource, ApplicationUser>();
-            CreateMap<OrderedItemResource, OrderedItem>();
-            CreateMap<ShippingResource, Shipping>();
-            CreateMap<ShippingResource, Shipping>();
-            CreateMap<InvoiceResource, Invoice>();
             //    CreateMap<CategoryResource, Category>();
 
 

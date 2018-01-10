@@ -9,47 +9,46 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iShop.Web.Server.Persistent.Repositories.Commons
 {
-    public class OrderRepository : DataRepositoryBase<Order>, IOrderRepository
+    public class OrderRepository /*:*/ /*DataRepositoryBase<Order>, IOrderRepository*/
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
 
-        public OrderRepository(ApplicationDbContext context) : base(context)
-        {
-            _context = context;
-        }
+        //public OrderRepository(ApplicationDbContext context) : base(context)
+        //{
+        //    _context = context;
+        //}
 
-        public async Task<IEnumerable<Order>> GetUserOrders(Guid userId)
-        {
-            return await _context.Orders
-                .Include(o => o.OrderedItems)
-                .Include(o => o.Shipping)
-                .Include(o => o.Invoice)
-                .Include(o => o.User)
-                .Where(o => o.UserId == userId)
-                .ToListAsync();
-        }
+        //public async Task<IEnumerable<Order>> GetUserOrders(Guid userId)
+        //{
+        //    return await _context.Orders
+        //        .Include(c => c.ShoppingCart)
+        //        .ThenInclude(p => p.Carts)
+        //        .ThenInclude(p => p.Product)
+        //        .Include(c => c.ShoppingCart)
+        //        .ThenInclude(u => u.UserId)
+        //        .Where(s => s.ShoppingCartId == userId).ToListAsync();
+        //}
 
-        public async Task<Order> GetOrder(Guid orderId, bool includeRelated = true)
-        {
-            if (!includeRelated)
-                return await _context.Orders.FindAsync(orderId);
+        //public async Task<Order> GetOrder(Guid userId, Guid shoppingCartId, bool includeRelated = true)
+        //{
+        //    if (!includeRelated)
+        //        return await _context.Orders.FindAsync(shoppingCartId);
 
-            return await _context.Orders
-                .Include(o => o.OrderedItems)
-                .Include(o => o.Shipping)
-                .Include(o => o.Invoice)
-                .Include(o => o.User)
-                .SingleOrDefaultAsync(o => o.Id == orderId);
-        }
-        public async Task<IEnumerable<Order>> GetOrders()
-        {
-            return await _context.Orders
-                .Include(o => o.OrderedItems)
-                .Include(o => o.Shipping)
-                .Include(o => o.Invoice)
-                .Include(o => o.User)
-                .ToListAsync();
-        }
+        //    return await _context.Orders.Include(c => c.ShoppingCart)
+        //        .ThenInclude(p => p.Carts)
+        //        .ThenInclude(p => p.Product)
+        //        .Include(u => u.User)
+        //        .SingleOrDefaultAsync(v => v.ShoppingCartId == shoppingCartId);
+        //}
+        //public async Task<IEnumerable<Order>> GetOrders()
+        //{
+        //    return await _context.Orders
+        //        .Include(c => c.ShoppingCart)
+        //        .ThenInclude(p => p.Carts)
+        //        .ThenInclude(p => p.Product)
+        //        .Include(u => u.User)
+        //        .ToListAsync();
+        //}
 
     }
 }

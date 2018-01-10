@@ -11,6 +11,6 @@ namespace iShop.Web.Server.Core.Resources
         public ApplicationUserResource User { get; set; }
         public ShippingResource Shipping { get; set; }
         public InvoiceResource Invoice { get; set; }
-        public ICollection<OrderedItemResource> OrderedItems { get; set; }
+        public ICollection<OrderItemResource> OrderedItems { get; set; }
     }
 }

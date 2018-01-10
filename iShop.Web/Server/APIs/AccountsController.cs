@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using iShop.Web.Helpers;
 using iShop.Web.Server.Core.Models;
-using iShop.Web.Server.Core.Resources;
 using iShop.Web.Server.Core.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -49,7 +48,7 @@ namespace iShop.Web.Server.APIs
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody]RegisterResource model, string returnUrl = null)
+        public async Task<IActionResult> Register([FromBody]RegisterViewModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -58,10 +57,8 @@ namespace iShop.Web.Server.APIs
             {
                 UserName = model.Email,
                 Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                City = model.City,
-                Street = model.Street
+                FirstName = model.Firstname,
+                LastName = model.Lastname
             };
 
             var result = await _userManager.CreateAsync(currentUser, model.Password);
@@ -72,9 +69,8 @@ namespace iShop.Web.Server.APIs
                 //if (roleAddResult.Succeeded)
                 //{
                     _logger.LogInformation(LoggingEvents.Success, model.Email + " created");
-                return Ok(model.Email);
-                // NOTE:
-                // call the email services for confirm the account or do whatever you wanna do here
+                    // NOTE:
+                    // call the email services for confirm the account or do whatever you wanna do here
                 //}
             }
             _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to create");

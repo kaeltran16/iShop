@@ -2,7 +2,7 @@
 
 namespace iShop.Web.Server.Core.Resources
 {
-    public class OrderedItemResource
+    public class OrderItemResource
     {
         public ProductResource Product { get; set; }
         [Required]
