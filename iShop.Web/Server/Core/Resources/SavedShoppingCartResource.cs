@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace iShop.Web.Server.Core.Resources
 {
-    public class ShoppingCartResource
+    public class SavedShoppingCartResource
     {
         public Guid Id { get; set; }
-        public ApplicationUserResource User { get; set; }
-        public ICollection<CartResource> Carts { get; set; }
+        public Guid UserId { get; set; }
+        public ICollection<Guid> Carts { get; set; }
+        [Required]
         public DateTime PlacedDate { get; set; }
     }
 }

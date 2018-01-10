@@ -28,25 +28,6 @@ namespace iShop.Web.Server.APIs
             _logger = logger;
         }
 
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody]LoginViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation(LoggingEvents.Success, model.Email + " signs in");
-                return Ok(model.Email);
-            }
-         
-            _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to loggin");
-            return BadRequest(model.Email);
-        }
-
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody]RegisterResource model, string returnUrl = null)

@@ -12,11 +12,11 @@ namespace iShop.Web.Server.Core.Resources
         public Guid UserId { get; set; }
         public Guid ShippingId { get; set; }
         public Guid InvoiceId { get; set; }
-        public ICollection<Guid> OrderedItems { get; set; }
+        public ICollection<OrderedItemResource> OrderedItems { get; set; }
 
         public SavedOrderResource()
         {
-            OrderedItems = new Collection<Guid>();
+            OrderedItems = new Collection<OrderedItemResource>();
         }
     }
 }

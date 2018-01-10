@@ -9,8 +9,6 @@ namespace iShop.Web.Server.Core.Resources
     {
         public Guid Id { get; set; }
         public ApplicationUserResource User { get; set; }
-        public ShippingResource Shipping { get; set; }
-        public InvoiceResource Invoice { get; set; }
         public ICollection<OrderedItemResource> OrderedItems { get; set; }
     }
 }

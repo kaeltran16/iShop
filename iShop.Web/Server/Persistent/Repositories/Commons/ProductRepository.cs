@@ -19,23 +19,25 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
             _context = context;
         }
 
-        public async Task<Product> GetProductId(Guid id, bool includeRelated = true)
+        public async Task<Product> GetProduct(Guid id, bool includeRelated = true)
         {
             if (!includeRelated)
                 return await _context.Products.FindAsync(id);
 
             return await _context.Products
-                .Include(c => c.ProductCategories)
-                .ThenInclude(c=>c.Category)
+                .Include(p => p.ProductCategories)
+                .ThenInclude(c => c.Category)
                 .Include(p => p.Images)
-                .SingleOrDefaultAsync(v => v.Id == id);
+                .Include(p => p.Inventories)
+                .SingleOrDefaultAsync(p => p.Id == id);
         }
         public async Task<IEnumerable<Product>> GetProducts()
         {
             return await _context.Products
-                .Include(c => c.ProductCategories)
-                .ThenInclude(c=>c.Category)
+                .Include(p => p.ProductCategories)
+                .ThenInclude(c => c.Category)
                 .Include(p => p.Images)
+                .Include(p => p.Inventories)
                 .ToListAsync();
         }
 

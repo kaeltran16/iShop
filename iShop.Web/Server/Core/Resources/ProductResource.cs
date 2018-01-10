@@ -21,6 +21,6 @@ namespace iShop.Web.Server.Core.Resources
         public string Summary { get; set; }
         [Required]
         public DateTime ExpiredDate { get; set; }
-//        public ICollection<ImageResource> Images { get; set; }
+        public ICollection<ImageResource> Images { get; set; }
     }
 }
