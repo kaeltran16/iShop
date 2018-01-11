@@ -92,13 +92,13 @@ namespace iShop.Web.Server.APIs
         }
 
 
-        [HttpGet("{productId}")]
-        public async Task<IActionResult> Get(Guid productId)
-        {
-            var images = await _unitOfWork.ImageRepository.GetProductImages(productId);
-            var imageResource = _mapper.Map<IEnumerable<Image>, IEnumerable<ImageResource>>(images);
-            return Ok(imageResource);
-        }
+        //[HttpGet("{productId}")]
+        //public async Task<IActionResult> Get(Guid productId)
+        //{
+        //    var images = await _unitOfWork.ImageRepository.GetProductImages(productId);
+        //    var imageResource = _mapper.Map<IEnumerable<Image>, IEnumerable<ImageResource>>(images);
+        //    return Ok(imageResource);
+        //}
     }
 
 }

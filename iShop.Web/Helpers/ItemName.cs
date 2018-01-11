@@ -12,6 +12,7 @@ namespace iShop.Web.Helpers
         public const string Product = "Product";
         public const string ShoppingCart = "ShoppingCart";
         public const string Image = "Image";
+        public const string Supplier = "Supplier";
 
     }
 }

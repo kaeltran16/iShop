@@ -9,7 +9,7 @@ namespace iShop.Web.Server.Core.Resources
     public class ProductResource
     {
         public Guid Id { get; set; }
-        public ICollection<InventoryResource> Inventories { get; set; }
+        public InventoryResource Inventory { get; set; }
         public ICollection<CategoryResource> Categories { get; set; }
 
         public string Sku { get; set; }

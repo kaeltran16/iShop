@@ -11,12 +11,10 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
 {
     public class ProductRepository : DataRepositoryBase<Product>, IProductRepository
     {
-        private readonly ApplicationDbContext _context;
 
         public ProductRepository(ApplicationDbContext context)
             : base(context)
         {
-            _context = context;
         }
 
         public async Task<Product> GetProduct(Guid id, bool includeRelated = true)
@@ -29,6 +27,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
                 .ThenInclude(c => c.Category)
                 .Include(p => p.Images)
                 .Include(p => p.Inventories)
+                .ThenInclude(i=>i.Supplier)
                 .SingleOrDefaultAsync(p => p.Id == id);
         }
         public async Task<IEnumerable<Product>> GetProducts()
@@ -38,6 +37,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
                 .ThenInclude(c => c.Category)
                 .Include(p => p.Images)
                 .Include(p => p.Inventories)
+                .ThenInclude(i => i.Supplier)
                 .ToListAsync();
         }
 

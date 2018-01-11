@@ -15,6 +15,7 @@ namespace iShop.Web.Server.Mapping
             // Entities to Resources
 
             CreateMap<Category, CategoryResource>();
+            CreateMap<Supplier, SupplierResource>();
 
             CreateMap<Order, OrderResource>()
                 .ForMember(or => or.OrderedItems, opt => opt.MapFrom(p =>
@@ -33,7 +34,7 @@ namespace iShop.Web.Server.Mapping
                 .ForMember(pr => pr.Categories,
                     opt => opt.MapFrom(p =>
                         p.ProductCategories.Select(pc => pc.Category)))
-                .ForMember(pr => pr.Inventories, opt => opt.MapFrom(p => p.Inventories))
+                .ForMember(pr => pr.Inventory, opt => opt.MapFrom(p => p.Inventory))
                 .ForMember(pr => pr.Images, opt => opt.MapFrom(p => p.Images));
 
             CreateMap<Image, ImageResource>();
@@ -56,6 +57,10 @@ namespace iShop.Web.Server.Mapping
             CreateMap<CategoryResource, Category>()
                 .ForMember(cr => cr.Id, opt => opt.Ignore())
                 .ForMember(c => c.ProductCategories, opt => opt.Ignore());
+
+            CreateMap<SupplierResource, Supplier>()
+                .ForMember(cr => cr.Id, opt => opt.Ignore())
+                .ForMember(c => c.Inventories, opt => opt.Ignore());
 
             CreateMap<OrderResource, Order>()
                 .ForMember(o => o.Id, opt => opt.Ignore())
@@ -83,7 +88,7 @@ namespace iShop.Web.Server.Mapping
                 .AfterMap((pr, p) =>
                 {
                     var addedCategories = pr.Categories.Where(id => p.ProductCategories.All(pc => pc.CategoryId != id))
-                        .Select(id => new ProductCategory() { CategoryId = id, ProductId = pr.Id }).ToList();
+                        .Select(id => new ProductCategory() {CategoryId = id, ProductId = pr.Id}).ToList();
                     foreach (var pc in addedCategories)
                         p.ProductCategories.Add(pc);
 
@@ -92,6 +97,19 @@ namespace iShop.Web.Server.Mapping
                     foreach (var pc in removedFeatures)
                         p.ProductCategories.Remove(pc);
                 });
+                //.ForMember(p => p.In, opt => opt.Ignore())
+                //.AfterMap((or, o) =>
+                //{
+                //    var addedOrderedItems = or.Inventories.Where(oir => o.OrderedItems.All(oi => oi.ProductId != oir.ProductId))
+                //        .Select(oir => new Inventory() { ProductId = oir.ProductId, Stock = oir.Stock, SupplierId = or.Id }).ToList();
+                //    foreach (var oi in addedOrderedItems)
+                //        o.Inventories.Add(oi);
+
+                //    var removedFeatures =
+                //        o.Inventories.Where(oi => or.Inventories.Any(oir => oir.ProductId != oi.ProductId)).ToList();
+                //    foreach (var oi in removedFeatures)
+                //        o.Inventories.Remove(oi);
+                //});
 
 
 
@@ -126,8 +144,8 @@ namespace iShop.Web.Server.Mapping
             CreateMap<ShippingResource, Shipping>();
             CreateMap<ShippingResource, Shipping>();
             CreateMap<InvoiceResource, Invoice>();
-            
 
+            CreateMap<InventoryResource, Inventory>();
 
 
 
