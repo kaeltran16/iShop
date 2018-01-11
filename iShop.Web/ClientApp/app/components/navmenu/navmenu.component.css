@@ -19,9 +19,7 @@
 .cart {
     height: 50px;
     width: 50px;
-    border-radius: 50%;
-    border: rgb(43, 190, 226) solid 2px;
-    padding: 5px;
+   
 }
 
 
@@ -125,4 +123,34 @@
 .dropdown-menu {
     margin: 0px;
     padding: 0px;
+}
+
+.display {
+    display: none;
+    position: absolute;
+    top: 115px;
+    right: 0px;
+    z-index: 10000;
+    color: black;
+}
+
+.search ul li a:hover div.display {
+    display: block;
+}
+
+.quantity {
+    position:   absolute;
+    top: 53px;
+    right: 170px;
+ 
+}
+.notShow {
+    display: none;
+}
+.show {
+    display: block;
+}
+
+.back {
+    background-color: aqua;
 }

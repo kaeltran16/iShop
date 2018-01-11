@@ -66,6 +66,7 @@
   <ItemGroup>
     <None Remove="ClientApp\app\components\custom-pipe\fill-pipe.ts" />
     <None Remove="ClientApp\app\components\custom-pipe\filter-pipe.ts" />
+    <None Remove="ClientApp\app\components\footer\footer.component.ts" />
     <None Remove="ClientApp\app\model\product.ts" />
     <None Remove="ClientApp\app\service\product.service.ts" />
   </ItemGroup>
@@ -79,6 +80,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\fill-pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\filter-pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\footer\footer.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\product.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\product.service.ts" />
   </ItemGroup>

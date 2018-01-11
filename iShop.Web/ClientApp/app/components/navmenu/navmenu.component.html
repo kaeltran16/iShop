@@ -3,8 +3,7 @@
 
 <body>
 
-    <login *ngIf="login" (onclick)="exitLogin($event)" @show></login>
-    <register *ngIf="register" (onclick)="exitRegister($event)" @show></register>
+
     <div class="background">
         <span>
             <span>Đặt hàng qua số điện thoại | </span>
@@ -18,19 +17,29 @@
     <div>
 
 
+
         <div class="search">
             <ul>
-                <li><a> <img class="cart  " src="/image/cart.png" alt="Girl" /></a></li>
+                <li><a> <img class="cart  " src="/icon/cart.PNG" alt="Girl" /></a></li>
                 <li> <a>  <input type="text" placeholder="Search" /></a> </li>
 
                 <li class="float-right" style="margin-right: 50px;">
-                    <a class="text-success" routerLink="/home">
+                    <a class="text-success" (click)="openShoppingCart();" routerLink="/shopping-cart"   >
                         <div>
-                            <img class="cart  " src="/image/cart.png" alt="Cart" />
+                            <span class="quantity badge badge-pill badge-success">10</span>
+                            <img class="cart  " src="/icon/cart.PNG" alt="Cart" />
+
                             <div style="float: right">
+
                                 <div>Đơn hàng</div>
                                 <div class="pt-1">100.000 đồng</div>
                             </div>
+                        </div>
+                        <div class="display ">
+                            <div [class.notShow]="isShow">
+                                <cart></cart>
+                            </div>
+
                         </div>
                     </a>
                 </li>
@@ -38,7 +47,7 @@
                     <div class="dropdown">
                         <a class="text-success" id="dropdownMenuButton" routerLink="/home" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div>
-                                <img style="height: 50px;" src="/image/user.png" alt="User " />
+                                <img class="cart" src="/image/user.png" alt="User " />
                                 <div class="float-right " style="padding: 10px;">
                                     <div style="margin-top: -10px;">Xin Chào!</div>
                                     <div class="mt-1">Đăng Nhập</div>
@@ -47,11 +56,29 @@
                         </a>
                         <div class="dropdown-menu pos " id="menuLogin">
                             <div class="card">
-                                <div *ngIf="hasLogin">
-                                    <a class="dropdown-item" (click)="exitLogin(true)">Đăng nhập</a>
-                                    <a class="dropdown-item" (click)="exitRegister(true)">Đăng kí</a>
+                                <div>
+                                    <a class="dropdown-item" (click)="openModal(login)">Đăng nhập</a>
+                                    <ng-template #login>
+                                        <div class="modal-header" style="background-color: rgb(245,245,245) ">
+                                            <div class="text-center w-100">   <h4 class="  text-success mt-3" style="font-family: ravie">HAI LÚA</h4></div>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <login></login>
+                                    </ng-template>
+                                    <a class="dropdown-item" (click)="openModal(register)">Đăng kí</a>
+                                    <ng-template #register>
+                                        <div class="modal-header" style="background-color: rgb(245,245,245) ">
+                                            <div class="text-center w-100">   <h4 class="  text-success mt-3" style="font-family: ravie">HAI LÚA</h4></div>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <register></register>
+                                    </ng-template>
                                 </div>
-                                <div *ngIf="!hasLogin">
+                                <div>
                                     <a class="dropdown-item">Giỏ hàng của tôi</a>
                                     <a class="dropdown-item">Đăng Xuất</a>
                                 </div>
@@ -68,7 +95,7 @@
 
     <div class="nav">
         <ul>
-            <li><a routerLink="/home">Trang chủ</a></li>
+            <li><a (click)="closeShoppingCart();" routerLink="/home" >Trang chủ</a></li>
             <li>
                 <item-menu [title]="'Thịt và Trứng'" [categories]="meet">
 
@@ -89,28 +116,6 @@
             <li class="float-right"><a routerLink="/home"><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
         </ul>
     </div>
-    <carousel style="height: 1000px; background-color: aqua">
-        <slide>
-            <img @show src="/image/raulang.jpg" alt="First slide" style="display: block; width: 1200px; height: 580px;">
-            <div class="carousel-caption d-none d-md-block">
-                <h3>First slide label</h3>
-                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </div>
-        </slide>
-        <slide>
-            <img src="/image/xanh1.jpg" alt="Second slide" style="display: block; width: 1200px; height: 580px;">
-            <div class="carousel-caption d-none d-md-block">
-                <h3>Second slide label</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-        </slide>
-        <slide>
-            <img src="/image/xanh3.jpg" alt="Third slide" style="display: block; width: 1200px; height: 580px;">
-            <div class="carousel-caption d-none d-md-block">
-                <h3>Third slide label</h3>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-            </div>
-        </slide>
-    </carousel>
+
 </body>
 

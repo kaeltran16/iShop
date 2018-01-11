@@ -8,7 +8,9 @@ import { Component, Output, EventEmitter,Input } from '@angular/core';
 export class  DetailProductComponent {
     @Output() onclick = new EventEmitter<boolean>();
     @Input('product') product:any;
-
+    max: number = 5;
+    rate: number = 4;
+    isReadonly: boolean = true;
     quantity:number=1;
     constructor() {
         

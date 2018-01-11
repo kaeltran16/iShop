@@ -1,7 +1,12 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿
 import { ProductService } from '../../service/product.service';
 import { Product } from "../../model/product";
-
+import { ChangeDetectorRef, TemplateRef, Component, OnInit } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/combineLatest';
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
@@ -11,7 +16,10 @@ import { Product } from "../../model/product";
 
 
 export class HomeComponent implements OnInit {
-    products: Product[];
+    products: Product[] = new Array({
+        title: "vu khac hoi",
+        id: 123,
+        price: 10}) ;
     filterargs = { Title: 'Tôm ni trắng' };
     startPopular: number = 1;
     endPopular: number = 3;
@@ -24,17 +32,24 @@ export class HomeComponent implements OnInit {
     endSeaFood: number = 3;
     exit: boolean = false;
     product: Product;
-    constructor(private productService: ProductService) {
-
+    modalRef: BsModalRef;
+    max: number = 10;
+    rate: number = 7;
+    isReadonly: boolean = true;
+    constructor(private productService: ProductService, private modalService: BsModalService) {
+       
     }
     exitDetail(isExit: boolean) {
         this.exit = isExit;
     }
     onDetail(p: Product) {
         this.product = p;
-        this.exitDetail(true);
+      
     }
-
+    openModal(template: TemplateRef<any>,p:Product) {
+        this.modalRef = this.modalService.show(template);
+        this.product = p;
+    }
 
     ngOnInit() {
       
