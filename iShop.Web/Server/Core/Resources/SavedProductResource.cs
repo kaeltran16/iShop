@@ -13,7 +13,9 @@ namespace iShop.Web.Server.Core.Resources
         public string Name { get; set; }
         public double Price { get; set; }
         public string Summary { get; set; }
+        public int Stock { get; set; }
         public DateTime ExpiredDate { get; set; }
+        public Guid SupplierId { get; set; }
         public ICollection<Guid> Images { get; set; }
         public ICollection<Guid> Categories { get; set; }
 

@@ -35,7 +35,8 @@ namespace iShop.Web.Server.Mapping
                     opt => opt.MapFrom(p =>
                         p.ProductCategories.Select(pc => pc.Category)))
                 .ForMember(pr => pr.Inventory, opt => opt.MapFrom(p => p.Inventory))
-                .ForMember(pr => pr.Images, opt => opt.MapFrom(p => p.Images));
+                .ForMember(pr => pr.Images, opt => opt.MapFrom(p => p.Images))
+                .ForMember(pr => pr.SupplierId, opt => opt.MapFrom(p => p.Inventory.SupplierId));
 
             CreateMap<Image, ImageResource>();
             CreateMap<ApplicationUser, ApplicationUserResource>();
@@ -96,20 +97,15 @@ namespace iShop.Web.Server.Mapping
                         p.ProductCategories.Where(c => !pr.Categories.Contains(c.CategoryId)).ToList();
                     foreach (var pc in removedFeatures)
                         p.ProductCategories.Remove(pc);
+                })
+                
+                .ForMember(p => p.Inventory, opt => opt.Ignore())
+                .AfterMap((pr, p) =>
+                {
+                    var inventory = new Inventory() {ProductId = pr.Id, SupplierId = pr.SupplierId, Stock = pr.Stock};
+                    p.Inventory = inventory;
                 });
-                //.ForMember(p => p.In, opt => opt.Ignore())
-                //.AfterMap((or, o) =>
-                //{
-                //    var addedOrderedItems = or.Inventories.Where(oir => o.OrderedItems.All(oi => oi.ProductId != oir.ProductId))
-                //        .Select(oir => new Inventory() { ProductId = oir.ProductId, Stock = oir.Stock, SupplierId = or.Id }).ToList();
-                //    foreach (var oi in addedOrderedItems)
-                //        o.Inventories.Add(oi);
-
-                //    var removedFeatures =
-                //        o.Inventories.Where(oi => or.Inventories.Any(oir => oir.ProductId != oi.ProductId)).ToList();
-                //    foreach (var oi in removedFeatures)
-                //        o.Inventories.Remove(oi);
-                //});
+                
 
 
 

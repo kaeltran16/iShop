@@ -26,7 +26,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
                 .Include(p => p.ProductCategories)
                 .ThenInclude(c => c.Category)
                 .Include(p => p.Images)
-                .Include(p => p.Inventories)
+                .Include(p => p.Inventory)
                 .ThenInclude(i=>i.Supplier)
                 .SingleOrDefaultAsync(p => p.Id == id);
         }
@@ -36,7 +36,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
                 .Include(p => p.ProductCategories)
                 .ThenInclude(c => c.Category)
                 .Include(p => p.Images)
-                .Include(p => p.Inventories)
+                .Include(p => p.Inventory)
                 .ThenInclude(i => i.Supplier)
                 .ToListAsync();
         }
