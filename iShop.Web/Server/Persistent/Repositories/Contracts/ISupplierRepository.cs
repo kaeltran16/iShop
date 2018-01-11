@@ -7,9 +7,10 @@ using iShop.Web.Server.Core.Models;
 
 namespace iShop.Web.Server.Persistent.Repositories.Contracts
 {
-    public interface ICategoryRepository: IDataRepository<Category>
+    public interface ISupplierRepository: IDataRepository<Supplier>
     {
-        Task<Category> GetCategory(Guid id);
-        Task<IEnumerable<Category>> GetCategories();
+        Task<IEnumerable<Supplier>> GetSuppliers();
+        Task<Supplier> GetSupplier(Guid supplierId);
+
     }
 }

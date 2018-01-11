@@ -12,9 +12,10 @@ using System;
 namespace iShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180111154757_EnableDataLogging")]
+    partial class EnableDataLogging
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,9 +171,6 @@ namespace iShop.Web.Migrations
 
                     b.HasKey("ProductId", "SupplierId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Inventories");
@@ -238,8 +236,6 @@ namespace iShop.Web.Migrations
                     b.Property<DateTime>("AddedDate");
 
                     b.Property<DateTime>("ExpiredDate");
-
-                    b.Property<Guid>("InventoryId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -317,8 +313,6 @@ namespace iShop.Web.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
-
-                    b.Property<Guid>("InventoryId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -550,8 +544,8 @@ namespace iShop.Web.Migrations
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Inventory", b =>
                 {
                     b.HasOne("iShop.Web.Server.Core.Models.Product", "Product")
-                        .WithOne("Inventory")
-                        .HasForeignKey("iShop.Web.Server.Core.Models.Inventory", "ProductId")
+                        .WithMany("Inventories")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("iShop.Web.Server.Core.Models.Supplier", "Supplier")

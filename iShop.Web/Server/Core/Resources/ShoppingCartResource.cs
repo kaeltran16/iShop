@@ -11,7 +11,6 @@ namespace iShop.Web.Server.Core.Resources
         public Guid Id { get; set; }
         public ApplicationUserResource User { get; set; }
         public ICollection<CartResource> Carts { get; set; }
-        [Required]
         public DateTime PlacedDate { get; set; }
     }
 }

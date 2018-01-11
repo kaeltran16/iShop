@@ -19,13 +19,13 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
                 .HasOne(c => c.Category)
                 .WithMany(c => c.ProductCategories)
                 .HasForeignKey(pc => pc.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne(c => c.Product)
                 .WithMany(p => p.ProductCategories)
                 .HasForeignKey(pc => pc.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

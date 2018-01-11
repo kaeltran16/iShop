@@ -11,9 +11,6 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
 {
     public class CategoryRepository : DataRepositoryBase<Category>, ICategoryRepository
     {
-
-        private readonly ApplicationDbContext _context;
-
         public CategoryRepository(ApplicationDbContext context)
             : base(context)
         {

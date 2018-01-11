@@ -12,9 +12,10 @@ using System;
 namespace iShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180111195943_ChangeSupplierInventoryToOneOne")]
+    partial class ChangeSupplierInventoryToOneOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,7 +174,8 @@ namespace iShop.Web.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("SupplierId")
+                        .IsUnique();
 
                     b.ToTable("Inventories");
                 });
@@ -555,8 +557,8 @@ namespace iShop.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("iShop.Web.Server.Core.Models.Supplier", "Supplier")
-                        .WithMany("Inventories")
-                        .HasForeignKey("SupplierId")
+                        .WithOne("Inventory")
+                        .HasForeignKey("iShop.Web.Server.Core.Models.Inventory", "SupplierId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

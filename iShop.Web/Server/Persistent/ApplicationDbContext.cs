@@ -37,10 +37,18 @@ namespace iShop.Web.Server.Persistent
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyEntityConfigurations();
-                 
+          
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ChangeIdentityTableNames();
         }
+
+        // Will be removed in production 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+           
+        }
     }
+
 }

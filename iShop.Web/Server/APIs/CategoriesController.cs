@@ -5,19 +5,19 @@ using AutoMapper;
 using iShop.Web.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
+using iShop.Web.Server.Extensions;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 namespace iShop.Web.Server.APIs
 {
     [Route("/api/[controller]")]
-    public class CategoriesController : Microsoft.AspNetCore.Mvc.Controller
+    public class CategoriesController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CategoriesController> _logger;
-
 
         public CategoriesController(IMapper mapper, IUnitOfWork unitOfWork, ILogger<CategoriesController> logger)
         {
@@ -25,6 +25,7 @@ namespace iShop.Web.Server.APIs
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
+     
 
         // GET
         [HttpGet]
@@ -40,13 +41,17 @@ namespace iShop.Web.Server.APIs
 
         // GET
         [HttpGet("{id}", Name = GetName.Category)]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
+            bool isValid = Guid.TryParse(id, out var categoryId);
+
+            if (!isValid)
+                return InvalidId(id);
+
+            var category = await _unitOfWork.CategoryRepository.GetCategory(categoryId);
 
             if (category == null)
-                return NotFound(
-                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+                return NotFound(ItemName.Category, categoryId);
 
             var categoryResource = _mapper.Map<Category, CategoryResource>(category);
 
@@ -56,6 +61,7 @@ namespace iShop.Web.Server.APIs
 
 
         // POST
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryResource categoryResources)
         {
@@ -69,74 +75,75 @@ namespace iShop.Web.Server.APIs
             // if something happens and the new item can not be saved, return the error
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogError(LoggingEvents.Fail, "item with id " + category.Id + " failed to saved");
-                return StatusCode(500,
-                    new ErrorMessage { Code = 500, Message = "item with id " + category.Id + " failed to saved" }
-                        .ToString());
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Category, category.Id);
+                return FailedToSave(ItemName.Category, category.Id);
             }
 
             category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
 
             var result = _mapper.Map<Category, CategoryResource>(category);
 
-            _logger.LogInformation(LoggingEvents.Created, "item with id " + category.Id + " is created");
+            _logger.LogMessage(LoggingEvents.Created, ItemName.Category, category.Id);
             return CreatedAtRoute(GetName.Category, new { id = category.Id }, result);
         }
 
         // DELETE
+        [Authorize]
         [HttpDelete("{id}")]
-        //[Authorize]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
+            bool isValid = Guid.TryParse(id, out var categoryId);
+
+            if (!isValid)
+                return InvalidId(id);
+            var category = await _unitOfWork.CategoryRepository.GetCategory(categoryId);
 
             if (category == null)
-                return NotFound(
-                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+                return NotFound(ItemName.Category, categoryId);
 
             _unitOfWork.CategoryRepository.Remove(category);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
-                return StatusCode(500,
-                    new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
-                        .ToString());
+                _logger.LogMessage(LoggingEvents.Fail, ItemName.Category, category.Id);
+                return FailedToSave(ItemName.Category, categoryId);
             }
 
-            _logger.LogInformation(LoggingEvents.Deleted, "item with id " + id + " is deleted");
+            _logger.LogMessage(LoggingEvents.Deleted, ItemName.Category, category.Id);
             return NoContent();
         }
 
 
 
         // PUT
+        [Authorize]
         [HttpPut("{id}")]
-        //[Authorize]
-        public async Task<IActionResult> Update(Guid id, [FromBody] CategoryResource categoryResource)
+        public async Task<IActionResult> Update(string id, [FromBody] CategoryResource categoryResource)
         {
+            bool isValid = Guid.TryParse(id, out var categoryId);
+
+            if (!isValid)
+                return InvalidId(id);
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var category = await _unitOfWork.CategoryRepository.GetCategory(id);
+            var category = await _unitOfWork.CategoryRepository.GetCategory(categoryId);
 
             if (category == null)
-                return NotFound(
-                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+                return NotFound(ItemName.Category, categoryId);
 
             _mapper.Map<CategoryResource, Category>(categoryResource, category);
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
-                return StatusCode(500,
-                    new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
-                        .ToString());
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Category, category.Id);
+                return FailedToSave(ItemName.Category, categoryId);
             }
 
             category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
 
             var result = _mapper.Map<Category, CategoryResource>(category);
-            _logger.LogInformation(LoggingEvents.Updated, "item with id " + id + " updated");
+            _logger.LogMessage(LoggingEvents.Updated, ItemName.Category, category.Id);
             return Ok(result);
         }
 

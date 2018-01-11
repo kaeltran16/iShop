@@ -7,9 +7,8 @@ using iShop.Web.Server.Core.Models;
 
 namespace iShop.Web.Server.Persistent.Repositories.Contracts
 {
-    public interface ICategoryRepository: IDataRepository<Category>
+    public interface IImagesRepository: IDataRepository<Image>
     {
-        Task<Category> GetCategory(Guid id);
-        Task<IEnumerable<Category>> GetCategories();
+        Task<IEnumerable<Image>> GetProductImages(Guid productId);
     }
 }
