@@ -25,7 +25,7 @@ namespace iShop.Web.Server.APIs
         public IActionResult InvalidId(string itemId)
         {
             return StatusCode(500,
-                new ErrorMessage { Code = 500, Message = "Error accured, please check your input ID" }
+                new ErrorMessage { Code = 500, Message = "Error occured, please check your input ID" }
                     .ToString());
         }
 
@@ -34,6 +34,32 @@ namespace iShop.Web.Server.APIs
             return StatusCode(401,
                 new ErrorMessage { Code = 500, Message = "Unauthorized attempt!!" }
                     .ToString());
+        }
+
+        public IActionResult NullOrEmpty(string itemName)
+        {
+            return BadRequest(new ErrorMessage {Code = 400, Message = "Error occured, please check your " + itemName}
+                .ToString());
+        }
+
+        public IActionResult Oversized(string itemName, int maxSize)
+        {
+            return BadRequest(new ErrorMessage
+                {
+                    Code = 400,
+                    Message = "Error occured, " + itemName + " has maxmimum size of " + maxSize
+                }
+                .ToString());
+        }
+
+        public IActionResult UnSupportedType(string itemName, string[] supportedType)
+        {
+            return BadRequest(new ErrorMessage
+                {
+                    Code = 400,
+                    Message = itemName + " has invalid type. The support types are " + supportedType
+                }
+                .ToString());
         }
 
 

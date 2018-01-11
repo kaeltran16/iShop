@@ -6,6 +6,7 @@ using AutoMapper;
 using iShop.Web.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
+using iShop.Web.Server.Extensions;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,7 @@ namespace iShop.Web.Server.APIs
 {
 
     [Route("/api/[controller]")]
-    public class ProductsController : Microsoft.AspNetCore.Mvc.Controller
+    public class ProductsController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -31,13 +32,16 @@ namespace iShop.Web.Server.APIs
 
         // GET
         [HttpGet("{id}", Name = GetName.Product)]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            var product = await _unitOfWork.ProductRepository.GetProduct(id);
+            bool isValid = Guid.TryParse(id, out var productId);
+            if (!isValid)
+                return InvalidId(id);
+
+            var product = await _unitOfWork.ProductRepository.GetProduct(productId);
 
             if (product == null)
-                return NotFound(
-                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+                NotFound(ItemName.Product, productId);
 
             var productResource = _mapper.Map<Product, ProductResource>(product);
 
@@ -68,17 +72,15 @@ namespace iShop.Web.Server.APIs
             await _unitOfWork.ProductRepository.AddAsync(product);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogError(LoggingEvents.Fail, "item with id " + product.Id + " failed to saved");
-                return StatusCode(500,
-                    new ErrorMessage { Code = 500, Message = "item with id " + product.Id + " failed to saved" }
-                        .ToString());
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Product, product.Id);
+                return FailedToSave(ItemName.Category, product.Id);
             }
 
             product = await _unitOfWork.ProductRepository.GetProduct(product.Id);
 
             var result = _mapper.Map<Product, ProductResource>(product);
 
-            _logger.LogInformation(LoggingEvents.Created, "item with id " + product.Id + " is created");
+            _logger.LogMessage(LoggingEvents.Created, ItemName.Product, product.Id);
 
             return CreatedAtRoute(GetName.Product, new { id = product.Id }, result);
         }
@@ -86,32 +88,33 @@ namespace iShop.Web.Server.APIs
         // PUT
         //[Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] SavedProductResource savedProductResource)
+        public async Task<IActionResult> Update(string id, [FromBody] SavedProductResource savedProductResource)
         {
+            bool isValid = Guid.TryParse(id, out var productId);
+            if (!isValid)
+                return InvalidId(id);
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var product = await _unitOfWork.ProductRepository.GetProduct(id);
+            var product = await _unitOfWork.ProductRepository.GetProduct(productId);
 
             if (product == null)
-                return NotFound(
-                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+                return NotFound(ItemName.Product, productId);
 
             _mapper.Map<SavedProductResource, Product>(savedProductResource, product);
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
-                return StatusCode(500,
-                    new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
-                        .ToString());
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Product, product.Id);
+                return FailedToSave(ItemName.Category, product.Id);
             }
 
             product = await _unitOfWork.ProductRepository.GetProduct(product.Id);
 
             var result = _mapper.Map<Product, SavedProductResource>(product);
 
-            _logger.LogInformation(LoggingEvents.Updated, "item with id " + id + " updated");
+            _logger.LogMessage(LoggingEvents.Updated, ItemName.Product, product.Id);
 
             return Ok(result);
         }
@@ -119,24 +122,26 @@ namespace iShop.Web.Server.APIs
         // DELETE
         //[Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(Guid id)
+        public async Task<IActionResult> DeleteProduct(string id)
         {
-            var product = await _unitOfWork.ProductRepository.GetProduct(id);
+            bool isValid = Guid.TryParse(id, out var productId);
+            if (!isValid)
+                return InvalidId(id);
+
+            var product = await _unitOfWork.ProductRepository.GetProduct(productId);
 
             if (product == null)
-                return NotFound(
-                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+                return NotFound(ItemName.Product, productId);
 
             _unitOfWork.ProductRepository.Remove(product);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
-                return StatusCode(500,
-                    new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
-                        .ToString());
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Product, product.Id);
+                return FailedToSave(ItemName.Category, product.Id);
             }
 
-            _logger.LogInformation(LoggingEvents.Deleted, "item with id " + id + " is deleted");
+            _logger.LogMessage(LoggingEvents.Deleted, ItemName.Product, product.Id);
+
 
             return NoContent();
         }

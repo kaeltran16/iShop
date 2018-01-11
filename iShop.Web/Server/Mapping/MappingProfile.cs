@@ -19,18 +19,16 @@ namespace iShop.Web.Server.Mapping
             CreateMap<Order, OrderResource>()
                 .ForMember(or => or.OrderedItems, opt => opt.MapFrom(p =>
                     p.OrderedItems.Select(pc => new OrderedItem(){ProductId = pc.ProductId, Quantity = pc.Quantity})));
-                       
+
             CreateMap<Order, SavedOrderResource>();
-                
 
+            CreateMap<ShoppingCart, ShoppingCartResource>()
+                .ForMember(or => or.Carts, opt => opt.MapFrom(p =>
+                    p.Carts.Select(pc => new Cart() { ProductId = pc.ProductId, Quantity = pc.Quantity })));
 
-            CreateMap<ApplicationUser, ApplicationUserResource>();
-            CreateMap<Category, CategoryResource>();
-            CreateMap<Cart, CartResource>();
-            CreateMap<Image, ImageResource>();
-            CreateMap<Inventory, InventoryResource>();
-            CreateMap<ShoppingCart, ShoppingCartResource>();
             CreateMap<ShoppingCart, SavedShoppingCartResource>();
+            CreateMap<Product, SavedProductResource>();
+
             CreateMap<Product, ProductResource>()
                 .ForMember(pr => pr.Categories,
                     opt => opt.MapFrom(p =>
@@ -38,7 +36,15 @@ namespace iShop.Web.Server.Mapping
                 .ForMember(pr => pr.Inventories, opt => opt.MapFrom(p => p.Inventories))
                 .ForMember(pr => pr.Images, opt => opt.MapFrom(p => p.Images));
 
-            CreateMap<Product, SavedProductResource>();
+            CreateMap<Image, ImageResource>();
+            CreateMap<ApplicationUser, ApplicationUserResource>();
+            CreateMap<Category, CategoryResource>();
+            CreateMap<Cart, CartResource>();
+            CreateMap<Image, ImageResource>();
+            CreateMap<Inventory, InventoryResource>();
+        
+            
+
        
 
             CreateMap<OrderedItem, OrderedItemResource>();
@@ -52,15 +58,16 @@ namespace iShop.Web.Server.Mapping
                 .ForMember(c => c.ProductCategories, opt => opt.Ignore());
 
             CreateMap<OrderResource, Order>()
-                .ForMember(o => o.Id, opt => opt.Ignore());
+                .ForMember(o => o.Id, opt => opt.Ignore())
+                .ForMember(d => d.OrderedItems, opt => opt.Ignore());
 
             CreateMap<SavedOrderResource, Order>()
                 .ForMember(o => o.Id, opt => opt.Ignore())
-                .ForMember(o => o.OrderedItems, opt => opt.MapFrom(c=>c.OrderedItems))
+                .ForMember(o => o.OrderedItems, opt => opt.Ignore())
                 .AfterMap((or, o) =>
                 {
-                    var addedOrderedItems = or.OrderedItems.Where(id => o.OrderedItems.All(oi => oi.ProductId != id.ProductId))
-                        .Select(id => new OrderedItem() { ProductId = id.ProductId, OrderId = or.Id }).ToList();
+                    var addedOrderedItems = or.OrderedItems.Where(oir => o.OrderedItems.All(oi => oi.ProductId != oir.ProductId))
+                        .Select(oir => new OrderedItem() { ProductId = oir.ProductId, Quantity = oir.Quantity, OrderId = or.Id}).ToList();
                     foreach (var oi in addedOrderedItems)
                         o.OrderedItems.Add(oi);
 
@@ -70,51 +77,56 @@ namespace iShop.Web.Server.Mapping
                         o.OrderedItems.Remove(oi);
                 });
 
-
-
-            CreateMap<ProductResource, Product>()
-                .ForMember(p => p.Id, opt => opt.Ignore())
-                .ForMember(d => d.ProductCategories, opt => opt.Ignore());
             CreateMap<SavedProductResource, Product>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(p => p.ProductCategories, opt => opt.Ignore())
                 .AfterMap((pr, p) =>
                 {
-                    var addedCategories = pr.Categories.Where(id => p.ProductCategories.All(f => f.CategoryId != id))
-                        .Select(id => new ProductCategory() {CategoryId = id, ProductId = pr.Id}).ToList();
-                    foreach (var f in addedCategories)
-                        p.ProductCategories.Add(f);
+                    var addedCategories = pr.Categories.Where(id => p.ProductCategories.All(pc => pc.CategoryId != id))
+                        .Select(id => new ProductCategory() { CategoryId = id, ProductId = pr.Id }).ToList();
+                    foreach (var pc in addedCategories)
+                        p.ProductCategories.Add(pc);
 
                     var removedFeatures =
                         p.ProductCategories.Where(c => !pr.Categories.Contains(c.CategoryId)).ToList();
-                    foreach (var f in removedFeatures)
-                        p.ProductCategories.Remove(f);
+                    foreach (var pc in removedFeatures)
+                        p.ProductCategories.Remove(pc);
                 });
 
 
 
-         
+            CreateMap<ShoppingCartResource, ShoppingCart>()
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(d => d.Carts, opt => opt.Ignore());
+
+            CreateMap<SavedShoppingCartResource, ShoppingCart>()
+                .ForMember(o => o.Id, opt => opt.Ignore())
+                .ForMember(o => o.Carts, opt => opt.MapFrom(c => c.Carts))
+                .AfterMap((sr, s) =>
+                {
+                    var addedCarts = sr.Carts.Where(cr => s.Carts.All(c => c.ProductId != cr.ProductId))
+                        .Select(cr => new Cart() { ProductId = cr.ProductId, Quantity = cr.Quantity, ShoppingCartId = sr.Id}).ToList();
+                    foreach (var c in addedCarts)
+                        s.Carts.Add(c);
+
+                    var removedCarts =
+                        s.Carts.Where(c => sr.Carts.Any(cr => cr.ProductId != c.ProductId)).ToList();
+                    foreach (var c in removedCarts)
+                        s.Carts.Remove(c);
+                });
+
+            CreateMap<ProductResource, Product>()
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(d => d.ProductCategories, opt => opt.Ignore());
+            CreateMap<ImageResource, Image>();
+            CreateMap<CartResource, Cart>();
 
             CreateMap<ApplicationUserResource, ApplicationUser>();
             CreateMap<OrderedItemResource, OrderedItem>();
             CreateMap<ShippingResource, Shipping>();
             CreateMap<ShippingResource, Shipping>();
             CreateMap<InvoiceResource, Invoice>();
-            CreateMap<ShoppingCartResource, ShoppingCart>();
-            CreateMap<SavedShoppingCartResource, ShoppingCart>()
-                .ForMember(o => o.Id, opt => opt.Ignore())
-                .ForMember(o => o.Carts, opt => opt.Ignore())
-                .AfterMap((pr, p) =>
-                {
-                    var addedCategories = pr.Carts.Where(id => p.Carts.All(f => f.ProductId != id))
-                        .Select(id => new Cart() {ProductId = id, ShoppingCartId = pr.Id}).ToList();
-                    foreach (var f in addedCategories)
-                        p.Carts.Add(f);
-
-                    var removedFeatures = p.Carts.Where(c => !pr.Carts.Contains(c.ProductId)).ToList();
-                    foreach (var f in removedFeatures)
-                        p.Carts.Remove(f);
-                });
+            
 
 
 

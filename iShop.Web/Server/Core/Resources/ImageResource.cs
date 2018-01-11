@@ -7,5 +7,7 @@ namespace iShop.Web.Server.Core.Resources
 {
     public class ImageResource
     {
+        public Guid Id { get; set; }
+        public string FileName { get; set; }
     }
 }

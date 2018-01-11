@@ -47,15 +47,10 @@ namespace iShop.Web.Server.APIs
         [HttpGet("user/{id}")]
         public async Task<IActionResult> GetUserOrders(string id)
         {
-            Guid userId;
-            try
-            {
-                userId = Guid.Parse(id);
-            }
-            catch (Exception e)
-            {
+            bool isValid = Guid.TryParse(id, out var userId);
+
+            if (!isValid)
                 return InvalidId(id);
-            }
 
             if (userId != User.GetUserId())
                 return UnAuthorized();
@@ -73,15 +68,9 @@ namespace iShop.Web.Server.APIs
         [HttpGet("{id}", Name = GetName.Order)]
         public async Task<IActionResult> Get(string id)
         {
-            Guid orderId;
-            try
-            {
-                orderId = Guid.Parse(id);
-            }
-            catch (Exception)
-            {
+            bool isValid = Guid.TryParse(id, out var orderId);
+            if (!isValid)
                 return InvalidId(id);
-            }
             var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
             if (order == null)
@@ -126,63 +115,53 @@ namespace iShop.Web.Server.APIs
                 new { id = order.Id }, result);
         }
 
-       // PUT
-       //[HttpPut("{id}")]
-       // public async Task<IActionResult> Update(string id, [FromBody]SavedOrderResource savedOrderResource)
-       // {
-       //     Guid orderId;
-       //     try
-       //     {
-       //         Guid.TryParse(id, out orderId);
-       //     }
-       //     catch (Exception)
-       //     {
-       //         return InvalidId(id);
-       //     }
+        //PUT
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody]SavedOrderResource savedOrderResource)
+        {
+            bool isValid = Guid.TryParse(id, out var orderId);
+            if (!isValid)
+                return InvalidId(id);
 
-       //     if (!ModelState.IsValid)
-       //         return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-       //     var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
+            var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
-       //     if (order == null)
-       //         return NotFound(ItemName.Order, orderId);
+            if (order == null)
+                return NotFound(ItemName.Order, orderId);
 
-       //     if (order.UserId != User.GetUserId())
-       //         return UnAuthorized();
+            if (order.UserId != User.GetUserId())
+                return UnAuthorized();
 
-       //     _mapper.Map<SavedOrderResource, Order>(savedOrderResource, order);
+            _mapper.Map<SavedOrderResource, Order>(savedOrderResource, order);
 
-       //     if (!await _unitOfWork.CompleteAsync())
-       //     {
-       //         _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Order, order.Id);
+            if (!await _unitOfWork.CompleteAsync())
+            {
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Order, order.Id);
 
-       //         return FailedToSave(ItemName.Order, order.Id);
-       //     }
+                return FailedToSave(ItemName.Order, order.Id);
+            }
 
-       //     order = await _unitOfWork.OrderRepository.GetOrder(order.Id);
+            order = await _unitOfWork.OrderRepository.GetOrder(order.Id);
 
-       //     var result = _mapper.Map<Order, SavedOrderResource>(order);
+            var result = _mapper.Map<Order, SavedOrderResource>(order);
 
-       //     _logger.LogMessage(LoggingEvents.Updated, ItemName.Order, order.Id);
+            _logger.LogMessage(LoggingEvents.Updated, ItemName.Order, order.Id);
 
-       //     return Ok(result);
-       // }
+            return Ok(result);
+        }
 
         // DELETE
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(string id)
         {
-            Guid orderId;
-            try
-            {
-                orderId = Guid.Parse(id);
-            }
-            catch (Exception)
-            {
+            bool isValid = Guid.TryParse(id, out var orderId);
+            if (!isValid)
                 return InvalidId(id);
-            }
+
             var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
             if (order == null)

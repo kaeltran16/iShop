@@ -15,6 +15,7 @@ namespace iShop.Web.Server.Persistent.UnitOfWork.Commons
         private IProductRepository _productRepository;
         private IShoppingCartRepository _shoppingCartRepository;
         private IOrderRepository _orderRepository;
+        private ImageRepository _imageRepository;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -30,6 +31,12 @@ namespace iShop.Web.Server.Persistent.UnitOfWork.Commons
             _shoppingCartRepository ?? (_shoppingCartRepository = new ShoppingCartRepository(_context));
         public IOrderRepository OrderRepository =>
             _orderRepository ?? (_orderRepository = new OrderRepository(_context));
+
+      
+
+        public IImagesRepository ImageRepository =>
+            _imageRepository ?? (_imageRepository
+                = new ImageRepository(_context));
         // Complete current unit of work, save changes to the database
         public async Task<bool> CompleteAsync()
         {

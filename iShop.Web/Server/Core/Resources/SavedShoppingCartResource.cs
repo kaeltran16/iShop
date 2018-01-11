@@ -10,8 +10,6 @@ namespace iShop.Web.Server.Core.Resources
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public ICollection<Guid> Carts { get; set; }
-        [Required]
-        public DateTime PlacedDate { get; set; }
+        public ICollection<CartResource> Carts { get; set; }
     }
 }

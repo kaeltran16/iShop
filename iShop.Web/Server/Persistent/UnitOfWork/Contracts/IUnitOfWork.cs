@@ -13,6 +13,7 @@ namespace iShop.Web.Server.Persistent.UnitOfWork.Contracts
         IProductRepository ProductRepository { get; }
         IShoppingCartRepository ShoppingCartRepository { get; }
         IOrderRepository OrderRepository { get; }
+        IImagesRepository ImageRepository { get; }
         Task<bool> CompleteAsync();
     }
 

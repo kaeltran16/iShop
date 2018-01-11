@@ -43,15 +43,10 @@ namespace iShop.Web.Server.APIs
         [HttpGet("{id}", Name = GetName.Category)]
         public async Task<IActionResult> Get(string id)
         {
-            Guid categoryId;
-            try
-            {
-                categoryId = Guid.Parse(id);
-            }
-            catch (Exception)
-            {
+            bool isValid = Guid.TryParse(id, out var categoryId);
+
+            if (!isValid)
                 return InvalidId(id);
-            }
 
             var category = await _unitOfWork.CategoryRepository.GetCategory(categoryId);
 
@@ -97,15 +92,10 @@ namespace iShop.Web.Server.APIs
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            Guid categoryId;
-            try
-            {
-                categoryId = Guid.Parse(id);
-            }
-            catch (Exception e)
-            {
+            bool isValid = Guid.TryParse(id, out var categoryId);
+
+            if (!isValid)
                 return InvalidId(id);
-            }
             var category = await _unitOfWork.CategoryRepository.GetCategory(categoryId);
 
             if (category == null)
@@ -129,15 +119,11 @@ namespace iShop.Web.Server.APIs
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] CategoryResource categoryResource)
         {
-            Guid categoryId;
-            try
-            {
-                categoryId = Guid.Parse(id);
-            }
-            catch (Exception e)
-            {
+            bool isValid = Guid.TryParse(id, out var categoryId);
+
+            if (!isValid)
                 return InvalidId(id);
-            }
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
