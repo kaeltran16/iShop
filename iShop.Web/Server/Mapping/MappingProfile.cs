@@ -19,8 +19,10 @@ namespace iShop.Web.Server.Mapping
 
             CreateMap<Order, OrderResource>()
                 .ForMember(or => or.OrderedItems, opt => opt.MapFrom(p =>
-                    p.OrderedItems.Select(pc => new OrderedItem(){ProductId = pc.ProductId, Quantity = pc.Quantity})));
-
+                    p.OrderedItems.Select(pc => new OrderedItem() {ProductId = pc.ProductId, Quantity = pc.Quantity})))
+                .ForMember(or => or.Shipping, opt => opt.MapFrom(o => o.Shipping))
+                .ForMember(or => or.Invoice, opt => opt.MapFrom(o => o.Invoice));
+                
             CreateMap<Order, SavedOrderResource>();
 
             CreateMap<ShoppingCart, ShoppingCartResource>()
@@ -72,16 +74,49 @@ namespace iShop.Web.Server.Mapping
                 .ForMember(o => o.OrderedItems, opt => opt.Ignore())
                 .AfterMap((or, o) =>
                 {
-                    var addedOrderedItems = or.OrderedItems.Where(oir => o.OrderedItems.All(oi => oi.ProductId != oir.ProductId))
-                        .Select(oir => new OrderedItem() { ProductId = oir.ProductId, Quantity = oir.Quantity, OrderId = or.Id}).ToList();
+                    var addedOrderedItems = or.OrderedItems
+                        .Where(oir => o.OrderedItems.All(oi => oi.ProductId != oir.ProductId))
+                        .Select(oir =>
+                            new OrderedItem() {ProductId = oir.ProductId, Quantity = oir.Quantity, OrderId = or.Id})
+                        .ToList();
                     foreach (var oi in addedOrderedItems)
                         o.OrderedItems.Add(oi);
 
                     var removedFeatures =
-                        o.OrderedItems.Where(oi => or.OrderedItems.Any(oir=>oir.ProductId!=oi.ProductId)).ToList();
+                        o.OrderedItems.Where(oi => or.OrderedItems.Any(oir => oir.ProductId != oi.ProductId)).ToList();
                     foreach (var oi in removedFeatures)
                         o.OrderedItems.Remove(oi);
+                })
+                .ForMember(o => o.Invoice, opt => opt.Ignore())
+                .AfterMap((or, o) =>
+                {
+                    var invoice = new Invoice() {Id = Guid.NewGuid(), OrderId = or.Id};
+                    o.Invoice = invoice;
+                })
+                .ForMember(o => o.Shipping, opt => opt.Ignore())
+                .AfterMap((or, o) =>
+                {
+                    var shipping = new Shipping()
+                    {
+                        Id = Guid.NewGuid(),
+                        OrderId = or.Id,
+                        Charge = or.Shipping.Charge,
+                        City = or.Shipping.City,
+                        ShippingDate = or.Shipping.ShippingDate,
+                        ShippingState = or.Shipping.ShippingState,
+                        Street = or.Shipping.Street
+                    };
+                    o.Shipping = shipping;
+                })
+                .AfterMap((or, o) =>
+                {
+                    o.InvoiceId = o.Invoice.Id;
+                    o.ShippingId = o.Shipping.Id;
                 });
+
+
+
+
 
             CreateMap<SavedProductResource, Product>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
@@ -137,9 +172,11 @@ namespace iShop.Web.Server.Mapping
 
             CreateMap<ApplicationUserResource, ApplicationUser>();
             CreateMap<OrderedItemResource, OrderedItem>();
-            CreateMap<ShippingResource, Shipping>();
-            CreateMap<ShippingResource, Shipping>();
-            CreateMap<InvoiceResource, Invoice>();
+            CreateMap<ShippingResource, Shipping>()
+                .ForMember(sr => sr.Id, opt => opt.Ignore());
+  
+            CreateMap<InvoiceResource, Invoice>()
+                .ForMember(sr => sr.Id, opt => opt.Ignore());
 
             CreateMap<InventoryResource, Inventory>();
 

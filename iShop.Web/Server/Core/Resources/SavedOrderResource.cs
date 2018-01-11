@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using iShop.Web.Server.Core.Models;
 
 namespace iShop.Web.Server.Core.Resources
 {
@@ -10,10 +11,8 @@ namespace iShop.Web.Server.Core.Resources
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public Guid ShippingId { get; set; }
-        public Guid InvoiceId { get; set; }
+        public ShippingResource Shipping { get; set; }
         public ICollection<OrderedItemResource> OrderedItems { get; set; }
-
         public SavedOrderResource()
         {
             OrderedItems = new Collection<OrderedItemResource>();

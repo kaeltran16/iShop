@@ -13,7 +13,8 @@ namespace iShop.Web.Server.Core.Models
         public Order Order { get; set; }
         public Invoice()
         {
-            Id = Guid.NewGuid();
+            if (Id == Guid.Empty)
+                Id = Guid.NewGuid();
             InvoiceDate = DateTime.Now;
         }
     }
