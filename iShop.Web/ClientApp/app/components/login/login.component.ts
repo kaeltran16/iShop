@@ -11,8 +11,5 @@ import { trigger, transition, state, animate, style, keyframes, useAnimation, qu
     ]
 })
 export class LoginComponent {
-    @Output('onclick') onclick = new EventEmitter<boolean>();
-    exit() {
-        this.onclick.emit(false);
-    }
+  
 }

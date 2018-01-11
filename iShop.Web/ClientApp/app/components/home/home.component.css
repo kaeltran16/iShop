@@ -1,11 +1,18 @@
 ﻿.product {
     background-color: aquamarine;
     width: 32%;
-    height: 355px;
+    height: 385px;
     position: relative;
     margin-left: 20px;
     float: left
 }
 .product:first-child {
     margin-left: 0px;
+}
+
+#alert-detail {
+    width: 800px;
+    background-color: white;
+    margin-left: -100px;
+   
 }

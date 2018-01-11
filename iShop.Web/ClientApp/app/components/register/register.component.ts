@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
 
 @Component({
@@ -11,9 +11,6 @@ import { trigger, transition, state, animate, style, keyframes, useAnimation, qu
     ]
 })
 export class RegisterComponent {
-    @Output('onclick') onclick = new EventEmitter<boolean>();
-    exit() {
-        this.onclick.emit(false);
-    }
+  
   
 }

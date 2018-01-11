@@ -1,6 +1,9 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, TemplateRef,OnInit } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
-
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
 @Component({
     selector: 'nav-menu',
     templateUrl: './navmenu.component.html',
@@ -15,26 +18,16 @@ import { trigger, transition, state, animate, style, keyframes, useAnimation, qu
             })),
             transition('small <=> large', animate('2000ms ease-in'))
         ]),
-        trigger('show', [
-
-            transition(':enter', animate('1000ms ease-in', keyframes([
-
-
-
-            ])))
-            ,
-
-            transition(':leave', animate('1000ms ease-out', keyframes([
-                style({ transform: 'scale(1)', offset: 0 }),
-                style({ transform: 'scale(0)', offset: 0.5 }),
-
-            ])))
-
-        ])
+       
     ]
 
 })
-export class NavMenuComponent {
+export class NavMenuComponent implements OnInit{
+    ngOnInit() {
+        this.isShow = false;
+    }
+
+    isShow:boolean=false;
     meet: any[] = [
         "Thịt Heo",
         "Thịt Bò",
@@ -45,13 +38,26 @@ export class NavMenuComponent {
         "Cá Biển",
         "Các Loại Thủy Hải Sản Khác"
     ];
-    hasLogin: boolean = true;
-    login: boolean = false;
-    register: boolean = false;
-    exitLogin(isLogin: boolean) {
-        this.login = isLogin;
+
+    modalRef: BsModalRef;
+    constructor(private modalService: BsModalService,
+        private route: ActivatedRoute,
+        private router: Router
+    ) {
+       
     }
-    exitRegister(isRegister: boolean) {
-        this.register = isRegister;
+
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template);
     }
+
+    openShoppingCart() {
+//        this.router.navigate(['/shopping-cart']);
+        this.isShow = true;
+    }
+    closeShoppingCart() {
+      
+        this.isShow = false;
+    }
+  
 }
