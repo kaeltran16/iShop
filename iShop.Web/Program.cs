@@ -20,9 +20,10 @@ namespace iShop.Web
         {
             // NLog: setup the logger first to catch all errors
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+
             try
             {
-                logger.Debug("init main");
+                logger.Debug("Init Main Program");
                 var host = BuildWebHost(args);
                 using (var scope = host.Services.CreateScope())
                 {

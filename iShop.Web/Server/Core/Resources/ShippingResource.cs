@@ -10,12 +10,19 @@ namespace iShop.Web.Server.Core.Resources
     public class ShippingResource
     {
         public Guid Id { get; set; }
+        [Required]
         public DateTime ShippingDate { get; set; }
         public ShippingState ShippingState { get; set; }
-        
+        [Required]
         public double Charge { get; set; }
+        [Required]
+        [StringLength(50)]
         public string Ward { get; set; }
+        [Required]
+        [StringLength(50)]
         public string Disctrict { get; set; }
+        [Required]
+        [StringLength(50)]
         public string City { get; set; }
 
 

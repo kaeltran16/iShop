@@ -1,27 +1,15 @@
 using System;
-using AspNet.Security.OpenIdConnect.Primitives;
-using iShop.Web.Server.Core.Models;
-using iShop.Web.Server.Persistent;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.Webpack;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
-using iShop.Web.Server.Persistent.Repositories.Commons;
-using iShop.Web.Server.Persistent.Repositories.Contracts;
-using iShop.Web.Server.Persistent.UnitOfWork.Commons;
-using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using iShop.Web.Server.Commons.BaseClasses;
-using System.Linq;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
+using iShop.Web.Server.Commons.Extensions;
+using iShop.Web.Server.Commons.Helpers;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace iShop.Web
 {
@@ -32,120 +20,20 @@ namespace iShop.Web
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; set; }
 
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddScoped<IImagesRepository, ImageRepository>();
-            services.AddScoped<ISupplierRepository, SupplierRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+           services.AddDependencies();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
 
-                // Use OpenIddict
-                options.UseOpenIddict<Guid>();
-            });
-
-            services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
-                {
-                    opt.Password.RequiredLength = 8;
-                    opt.Password.RequireUppercase = true;
-                    opt.Password.RequireNonAlphanumeric = false;
-                    opt.User.RequireUniqueEmail = true;
-                })
-                // Specify where this data will be stored
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                // Add token for reseting password, email..
-                .AddDefaultTokenProviders();
-
-            // Configure Identity to use the same JWT claims as OpenIddict instead
-            // of the legacy WS-Federation claims it uses by default (ClaimTypes),
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
-                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
-            });
-           
-            
-            var audience = "resource_server";
-            var authority = "https://localhost:44386";
-
-            var secretKey = "mysupersecret_secretkey!123";
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
-
-            services.AddAuthentication(opt=>opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opt =>
-                {
-                    opt.Audience = audience;
-                    opt.Authority = authority;
-                    opt.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = signingKey,
-                        ValidateAudience = true,
-                        ValidAudience = audience,
-
-                        ValidateLifetime = true
-                    };
-                    
-                });
-             
-            services.AddOpenIddict(options =>
-            {
-                options.AddEntityFrameworkCoreStores<ApplicationDbContext>();
-
-                options.AddMvcBinders();
-                // Enable the token endpoint.
-                // Form password flow (used in username/password login requests)
-                options.EnableTokenEndpoint("/connect/token")
-
-                    // Enable the authorization endpoint.
-                    // Form implicit flow (used in social login redirects)
-                    .EnableAuthorizationEndpoint("/connect/authorize")
-
-                    .EnableTokenEndpoint("/connect/token")
-                    .EnableUserinfoEndpoint("/api/userinfo");
-
-                // Enable the password and the refresh token flows.
-                options.AllowPasswordFlow()
-                    .AllowAuthorizationCodeFlow()
-                    .AllowRefreshTokenFlow()
-                    // To enable external logins to authenticate
-                    .AllowImplicitFlow();
-                options.RegisterScopes(OpenIdConnectConstants.Scopes.Profile);
-                options.DisableHttpsRequirement();
-
-                    
-                options.SetAccessTokenLifetime(TimeSpan.FromMinutes(30));
-                options.SetIdentityTokenLifetime(TimeSpan.FromMinutes(30));
-                options.SetRefreshTokenLifetime(TimeSpan.FromMinutes(60));
-                options.AddSigningKey(signingKey);
-                options.UseJsonWebTokens();
-                options.AddEphemeralSigningKey();
-            });
-
-         
-
-         
-
-           
-            // Add the custome Identity for specify User and Role
-           
-
-            // Register the OAuth validation handler
+            services.AddCustomDbContext();
+            services.AddCustomIdentity();
+            services.AddCustomOpenIddict();
             services.AddAuthorization();
-               
-
-
             services.AddAutoMapper();
             services.AddMvc();
 
@@ -155,7 +43,6 @@ namespace iShop.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 
-            loggerFactory.AddConsole();
             loggerFactory.AddDebug(LogLevel.Information);
             if (env.IsDevelopment())
             {
@@ -178,11 +65,8 @@ namespace iShop.Web
                 });
             }
 
-
-
             app.UseAuthentication();
-               
-                    
+                               
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
@@ -191,8 +75,6 @@ namespace iShop.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-
-        
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
