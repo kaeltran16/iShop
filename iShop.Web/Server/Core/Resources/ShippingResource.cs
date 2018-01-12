@@ -24,6 +24,9 @@ namespace iShop.Web.Server.Core.Resources
         [Required]
         [StringLength(50)]
         public string City { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string PhoneNumber { get; set; }
 
 
         public ShippingResource()
