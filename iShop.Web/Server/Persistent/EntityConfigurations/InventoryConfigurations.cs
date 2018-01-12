@@ -20,8 +20,8 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
 
             builder
                 .HasOne(i => i.Product)
-                .WithMany(p => p.Inventories)
-                .HasForeignKey(i => i.ProductId)
+                .WithOne(p => p.Inventory)
+                .HasForeignKey<Inventory>(i => i.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
 

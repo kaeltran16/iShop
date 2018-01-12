@@ -1,0 +1,173 @@
+﻿
+<div class="card">
+    <img src="/icon/background/2.jpg" class="w-100" alt="background"/>
+    <div style="color: whitesmoke; position: absolute; top: 30%; right: 35%;">
+        <div class="text-center">
+            <h2>HAI LÚA</h2>
+            <p>Chuyên cung cấp các loại sản phẩm sạch tin cậy.</p>
+        </div>
+    </div>
+  
+</div>
+
+
+<div class="row pt-3">
+    <div class="col-7 card w-100">
+        <div class="card h3 pt-3 text-center text-success">Chọn địa chỉ giao hàng </div>
+        <br/>
+        <div>Địa chỉ 1</div>
+        <div class="card p-2 " (click)="chooseAddress(true);" [class.card-outline-success]="outline">
+            <div> Tên khách hàng : <span class="h5">Vũ Khắc Hợi</span></div>
+            <div> Địa chỉ : <span>Số 111 Tân Lâm Đạ đờn Lâm hà Lâm đông</span></div>
+        </div>
+        <br/>
+        <div>Địa chỉ 2</div>
+        <div class="card p-2" (click)="chooseAddress(false);" [class.card-outline-success]="!outline">
+            <div> Tên khách hàng : <span class="h5">Vũ Khắc Hợi</span></div>
+            <div> Địa chỉ : <span>Số 111 Tân Lâm Đạ đờn Lâm hà Lâm đông</span></div>
+        </div>
+        
+        
+        <a class="text-info pt-4" data-toggle="collapse" href="#newAddress" aria-expanded="false" aria-controls="collapseExample">
+          Thêm địa chỉ
+        </a>
+       
+        
+        <div class="collapse" id="newAddress">
+            <div class="card card-block">
+                <form>
+                    <div class="form-group">
+                        <label for="Name">Họ và Tên</label>
+                        <div class="input-group">
+                            <input #Name="ngModel" [(ngModel)]="name" type="text" id="Name" name="Name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="City">Thành Phố</label>
+                        <div class="input-group">
+                            <input #City="ngModel" [(ngModel)]="city" type="text" id="City" name="City" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="District">Quận/Huyện</label>
+                        <div class="input-group">
+                            <input #District="ngModel" [(ngModel)]="district" type="text" id="District" name="District" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Ward">Xã/Phường</label>
+                        <div class="input-group">
+                            <input #Ward="ngModel" [(ngModel)]="ward" type="text" id="Ward" name="Ward" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Telephone">Số điện thoại</label>
+                        <div class="input-group">
+                            <input #Telephone="ngModel" [(ngModel)]="telephone" type="text" id="Telephone" name="Telephone" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <div class="card w-100 col-5">
+        <table class="table table-hover ">
+            <thead>
+            <tr>
+                <th></th>
+                <th >Tên sản phẩm</th>
+                <th class="text-center">Số lượng</th>
+                <th class="text-center">Giá</th>
+               
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1.</th>
+                <td class="text-left">
+                   
+                    Rau xalad
+                </td>
+                <td> 1</td>
+                <td >100.000 <sup>đ</sup></td>
+               
+            </tr>
+            <tr>
+                <th scope="row">2.</th>
+                <td class="text-left">
+                   
+                    Rau xalad
+                </td>
+                <td> 1</td>
+                <td >100.000 <sup>đ</sup></td>
+                
+            </tr>
+            <tr>
+                <th scope="row">3.</th>
+                <td class="text-left">
+                  
+                    Rau xalad
+                </td>
+                <td> 1</td>
+                <td >100.000 <sup>đ</sup></td>
+              
+            </tr>
+            <tr>
+                <th scope="row">4.</th>
+                <td class="text-left">
+                  
+                    Rau xalad
+                </td>
+                <td> 1</td>
+                <td >100.000 <sup>đ</sup></td>
+               
+            </tr>
+            <tr>
+                <th scope="row">5.</th>
+                <td class="text-left">
+                 
+                    Rau xalad
+                </td>
+                <td> 1</td>
+                <td >100.000 <sup>đ</sup></td>
+             
+            </tr>
+            </tbody>
+            <tfoot >
+           
+            <tr>
+                <th></th>
+                <td >
+
+                </td>
+                <td>
+                    <div class="font-weight-normal text-success pb-3" >Phí vận chuyển</div>
+                    <div>Tổng cộng</div>
+                </td>
+                <td>
+                    <div class="font-weight-normal text-success pb-3" >Miễn phí</div>
+                    <div> 100000<sup>đ</sup></div>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <th></th>
+                <td >
+
+                </td>
+
+                <td colspan="2">
+                    <button class="btn-warning  p-2 w-100 rounded">Đặt hàng</button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+
+
+    </div>
+</div>

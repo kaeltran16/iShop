@@ -1,0 +1,33 @@
+
+a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ a:hover {
+    background-color: rgb(127, 180, 1);
+}
+/*.dropdown:hover>.collapse{*/
+/*    display: block;*/
+/*}*/
+
+.pos {
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+    left: 0;
+}
+.card-block {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 0px;
+    width: 150%;
+    max-width: 250px;
+}
+
+ 

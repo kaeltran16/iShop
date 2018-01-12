@@ -1,0 +1,12 @@
+textarea:focus, input:focus {
+    outline: none;
+}
+
+.container-child {
+    min-height: 500px;
+    
+    background-color: rgb(245,245,245)
+}
+
+
+

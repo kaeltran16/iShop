@@ -19,7 +19,8 @@ namespace iShop.Web.Server.Core.Models
 
         public Shipping()
         {
-            Id = Guid.NewGuid();
+            if (Id == Guid.Empty)
+                Id = Guid.NewGuid();
             ShippingState = ShippingState.None;
         }
     }

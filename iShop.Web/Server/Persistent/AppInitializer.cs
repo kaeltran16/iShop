@@ -21,18 +21,36 @@ namespace iShop.Web.Server.Persistent
         {
 
             // SAMPLE
-            //if (!_context.Images.Any())
-            //{
-            //    var images = new List<Image>()
-            //    {
-            //        new Image() {FileName = "this is test"},
-            //        new Image() {FileName = "This is TEST"}
-            //    };
-            //    await _context.AddRangeAsync(images);
-            //    await _context.SaveChangesAsync();
-            //}
+            if (!_context.Products.Any())
+            {
+                var product = new Product()
+                {
+                    Price = 16,
+                    Name = "TEST67",
+                    ExpiredDate = DateTime.Now
+                };
+                var category = new Category() { Name = "TEST34", Detail = "abcxyz" };
+                product.ProductCategories = new List<ProductCategory>
+                {
+                    new ProductCategory()
+                    {
+                        Product = product,
+                        Category = category
+                    }
+                };
+
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+            };
+
            
+             
+            }
+
+         
+
+
+
 
         }
-    }
 }

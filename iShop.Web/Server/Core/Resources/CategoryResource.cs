@@ -9,7 +9,6 @@ namespace iShop.Web.Server.Core.Resources
     public class CategoryResource
     {
         public Guid Id { get; set; }
-        public ICollection<ProductResource> Products;
         [Required]
         public string Name { get; set; }
         public string Detail { get; set; }

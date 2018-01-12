@@ -10,6 +10,5 @@ namespace iShop.Web.Server.Core.Resources
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<InventoryResource> Inventories { get; set; }
     }
 }

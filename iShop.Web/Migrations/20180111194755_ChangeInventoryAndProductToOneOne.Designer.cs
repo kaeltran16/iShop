@@ -12,8 +12,8 @@ using System;
 namespace iShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180106070245_InitialModel")]
-    partial class InitialModel
+    [Migration("20180111194755_ChangeInventoryAndProductToOneOne")]
+    partial class ChangeInventoryAndProductToOneOne
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -171,9 +171,12 @@ namespace iShop.Web.Migrations
 
                     b.HasKey("ProductId", "SupplierId");
 
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("Inventory");
+                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Invoice", b =>
@@ -190,7 +193,7 @@ namespace iShop.Web.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Invoice");
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Order", b =>
@@ -225,7 +228,7 @@ namespace iShop.Web.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderedItem");
+                    b.ToTable("OrderedItems");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Product", b =>
@@ -236,6 +239,8 @@ namespace iShop.Web.Migrations
                     b.Property<DateTime>("AddedDate");
 
                     b.Property<DateTime>("ExpiredDate");
+
+                    b.Property<Guid>("InventoryId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -261,7 +266,7 @@ namespace iShop.Web.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Shipping", b =>
@@ -288,7 +293,7 @@ namespace iShop.Web.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Shipping");
+                    b.ToTable("Shippings");
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.ShoppingCart", b =>
@@ -319,7 +324,7 @@ namespace iShop.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Supplier");
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -544,8 +549,8 @@ namespace iShop.Web.Migrations
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Inventory", b =>
                 {
                     b.HasOne("iShop.Web.Server.Core.Models.Product", "Product")
-                        .WithMany("Inventories")
-                        .HasForeignKey("ProductId")
+                        .WithOne("Inventory")
+                        .HasForeignKey("iShop.Web.Server.Core.Models.Inventory", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("iShop.Web.Server.Core.Models.Supplier", "Supplier")
@@ -588,12 +593,12 @@ namespace iShop.Web.Migrations
                     b.HasOne("iShop.Web.Server.Core.Models.Category", "Category")
                         .WithMany("ProductCategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("iShop.Web.Server.Core.Models.Product", "Product")
                         .WithMany("ProductCategories")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Shipping", b =>

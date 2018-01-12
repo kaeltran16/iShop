@@ -11,6 +11,5 @@ namespace iShop.Web.Server.Persistent.Repositories.Contracts
     {
         Task<Category> GetCategory(Guid id);
         Task<IEnumerable<Category>> GetCategories();
-
     }
 }

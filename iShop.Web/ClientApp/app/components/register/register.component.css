@@ -1,0 +1,15 @@
+textarea:focus, input:focus {
+    outline: none;
+}
+
+.container-child {
+    z-index: 3;
+   
+    overflow: auto;
+    max-height: 550px;
+  
+    background-color: rgb(245,245,245)
+}
+
+
+

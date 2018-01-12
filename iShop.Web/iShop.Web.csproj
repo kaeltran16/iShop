@@ -59,11 +59,30 @@
     <Compile Remove="Migrations\20180106065513_InitialModel.Designer.cs" />
     <Compile Remove="Migrations\20180106070048_InitialModel.cs" />
     <Compile Remove="Migrations\20180106070048_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20180106070245_InitialModel.cs" />
+    <Compile Remove="Migrations\20180106070245_InitialModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\custom-pipe\fill-pipe.ts" />
+    <None Remove="ClientApp\app\components\custom-pipe\filter-pipe.ts" />
+    <None Remove="ClientApp\app\components\footer\footer.component.ts" />
+    <None Remove="ClientApp\app\model\product.ts" />
+    <None Remove="ClientApp\app\service\product.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\app\components\animation\" />
     <Folder Include="Server\Services\Commons\" />
     <Folder Include="Server\Services\Contracts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\fill-pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\filter-pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\footer\footer.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\product.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\product.service.ts" />
   </ItemGroup>
 
   <ItemGroup>

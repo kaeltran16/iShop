@@ -1,0 +1,8 @@
+tbody tr td  {
+    padding: 25px;
+}
+tbody tr  :nth-child(2) {
+    padding: 10px;
+}
+ 
+

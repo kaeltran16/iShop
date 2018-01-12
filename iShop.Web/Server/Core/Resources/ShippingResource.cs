@@ -10,15 +10,16 @@ namespace iShop.Web.Server.Core.Resources
     public class ShippingResource
     {
         public Guid Id { get; set; }
-        public OrderResource Order { get; set; }
-        [Required]
         public DateTime ShippingDate { get; set; }
         public ShippingState ShippingState { get; set; }
-        [Required]
+        
         public double Charge { get; set; }
-        [Required]
         public string Street { get; set; }
-        [Required]
         public string City { get; set; }
+
+        public ShippingResource()
+        {
+            ShippingState = ShippingState.None;
+        }
     }
 }

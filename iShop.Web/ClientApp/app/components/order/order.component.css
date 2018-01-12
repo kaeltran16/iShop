@@ -1,0 +1,16 @@
+tbody tr td  {
+    padding: 15px;
+    text-align: center;
+}
+
+
+
+tfoot tr td {
+    padding: 20px;
+    text-align: center;
+    font-weight: bold
+}
+
+
+ 
+

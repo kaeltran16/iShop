@@ -12,7 +12,6 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
 {
     public class ShoppingCartRepository : DataRepositoryBase<ShoppingCart>, IShoppingCartRepository
     {
-        private readonly ApplicationDbContext _context;
 
         public ShoppingCartRepository(ApplicationDbContext context)
             : base(context)
@@ -35,7 +34,10 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
             if (!includeRelated)
                 return await _context.ShoppingCarts.FindAsync(id);
 
-            return await _context.ShoppingCarts.Include(c => c.Carts).ThenInclude(p => p.Product).Include(u => u.User)
+            return await _context.ShoppingCarts
+                .Include(c => c.Carts)
+                .ThenInclude(p => p.Product)
+                .Include(u => u.User)
                 .SingleOrDefaultAsync(v => v.Id == id);
         }
         public async Task<IEnumerable<ShoppingCart>> GetShoppingCarts()
