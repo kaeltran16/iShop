@@ -6,9 +6,7 @@ namespace iShop.Web.Server.Mapping
 {
     public class InventoryProfile:BaseProfile
     {
-        public InventoryProfile(string profileName) : base(profileName)
-        {
-        }
+    
 
         protected override void CreateMap()
         {

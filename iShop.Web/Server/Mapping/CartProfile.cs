@@ -6,10 +6,6 @@ namespace iShop.Web.Server.Mapping
 {
     public class CartProfile : BaseProfile
     {
-        public CartProfile(string profileName) : base(profileName)
-        {
-        }
-
         protected override void CreateMap()
         {
             CreateMap<Cart, CartResource>();

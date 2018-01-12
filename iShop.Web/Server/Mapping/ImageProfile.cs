@@ -6,9 +6,7 @@ namespace iShop.Web.Server.Mapping
 {
     public class ImageProfile:BaseProfile
     {
-        public ImageProfile(string profileName) : base(profileName)
-        {
-        }
+     
 
         protected override void CreateMap()
         {

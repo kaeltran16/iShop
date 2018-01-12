@@ -10,9 +10,7 @@ namespace iShop.Web.Server.Mapping
 {
     public class CategoryProfile: BaseProfile
     {
-        public CategoryProfile(string profileName) : base(profileName)
-        {
-        }
+  
 
         protected override void CreateMap()
         {

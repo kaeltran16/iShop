@@ -10,10 +10,6 @@ namespace iShop.Web.Server.Mapping
 {
     public class InvoiceProfile:BaseProfile
     {
-        public InvoiceProfile(string profileName) : base(profileName)
-        {
-        }
-
         protected override void CreateMap()
         {
             CreateMap<Invoice, InvoiceResource>();

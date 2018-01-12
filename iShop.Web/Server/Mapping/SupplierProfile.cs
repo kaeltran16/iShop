@@ -6,9 +6,7 @@ namespace iShop.Web.Server.Mapping
 {
     public class SupplierProfile : BaseProfile
     {
-        public SupplierProfile(string profileName) : base(profileName)
-        {
-        }
+       
 
         protected override void CreateMap()
         {

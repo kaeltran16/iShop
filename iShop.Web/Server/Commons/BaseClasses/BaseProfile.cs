@@ -2,15 +2,15 @@
 
 namespace iShop.Web.Server.Commons.BaseClasses
 {
-    public abstract class BaseProfile: Profile
+    public abstract class BaseProfile : Profile
     {
-        protected BaseProfile(string profileName)
+        protected BaseProfile()
         {
-            ProfileName = profileName;
             CreateMap();
         }
 
-        public override string ProfileName { get; }
+
+
 
         protected abstract void CreateMap();
     }

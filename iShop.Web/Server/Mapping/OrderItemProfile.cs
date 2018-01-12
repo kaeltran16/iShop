@@ -6,10 +6,6 @@ namespace iShop.Web.Server.Mapping
 {
     public class OrderItemProfile:BaseProfile
     {
-        public OrderItemProfile(string profileName) : base(profileName)
-        {
-        }
-
         protected override void CreateMap()
         {
             CreateMap<OrderedItem, OrderedItemResource>();

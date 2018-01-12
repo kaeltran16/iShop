@@ -61,7 +61,7 @@ namespace iShop.Web.Server.APIs
 
 
         // POST
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryResource categoryResources)
         {
@@ -88,7 +88,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // DELETE
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

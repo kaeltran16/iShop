@@ -8,9 +8,7 @@ namespace iShop.Web.Server.Mapping
 {
     public class OrderProfile : BaseProfile
     {
-        public OrderProfile(string profileName) : base(profileName)
-        {
-        }
+ 
 
         protected override void CreateMap()
         {
