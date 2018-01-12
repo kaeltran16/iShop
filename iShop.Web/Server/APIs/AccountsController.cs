@@ -42,7 +42,8 @@ namespace iShop.Web.Server.APIs
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 City = model.City,
-                Street = model.Street
+                Ward = model.Ward,
+                District = model.District
             };
 
             var result = await _userManager.CreateAsync(currentUser, model.Password);

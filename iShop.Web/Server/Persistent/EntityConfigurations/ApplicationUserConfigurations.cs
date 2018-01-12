@@ -26,12 +26,6 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
 
             builder.Property(f => f.LastName)
                 .IsRequired();
-
-            builder.Property(f => f.Street)
-                .IsRequired();
-
-            builder.Property(f => f.City)
-                .IsRequired();
         }
     }
 }

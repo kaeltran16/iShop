@@ -14,8 +14,10 @@ namespace iShop.Web.Server.Core.Resources
         public ShippingState ShippingState { get; set; }
         
         public double Charge { get; set; }
-        public string Street { get; set; }
+        public string Ward { get; set; }
+        public string Disctrict { get; set; }
         public string City { get; set; }
+
 
         public ShippingResource()
         {

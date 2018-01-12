@@ -59,7 +59,8 @@ namespace iShop.Web.Server.Mapping
                    City = or.Shipping.City,
                    ShippingDate = or.Shipping.ShippingDate,
                    ShippingState = or.Shipping.ShippingState,
-                   Street = or.Shipping.Street
+                   Ward = or.Shipping.Ward,
+                   Disctrict = or.Shipping.Disctrict
                };
                o.Shipping = shipping;
            })
