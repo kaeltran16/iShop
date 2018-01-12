@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using iShop.Web.Helpers;
+using iShop.Web.Server.Commons.Helpers;
 using Microsoft.Extensions.Logging;
 
-namespace iShop.Web.Server.Extensions
+namespace iShop.Web.Server.Commons.Extensions
 {
     public static class LoggerExtension
     {

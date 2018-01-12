@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace iShop.Web.Server.Core.Models.Helpers
+namespace iShop.Web.Server.Commons.Helpers
 {
     public class ImageSettings
     {

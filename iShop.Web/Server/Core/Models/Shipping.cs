@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using iShop.Web.Server.Core.Models.Models.Enums;
+using iShop.Web.Server.Commons.BaseClasses;
+using iShop.Web.Server.Commons.Helpers;
 
 namespace iShop.Web.Server.Core.Models
 {
-    public class Shipping
+    public class Shipping : EntityBase
     {
-        public Guid Id { get; set; }
         public Guid OrderId { get; set; }
         public Order Order { get; set; }
         public DateTime ShippingDate { get; set; }
@@ -19,8 +16,6 @@ namespace iShop.Web.Server.Core.Models
 
         public Shipping()
         {
-            if (Id == Guid.Empty)
-                Id = Guid.NewGuid();
             ShippingState = ShippingState.None;
         }
     }

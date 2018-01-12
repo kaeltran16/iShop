@@ -11,12 +11,15 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
             builder
                 .Property(s => s.OrderId)
                 .IsRequired();
+
             builder
                 .Property(s => s.Charge)
                 .IsRequired();
+
             builder
                 .Property(s => s.City)
                 .IsRequired();
+
             builder
                 .Property(s => s.Street)
                 .IsRequired();
@@ -26,10 +29,6 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
                 .WithOne(o => o.Shipping)
                 .HasForeignKey<Shipping>(s => s.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .Property(s => s.OrderId)
-                .IsRequired();
 
         }
     }
