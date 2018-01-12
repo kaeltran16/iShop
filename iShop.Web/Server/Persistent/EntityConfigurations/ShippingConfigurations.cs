@@ -21,7 +21,10 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
                 .IsRequired();
 
             builder
-                .Property(s => s.Street)
+                .Property(s => s.Disctrict)
+                .IsRequired();
+            builder
+                .Property(s => s.Ward)
                 .IsRequired();
 
             builder
