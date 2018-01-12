@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using iShop.Web.Helpers;
+using iShop.Web.Server.Commons.Extensions;
+using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
-using iShop.Web.Server.Extensions;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +28,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
-        [HttpGet("{id}", Name = GetName.ShoppingCart)]
+        [HttpGet("{id}", Name = ItemName.ShoppingCart)]
         public async Task<IActionResult> Get(string id)
         {
             bool isValid = Guid.TryParse(id, out var shoppingCartId);
@@ -96,7 +96,7 @@ namespace iShop.Web.Server.APIs
 
             _logger.LogMessage(LoggingEvents.Created, ItemName.Product, shoppingCart.Id);
 
-            return CreatedAtRoute(GetName.ShoppingCart, new { id = shoppingCart.Id }, result);
+            return CreatedAtRoute(ItemName.ShoppingCart, new { id = shoppingCart.Id }, result);
         }
 
         // PUT

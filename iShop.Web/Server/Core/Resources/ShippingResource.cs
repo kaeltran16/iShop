@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using iShop.Web.Server.Core.Models.Models.Enums;
+using iShop.Web.Server.Commons.Helpers;
 
 namespace iShop.Web.Server.Core.Resources
 {

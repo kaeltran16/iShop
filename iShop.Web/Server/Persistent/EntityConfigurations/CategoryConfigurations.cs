@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace iShop.Web.Server.Persistent.EntityConfigurations
 {
-    public class ShoppingCartConfigurations: IEntityTypeConfiguration<ShoppingCart>
+    public class CategoryConfigurations:IEntityTypeConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<ShoppingCart> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
-            
+            builder.Property(c => c.Name)
+                .IsRequired();
         }
     }
 }

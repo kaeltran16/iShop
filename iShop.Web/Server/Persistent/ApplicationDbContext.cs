@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using iShop.Web.Server.Commons.Extensions;
 using iShop.Web.Server.Core.Models;
-using iShop.Web.Server.Extensions;
 using iShop.Web.Server.Persistent.EntityConfigurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
