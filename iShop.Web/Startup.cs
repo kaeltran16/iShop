@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using iShop.Web.Server.Persistent.Repositories.Commons;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
-//using iShop.Web.Server.Persistent.UnitOfWork.Commons;
+using iShop.Web.Server.Persistent.UnitOfWork.Commons;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -32,12 +32,12 @@ namespace iShop.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-//            services.AddScoped<ICategoryRepository, CategoryRepository>();
-//            services.AddScoped<IProductRepository, ProductRepository>();
-//            services.AddScoped<IOrderRepository, OrderRepository>();
-//            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-//            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-//            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -117,6 +117,7 @@ namespace iShop.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
             loggerFactory.AddConsole();
             loggerFactory.AddDebug(LogLevel.Information);
             if (env.IsDevelopment())
@@ -140,11 +141,12 @@ namespace iShop.Web
                 });
             }
 
+
+
             app.UseAuthentication();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
 
             app.UseMvc(routes =>
             {
@@ -152,11 +154,14 @@ namespace iShop.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
+        
+
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-      
+
+
 
         }
     }

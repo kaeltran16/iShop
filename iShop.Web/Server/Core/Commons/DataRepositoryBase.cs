@@ -10,7 +10,7 @@ namespace iShop.Web.Server.Core.Commons
     public class DataRepositoryBase<T> : IDataRepository<T>
         where T : class, new()
     {
-        private readonly ApplicationDbContext _context;
+        protected ApplicationDbContext _context;
 
         protected DataRepositoryBase(ApplicationDbContext context)
         {

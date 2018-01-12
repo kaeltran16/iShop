@@ -1,163 +1,184 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using AutoMapper;
-//using iShop.Web.Helpers;
-//using iShop.Web.Server.Core.Models;
-//using iShop.Web.Server.Core.Resources;
-//using iShop.Web.Server.Persistent.Repositories.Contracts;
-//using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.Logging;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using iShop.Web.Helpers;
+using iShop.Web.Server.Core.Models;
+using iShop.Web.Server.Core.Resources;
+using iShop.Web.Server.Extensions;
+using iShop.Web.Server.Persistent.Repositories.Contracts;
+using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-//namespace iShop.Web.Server.APIs
-//{
-//    [Route("/api/[controller]/user/")]
-//    public class OrdersController : Microsoft.AspNetCore.Mvc.Controller
-//    {
-//        private readonly IMapper _mapper;
-//        private readonly IUnitOfWork _unitOfWork;
-//        private readonly ILogger<OrdersController> _logger;
+namespace iShop.Web.Server.APIs
+{
+    [Route("/api/[controller]")]
+    public class OrdersController : BaseController
+    {
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<OrdersController> _logger;
 
-//        public OrdersController(IMapper mapper, IOrderRepository repository, IUnitOfWork unitOfWork,
-//            ILogger<OrdersController> logger)
-//        {
-//            _unitOfWork = unitOfWork;
-//            _logger = logger;
-//            _mapper = mapper;
-//        }
+        public OrdersController(IMapper mapper, IOrderRepository repository, IUnitOfWork unitOfWork,
+            ILogger<OrdersController> logger)
+        {
+            _unitOfWork = unitOfWork;
+            _logger = logger;
+            _mapper = mapper;
+        }
 
-//        // GET
-//        [HttpGet]
-//        public async Task<IActionResult> Get()
-//        {
-//            var orders = await _unitOfWork.OrderRepository.GetOrders();
+        // GET
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var orders = await _unitOfWork.OrderRepository.GetOrders();
 
-//            var orderResources =
-//                _mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(orders);
+            var orderResources =
+                _mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(orders);
 
-//            return Ok(orderResources);
-//        }
+            return Ok(orderResources);
+        }
 
-//        // GET
-//        [HttpGet("{userId}")]
-//        public async Task<IActionResult> GetUserOrders(Guid userId)
-//        {
-//            var order = await _unitOfWork.OrderRepository.GetUserOrders(userId);
+        // GET
+        [Authorize]
+        [HttpGet("user/{id}")]
+        public async Task<IActionResult> GetUserOrders(string id)
+        {
+            bool isValid = Guid.TryParse(id, out var userId);
 
-//            var orderResources =
-//                _mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(order);
+            if (!isValid)
+                return InvalidId(id);
 
-//            return Ok(orderResources);
-//        }
+            if (userId != User.GetUserId())
+                return UnAuthorized();
 
-//        // GET
-//        [HttpGet("{userId}/{id}", Name = GetName.Order)]
-//        public async Task<IActionResult> Get(Guid userId, Guid id)
-//        {
-//            var order = await _unitOfWork.OrderRepository.GetOrder(userId, id);
+            var order = await _unitOfWork.OrderRepository.GetUserOrders(userId);
 
-//            if (order == null)
-//                return NotFound(
-//                    new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+            var orderResources =
+                _mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(order);
 
-//            var orderResource = _mapper.Map<Order, OrderResource>(order);
+            return Ok(orderResources);
+        }
 
-//            return Ok(orderResource);
-//        }
+        // GET
+        [Authorize]
+        [HttpGet("{id}", Name = GetName.Order)]
+        public async Task<IActionResult> Get(string id)
+        {
+            bool isValid = Guid.TryParse(id, out var orderId);
+            if (!isValid)
+                return InvalidId(id);
+            var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
+
+            if (order == null)
+                return NotFound(ItemName.Order, orderId);
+
+            var userId = User.GetUserId();
+
+            if (order.UserId != userId)
+                return UnAuthorized();
+
+            var orderResource = _mapper.Map<Order, OrderResource>(order);
+
+            return Ok(orderResource);
+        }
 
 
-//        // POST
-//        [HttpPost]
-//        public async Task<IActionResult> Create([FromBody] SavedOrderResource savedOrderResources)
-//        {
-//            if (!ModelState.IsValid)
-//                return BadRequest(ModelState);
+        // POST
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] SavedOrderResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-//            var order = _mapper.Map<SavedOrderResource, Order>(savedOrderResources);
+            var order = _mapper.Map<SavedOrderResource, Order>(resource);
 
-//            await _unitOfWork.OrderRepository.AddAsync(order);
+            await _unitOfWork.OrderRepository.AddAsync(order);
 
-//            if (!await _unitOfWork.CompleteAsync())
-//            {
-//                _logger.LogError(LoggingEvents.Fail,
-//                    "order with userId " + savedOrderResources.UserId + ", shoppingCartId " +
-//                    savedOrderResources.ShoppingCartId + " failed to saved");
+            if (!await _unitOfWork.CompleteAsync())
+            {
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Order, order.Id);
 
-//                return StatusCode(500,
-//                    new ErrorMessage
-//                    {
-//                        Code = 500,
-//                        Message = "order by userId " + savedOrderResources.UserId + " failed to saved"
-//                    }
-//                        .ToString());
-//            }
+                return FailedToSave(ItemName.Order, order.Id);
+            }
 
-//            order = await _unitOfWork.OrderRepository.GetOrder(order.UserId, order.ShoppingCartId);
-//            var result = (_mapper.Map<Order, OrderResource>(order));
+            order = await _unitOfWork.OrderRepository.GetOrder(order.Id, false);
+            var result = (_mapper.Map<Order, OrderResource>(order));
 
-//            _logger.LogInformation(LoggingEvents.Created, "order by userId " + order.UserId + " is created");
+            _logger.LogMessage(LoggingEvents.Created, ItemName.Order, order.Id);
 
-//            return CreatedAtRoute(GetName.Order,
-//                new { userId = savedOrderResources.UserId, id = savedOrderResources.ShoppingCartId }, result);
-//        }
+            return CreatedAtRoute(GetName.Order,
+                new { id = order.Id }, result);
+        }
 
-//        // /api/Order/id update a order
-//        [HttpPut("{userId}/{id}")]
-//        public async Task<IActionResult> UpdateOrder(Guid userId, Guid shoppingCartId, [FromBody]SavedOrderResource savedOrderResource)
-//        {
-//            if (!ModelState.IsValid)
-//                return BadRequest(ModelState);
+        //PUT
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody]SavedOrderResource savedOrderResource)
+        {
+            bool isValid = Guid.TryParse(id, out var orderId);
+            if (!isValid)
+                return InvalidId(id);
 
-//            var order = await _unitOfWork.OrderRepository.GetOrder(userId, shoppingCartId);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-//            if (order == null)
-//                return NotFound(
-//                    new ErrorMessage { Code = 404, Message = "item with id " + shoppingCartId + " not existed" }.ToString());
+            var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
-//            _mapper.Map<SavedOrderResource, Order>(savedOrderResource, order);
+            if (order == null)
+                return NotFound(ItemName.Order, orderId);
 
-//            if (!await _unitOfWork.CompleteAsync())
-//            {
-//                _logger.LogError(LoggingEvents.Fail, "item with id " + shoppingCartId + " failed to saved");
-//                return StatusCode(500,
-//                    new ErrorMessage { Code = 500, Message = "item with id " + shoppingCartId + " failed to saved" }
-//                        .ToString());
-//            }
+            if (order.UserId != User.GetUserId())
+                return UnAuthorized();
 
-//            order = await _unitOfWork.OrderRepository.GetOrder(order.UserId, order.ShoppingCartId);
+            _mapper.Map<SavedOrderResource, Order>(savedOrderResource, order);
 
-//            var result = _mapper.Map<Order, SavedOrderResource>(order);
+            if (!await _unitOfWork.CompleteAsync())
+            {
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Order, order.Id);
 
-//            _logger.LogInformation(LoggingEvents.Updated, "item with id " + shoppingCartId + " updated");
+                return FailedToSave(ItemName.Order, order.Id);
+            }
 
-//            return Ok(result);
-//        }
+            order = await _unitOfWork.OrderRepository.GetOrder(order.Id);
 
-//        // DELETE
-//        [HttpDelete("{userId}/{id}")]
-//        public async Task<IActionResult> DeleteOrder(Guid userId, Guid shoppingCartId)
-//        {
-//            var order = await _unitOfWork.OrderRepository.GetOrder(userId, shoppingCartId, false);
+            var result = _mapper.Map<Order, SavedOrderResource>(order);
 
-//            if (order == null)
-//                return NotFound(
-//                    new ErrorMessage { Code = 404, Message = "item with id " + shoppingCartId + " not existed" }.ToString());
+            _logger.LogMessage(LoggingEvents.Updated, ItemName.Order, order.Id);
 
-//            _unitOfWork.OrderRepository.Remove(order);
+            return Ok(result);
+        }
 
-//            if (!await _unitOfWork.CompleteAsync())
-//            {
-//                _logger.LogError(LoggingEvents.Fail, "item with id " + shoppingCartId + " failed to saved");
-//                return StatusCode(500,
-//                    new ErrorMessage { Code = 500, Message = "item with id " + shoppingCartId + " failed to saved" }
-//                        .ToString());
-//            }
+        // DELETE
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrder(string id)
+        {
+            bool isValid = Guid.TryParse(id, out var orderId);
+            if (!isValid)
+                return InvalidId(id);
 
-//            _logger.LogInformation(LoggingEvents.Deleted, "item with id " + shoppingCartId + " is deleted");
+            var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
-//            return Ok(shoppingCartId);
-//        }
-//    }
-//}
+            if (order == null)
+                return NotFound(ItemName.Order, orderId);
+
+            _unitOfWork.OrderRepository.Remove(order);
+
+            if (!await _unitOfWork.CompleteAsync())
+            {
+                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Order, order.Id);
+
+                return FailedToSave(ItemName.Order, order.Id);
+            }
+
+            _logger.LogMessage(LoggingEvents.Deleted, ItemName.Order, order.Id);
+
+            return NoContent();
+        }
+    }
+}

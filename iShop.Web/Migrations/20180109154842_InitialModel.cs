@@ -88,7 +88,7 @@ namespace iShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Supplier",
+                name: "Suppliers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -97,7 +97,7 @@ namespace iShop.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Supplier", x => x.Id);
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,7 +173,7 @@ namespace iShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductCategory",
+                name: "ProductCategories",
                 columns: table => new
                 {
                     CategoryId = table.Column<Guid>(nullable: false),
@@ -181,15 +181,15 @@ namespace iShop.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCategory", x => new { x.CategoryId, x.ProductId });
+                    table.PrimaryKey("PK_ProductCategories", x => new { x.CategoryId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_ProductCategory_Categories_CategoryId",
+                        name: "FK_ProductCategories_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProductCategory_Products_ProductId",
+                        name: "FK_ProductCategories_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -218,7 +218,7 @@ namespace iShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inventory",
+                name: "Inventories",
                 columns: table => new
                 {
                     ProductId = table.Column<Guid>(nullable: false),
@@ -227,17 +227,17 @@ namespace iShop.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Inventory", x => new { x.ProductId, x.SupplierId });
+                    table.PrimaryKey("PK_Inventories", x => new { x.ProductId, x.SupplierId });
                     table.ForeignKey(
-                        name: "FK_Inventory_Products_ProductId",
+                        name: "FK_Inventories_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Inventory_Supplier_SupplierId",
+                        name: "FK_Inventories_Suppliers_SupplierId",
                         column: x => x.SupplierId,
-                        principalTable: "Supplier",
+                        principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -401,7 +401,7 @@ namespace iShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invoice",
+                name: "Invoices",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -410,9 +410,9 @@ namespace iShop.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invoice", x => x.Id);
+                    table.PrimaryKey("PK_Invoices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Invoice_Orders_OrderId",
+                        name: "FK_Invoices_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -420,7 +420,7 @@ namespace iShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderedItem",
+                name: "OrderedItems",
                 columns: table => new
                 {
                     ProductId = table.Column<Guid>(nullable: false),
@@ -429,15 +429,15 @@ namespace iShop.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderedItem", x => new { x.ProductId, x.OrderId });
+                    table.PrimaryKey("PK_OrderedItems", x => new { x.ProductId, x.OrderId });
                     table.ForeignKey(
-                        name: "FK_OrderedItem_Orders_OrderId",
+                        name: "FK_OrderedItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderedItem_Products_ProductId",
+                        name: "FK_OrderedItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -445,7 +445,7 @@ namespace iShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shipping",
+                name: "Shippings",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -458,9 +458,9 @@ namespace iShop.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shipping", x => x.Id);
+                    table.PrimaryKey("PK_Shippings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shipping_Orders_OrderId",
+                        name: "FK_Shippings_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -508,13 +508,13 @@ namespace iShop.Web.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventory_SupplierId",
-                table: "Inventory",
+                name: "IX_Inventories_SupplierId",
+                table: "Inventories",
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoice_OrderId",
-                table: "Invoice",
+                name: "IX_Invoices_OrderId",
+                table: "Invoices",
                 column: "OrderId",
                 unique: true);
 
@@ -547,8 +547,8 @@ namespace iShop.Web.Migrations
                 filter: "[ReferenceId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderedItem_OrderId",
-                table: "OrderedItem",
+                name: "IX_OrderedItems_OrderId",
+                table: "OrderedItems",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
@@ -557,8 +557,8 @@ namespace iShop.Web.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCategory_ProductId",
-                table: "ProductCategory",
+                name: "IX_ProductCategories_ProductId",
+                table: "ProductCategories",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -569,8 +569,8 @@ namespace iShop.Web.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shipping_OrderId",
-                table: "Shipping",
+                name: "IX_Shippings_OrderId",
+                table: "Shippings",
                 column: "OrderId",
                 unique: true);
 
@@ -622,10 +622,10 @@ namespace iShop.Web.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "Inventory");
+                name: "Inventories");
 
             migrationBuilder.DropTable(
-                name: "Invoice");
+                name: "Invoices");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictScopes");
@@ -634,13 +634,13 @@ namespace iShop.Web.Migrations
                 name: "OpenIddictTokens");
 
             migrationBuilder.DropTable(
-                name: "OrderedItem");
+                name: "OrderedItems");
 
             migrationBuilder.DropTable(
-                name: "ProductCategory");
+                name: "ProductCategories");
 
             migrationBuilder.DropTable(
-                name: "Shipping");
+                name: "Shippings");
 
             migrationBuilder.DropTable(
                 name: "UserClaim");
@@ -655,7 +655,7 @@ namespace iShop.Web.Migrations
                 name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
-                name: "Supplier");
+                name: "Suppliers");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictAuthorizations");

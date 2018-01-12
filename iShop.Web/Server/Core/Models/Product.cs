@@ -11,7 +11,8 @@ namespace iShop.Web.Server.Core.Models
     public class Product
     {
         public Guid Id { get; set; }
-        public ICollection<Inventory> Inventories { get; set; }
+        public Guid InventoryId { get; set; }
+        public Inventory Inventory { get; set; }
         public ICollection<ProductCategory> ProductCategories { get; set; }
         public ICollection<Cart> Carts { get; set; }
         public Collection<OrderedItem> OrderedItems { get; set; }
@@ -31,7 +32,6 @@ namespace iShop.Web.Server.Core.Models
             ProductCategories = new Collection<ProductCategory>();
             Carts = new Collection<Cart>();
             OrderedItems = new Collection<OrderedItem>();
-            Inventories = new Collection<Inventory>();
         }
     }
 }

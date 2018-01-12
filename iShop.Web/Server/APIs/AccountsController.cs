@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using iShop.Web.Helpers;
 using iShop.Web.Server.Core.Models;
+using iShop.Web.Server.Core.Resources;
 using iShop.Web.Server.Core.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -27,28 +28,9 @@ namespace iShop.Web.Server.APIs
             _logger = logger;
         }
 
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody]LoginViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation(LoggingEvents.Success, model.Email + " signs in");
-                return Ok(model.Email);
-            }
-         
-            _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to loggin");
-            return BadRequest(model.Email);
-        }
-
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody]RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register([FromBody]RegisterResource model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -57,8 +39,10 @@ namespace iShop.Web.Server.APIs
             {
                 UserName = model.Email,
                 Email = model.Email,
-                FirstName = model.Firstname,
-                LastName = model.Lastname
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                City = model.City,
+                Street = model.Street
             };
 
             var result = await _userManager.CreateAsync(currentUser, model.Password);
@@ -69,8 +53,9 @@ namespace iShop.Web.Server.APIs
                 //if (roleAddResult.Succeeded)
                 //{
                     _logger.LogInformation(LoggingEvents.Success, model.Email + " created");
-                    // NOTE:
-                    // call the email services for confirm the account or do whatever you wanna do here
+                return Ok(model.Email);
+                // NOTE:
+                // call the email services for confirm the account or do whatever you wanna do here
                 //}
             }
             _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to create");
