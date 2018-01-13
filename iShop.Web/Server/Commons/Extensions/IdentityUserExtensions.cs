@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace iShop.Web.Server.Extensions
+namespace iShop.Web.Server.Commons.Extensions
 {
     public static class IdentityUserExtensions
     {

@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using iShop.Web.Server.Commons.BaseClasses;
 
 namespace iShop.Web.Server.Core.Models
 {
-    public class Invoice
+    public class Invoice : EntityBase
     {
-        public Guid Id { get; set; }
         public DateTime InvoiceDate { get; set; }
         public Guid OrderId { get; set; }
         public Order Order { get; set; }
         public Invoice()
         {
-            if (Id == Guid.Empty)
-                Id = Guid.NewGuid();
             InvoiceDate = DateTime.Now;
         }
     }
