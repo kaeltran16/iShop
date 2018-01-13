@@ -10,13 +10,18 @@ namespace iShop.Web.Server.Core.Resources
     {
         public Guid Id { get; set; }
         [Required]
+        [StringLength(100)]
         public string FirstName { get; set; }
         [Required]
+        [StringLength(100)]
         public string LastName { get; set; }
+        [StringLength(50)]
         public string Ward { get; set; }
-      
-        public string District { get; set; }
-        
+        [StringLength(50)]
+        public string District { get; set; }   
+        [StringLength(50)]
         public string City { get; set; }
+        [StringLength(50)]
+        public string PhoneNumber { get; set; }
     }
 }

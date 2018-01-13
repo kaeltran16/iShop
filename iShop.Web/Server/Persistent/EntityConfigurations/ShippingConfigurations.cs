@@ -26,6 +26,9 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
             builder
                 .Property(s => s.Ward)
                 .IsRequired();
+            builder
+                .Property(s => s.PhoneNumber)
+                .IsRequired();
 
             builder
                 .HasOne(s => s.Order)

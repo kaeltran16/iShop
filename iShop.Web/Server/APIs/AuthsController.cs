@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Primitives;
 using AspNet.Security.OpenIdConnect.Server;
+using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Core.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -21,87 +22,15 @@ namespace iShop.Web.Server.APIs
         private readonly IOptions<IdentityOptions> _identityOptions;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly JwtTokenSettings _tokenSettings;
 
         public AuthsController(IOptions<IdentityOptions> identityOptions, SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, JwtTokenSettings tokenSettings)
         {
             _identityOptions = identityOptions;
             _signInManager = signInManager;
             _userManager = userManager;
-        }
-
-        [Authorize]
-        [HttpGet("~/connect/authorize")]
-        public async Task<IActionResult> Authorize(OpenIdConnectRequest request)
-        {
-
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-
-            if (info == null)
-            {
-                // If an identity provider was explicitly specified, redirect
-                // the user agent to the AccountController.ExternalLogin action.
-                var provider = (string) request["provider"];
-
-                if (!string.IsNullOrEmpty(provider))
-                {
-                    // Request a redirect to the external login provider.
-                    var returnUrl = Request.PathBase + Request.Path + Request.QueryString;
-                    var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, returnUrl);
-                    return Challenge(properties, provider);
-                }
-
-                return NotFound();
-            }
-
-            // Sign in the user with this external login provider if the user already has a login.
-            var result =
-                await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey,
-                    isPersistent: false);
-
-            if (result.Succeeded)
-            {
-                // Retrieve the profile of the logged in user.
-                var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                var ticket = await CreateTicketAsync(request, user);
-                // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
-                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
-            }
-
-            var email = (string) request["email"];
-            if (!string.IsNullOrEmpty(email))
-            {
-                var user = new ApplicationUser {UserName = email, Email = email};
-                var accountCreateResult = await _userManager.CreateAsync(user);
-                if (accountCreateResult.Succeeded)
-                {
-                    accountCreateResult = await _userManager.AddLoginAsync(user, info);
-                    if (accountCreateResult.Succeeded)
-                    {
-
-                        var ticket = await CreateTicketAsync(request, user);
-                        // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
-                        return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
-                    }
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            else
-            {
-                // External account doesn't have a local account so ask to create one
-                return NotFound();
-            }
-
-            return BadRequest();
+            _tokenSettings = tokenSettings;
         }
 
         private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, ApplicationUser user, AuthenticationProperties properties = null)
@@ -130,14 +59,11 @@ namespace iShop.Web.Server.APIs
             }
 
             ticket.SetResources("resource_server");
+        
 
-            // Note: by default, claims are NOT automatically included in the access and identity tokens.
-            // To allow OpenIddict to serialize them, you must attach them a destination, that specifies
-            // whether they should be included in access tokens, in identity tokens or in both.
 
             foreach (var claim in ticket.Principal.Claims)
             {
-                // Never include the security stamp in the access and identity tokens, as it's a secret value.
                 if (claim.Type == _identityOptions.Value.ClaimsIdentity.SecurityStampClaimType)
                 {
                     continue;
@@ -148,8 +74,7 @@ namespace iShop.Web.Server.APIs
                     OpenIdConnectConstants.Destinations.AccessToken
                 };
 
-                // Only add the iterated claim to the id_token if the corresponding scope was granted to the client application.
-                // The other claims will only be added to the access_token, which is encrypted when using the default format.
+             
                 if ((claim.Type == OpenIdConnectConstants.Claims.Name && ticket.HasScope(OpenIdConnectConstants.Scopes.Profile)) ||
                     (claim.Type == OpenIdConnectConstants.Claims.Email && ticket.HasScope(OpenIdConnectConstants.Scopes.Email)) ||
                     (claim.Type == OpenIdConnectConstants.Claims.Role && ticket.HasScope(OpenIddictConstants.Claims.Roles)))

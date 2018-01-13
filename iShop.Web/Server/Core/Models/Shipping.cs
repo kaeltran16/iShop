@@ -14,7 +14,7 @@ namespace iShop.Web.Server.Core.Models
         public string Ward { get; set; }
         public string Disctrict { get; set; }
         public string City { get; set; }
-
+        public string PhoneNumber { get; set; }
         public Shipping()
         {
             ShippingState = ShippingState.None;
