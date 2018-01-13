@@ -10,10 +10,16 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 
 
+//service 
+import { ProductService } from "./service/product.service";
+import { UserService } from "./service/user.service";
+
+
+
+
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
-import { ProductService } from "./service/product.service";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FilterPipe } from './components/custom-pipe/filter-pipe';
 import { FillPipe } from './components/custom-pipe/fill-pipe';
@@ -69,7 +75,7 @@ import { OrderComponent } from './components/order/order.component';
     ],
     providers: [
         ProductService,
-     
+        UserService
     ]
 })
 export class AppModuleShared {
