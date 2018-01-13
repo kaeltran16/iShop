@@ -79,6 +79,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\app\components\animation\" />
+    <Folder Include="Server\Extensions\" />
     <Folder Include="Server\Services\Commons\" />
     <Folder Include="Server\Services\Contracts\" />
   </ItemGroup>

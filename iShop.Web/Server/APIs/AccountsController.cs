@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using iShop.Web.Helpers;
+using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
 using iShop.Web.Server.Core.ViewModels;
@@ -42,7 +42,8 @@ namespace iShop.Web.Server.APIs
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 City = model.City,
-                Street = model.Street
+                Ward = model.Ward,
+                District = model.District
             };
 
             var result = await _userManager.CreateAsync(currentUser, model.Password);
