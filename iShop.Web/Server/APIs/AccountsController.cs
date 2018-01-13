@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
@@ -17,15 +18,17 @@ namespace iShop.Web.Server.APIs
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountsController> _logger;
+        private readonly IMapper _mapper;
 
         public AccountsController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<AccountsController> logger)
+            ILogger<AccountsController> logger, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -34,15 +37,11 @@ namespace iShop.Web.Server.APIs
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-           
-            var currentUser = new ApplicationUser
-            {
-                UserName = model.Email,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-            };
 
+            var currentUser = _mapper.Map<RegisterResource, ApplicationUser>(model);
+            currentUser.Email = model.Email;
+            currentUser.PhoneNumber = model.PhoneNumber;
+            currentUser.UserName = model.Email;
             var result = await _userManager.CreateAsync(currentUser, model.Password);
             if (result.Succeeded)
             {

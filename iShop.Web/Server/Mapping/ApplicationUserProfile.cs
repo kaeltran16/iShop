@@ -11,6 +11,8 @@ namespace iShop.Web.Server.Mapping
         {
             CreateMap<ApplicationUser, ApplicationUserResource>();
             CreateMap<ApplicationUserResource, ApplicationUser>();
+            CreateMap<RegisterResource, ApplicationUser>();
+            CreateMap<ApplicationUser, RegisterResource>();
         }
     }
 }
