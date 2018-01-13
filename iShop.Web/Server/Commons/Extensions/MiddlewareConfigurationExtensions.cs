@@ -73,15 +73,20 @@ namespace iShop.Web.Server.Commons.Extensions
             // of the legacy WS-Federation claims it uses by default (ClaimTypes),
             services.Configure<IdentityOptions>(options =>
                 {
-                    options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
                     options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                    options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
                     options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
                 });
 
 
-            services.AddAuthentication(opt => opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(opt=>
+                {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(opt =>
                 {
+                    opt.RequireHttpsMetadata = false;
                     opt.Audience = tokenSettings.Audience;
                     opt.Authority = tokenSettings.Authority;
                     opt.TokenValidationParameters = new TokenValidationParameters()

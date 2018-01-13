@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using iShop.Web.Server.Commons.Extensions;
 using iShop.Web.Server.Commons.Helpers;
 using Microsoft.AspNetCore.DataProtection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace iShop.Web
 {
@@ -35,7 +37,9 @@ namespace iShop.Web
             services.AddCustomOpenIddict();
             services.AddAuthorization();
             services.AddAutoMapper();
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(opt =>
+                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
         }
 

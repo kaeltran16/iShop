@@ -21,5 +21,7 @@ namespace iShop.Web.Server.Core.Resources
         public string District { get; set; }   
         [StringLength(50)]
         public string City { get; set; }
+        [StringLength(50)]
+        public string PhoneNumber { get; set; }
     }
 }
