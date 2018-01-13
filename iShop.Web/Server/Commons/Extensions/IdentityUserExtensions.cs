@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace iShop.Web.Server.Commons.Extensions
@@ -11,7 +12,7 @@ namespace iShop.Web.Server.Commons.Extensions
             if (principal == null)
                 throw new ArgumentNullException(nameof(principal));
 
-            var id = principal.FindFirst("sub")?.Value;
+            var id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             return Guid.Parse(id);
         }
