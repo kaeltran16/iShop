@@ -67,8 +67,14 @@
     <None Remove="ClientApp\app\components\custom-pipe\fill-pipe.ts" />
     <None Remove="ClientApp\app\components\custom-pipe\filter-pipe.ts" />
     <None Remove="ClientApp\app\components\footer\footer.component.ts" />
+    <None Remove="ClientApp\app\model\category.ts" />
+    <None Remove="ClientApp\app\model\Image.ts" />
+    <None Remove="ClientApp\app\model\order.ts" />
     <None Remove="ClientApp\app\model\product.ts" />
+    <None Remove="ClientApp\app\model\shoppingCart.ts" />
+    <None Remove="ClientApp\app\model\user.ts" />
     <None Remove="ClientApp\app\service\product.service.ts" />
+    <None Remove="ClientApp\app\service\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -82,7 +88,13 @@
     <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\fill-pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\filter-pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\footer\footer.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\model\product.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\Product.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\Category.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\Order.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\ShoppingCart.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\Image.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\User.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\user.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\product.service.ts" />
   </ItemGroup>
 

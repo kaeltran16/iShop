@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using iShop.Web.Server.Core.Models;
 
 namespace iShop.Web.Server.Commons.BaseClasses
 {
@@ -9,9 +10,8 @@ namespace iShop.Web.Server.Commons.BaseClasses
             CreateMap();
         }
 
-
-
-
         protected abstract void CreateMap();
+
+       
     }
 }
