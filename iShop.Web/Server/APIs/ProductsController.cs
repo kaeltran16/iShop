@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using iShop.Web.Helpers;
+using iShop.Web.Server.Commons.Extensions;
+using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
-using iShop.Web.Server.Extensions;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +31,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
-        [HttpGet("{id}", Name = GetName.Product)]
+        [HttpGet("{id}", Name = ItemName.Product)]
         public async Task<IActionResult> Get(string id)
         {
             bool isValid = Guid.TryParse(id, out var productId);
@@ -82,7 +82,7 @@ namespace iShop.Web.Server.APIs
 
             _logger.LogMessage(LoggingEvents.Created, ItemName.Product, product.Id);
 
-            return CreatedAtRoute(GetName.Product, new { id = product.Id }, result);
+            return CreatedAtRoute(ItemName.Product, new { id = product.Id }, result);
         }
 
         // PUT

@@ -16,6 +16,12 @@ using iShop.Web.Server.Persistent.UnitOfWork.Commons;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using iShop.Web.Server.Commons.BaseClasses;
+using System.Linq;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace iShop.Web
 {
@@ -36,7 +42,8 @@ namespace iShop.Web
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IImagesRepository, ImageRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -46,6 +53,7 @@ namespace iShop.Web
                 // Use OpenIddict
                 options.UseOpenIddict<Guid>();
             });
+
             services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
                 {
                     opt.Password.RequiredLength = 8;
@@ -61,15 +69,36 @@ namespace iShop.Web
             // Configure Identity to use the same JWT claims as OpenIddict instead
             // of the legacy WS-Federation claims it uses by default (ClaimTypes),
             services.Configure<IdentityOptions>(options =>
-                {
-                    options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-                    options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
-                    options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
-                });
-
+            {
+                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+            });
            
+            
+            var audience = "resource_server";
+            var authority = "https://localhost:44386";
 
+            var secretKey = "mysupersecret_secretkey!123";
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
 
+            services.AddAuthentication(opt=>opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.Audience = audience;
+                    opt.Authority = authority;
+                    opt.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingKey,
+                        ValidateAudience = true,
+                        ValidAudience = audience,
+
+                        ValidateLifetime = true
+                    };
+                    
+                });
+             
             services.AddOpenIddict(options =>
             {
                 options.AddEntityFrameworkCoreStores<ApplicationDbContext>();
@@ -88,25 +117,33 @@ namespace iShop.Web
 
                 // Enable the password and the refresh token flows.
                 options.AllowPasswordFlow()
+                    .AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
                     // To enable external logins to authenticate
                     .AllowImplicitFlow();
+                options.RegisterScopes(OpenIdConnectConstants.Scopes.Profile);
+                options.DisableHttpsRequirement();
 
                     
                 options.SetAccessTokenLifetime(TimeSpan.FromMinutes(30));
                 options.SetIdentityTokenLifetime(TimeSpan.FromMinutes(30));
                 options.SetRefreshTokenLifetime(TimeSpan.FromMinutes(60));
-
+                options.AddSigningKey(signingKey);
                 options.UseJsonWebTokens();
                 options.AddEphemeralSigningKey();
             });
 
+         
+
+         
+
+           
             // Add the custome Identity for specify User and Role
            
 
             // Register the OAuth validation handler
-            services.AddAuthentication()
-                .AddOAuthValidation();
+            services.AddAuthorization();
+               
 
 
             services.AddAutoMapper();
@@ -144,7 +181,8 @@ namespace iShop.Web
 
 
             app.UseAuthentication();
-
+               
+                    
             app.UseDefaultFiles();
             app.UseStaticFiles();
 

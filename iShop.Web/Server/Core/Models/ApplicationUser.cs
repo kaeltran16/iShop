@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
 namespace iShop.Web.Server.Core.Models
@@ -13,10 +10,12 @@ namespace iShop.Web.Server.Core.Models
         public string FirstName { get; set; }      
         public string LastName { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string Street { get; set; }
+        public string Ward { get; set; }
+        public string District { get; set; }
         public string City { get; set; }
         public ICollection<ShoppingCart> ShoppingCarts { get; set; }
         public ICollection<Order> Orders { get; set; }
+
         public ApplicationUser()
         {
             CreatedDate = DateTime.Now;

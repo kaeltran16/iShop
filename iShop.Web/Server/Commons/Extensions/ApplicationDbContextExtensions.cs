@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Persistent.EntityConfigurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace iShop.Web.Server.Extensions
+namespace iShop.Web.Server.Commons.Extensions
 {
     public static class ApplicationDbContextExtensions
     {
         public static void ApplyEntityConfigurations(this ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ApplicationUserConfigurations());
+            modelBuilder.ApplyConfiguration(new CategoryConfigurations());
             modelBuilder.ApplyConfiguration(new CartConfigurations());
             modelBuilder.ApplyConfiguration(new InventoryConfigurations());
             modelBuilder.ApplyConfiguration(new InvoiceConfigurations());

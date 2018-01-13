@@ -13,7 +13,10 @@ namespace iShop.Web.Server.Core.Resources
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        public string Street { get; set; }
+        public string Ward { get; set; }
+      
+        public string District { get; set; }
+        
         public string City { get; set; }
     }
 }
