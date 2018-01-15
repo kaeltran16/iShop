@@ -1,27 +1,29 @@
 ﻿ export class User {
    
-   private password : string;
-   private firstName: string;
-   private lastName: string;
-   private email: string;
-   private street: string;
-    private city:string;
-    constructor(firstName: string, lastName: string, password: string,email: string, street: string, city: string) {
+   public  password : string;
+     public firstName: string;
+     public lastName: string;
+     public email: string;
+     public ward: string;
+     public district:string;
+    constructor(firstName: string, lastName: string, password: string,email: string, ward: string, district: string) {
          this.password = password;
          this.firstName = firstName;
          this.lastName = lastName;
          this.email = email;
-         this.street = street;
-         this.city = city;
+         this.ward = ward;
+         this.district = district;
      }
-   
-}
+
+
+
+ }
 
 
 export class Login {
-    private username: string;
-    private password: string;
-    private grant_type: string;
+    public username: string;
+    public password: string;
+    public grant_type: string;
     constructor(username:string, password:string) {
         this.grant_type = "password";
         this.username = username;

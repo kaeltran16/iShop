@@ -13,17 +13,34 @@ import { Login } from "../../model/User";
 })
 export class LoginComponent {
     username: string="";
-    password: string="";
+    password: string = "";
+    result:boolean=false;
+    @Output('onclick') onclick = new EventEmitter<any>();
+   
 
+        
+ 
     constructor(private userService: UserService) {
         
     }
-    
-    login() {
-        var user = new Login(this.username, this.password);
-        var token = this.userService.login(user);
-        token.map(t=>console.log(t.ok));
-        console.log(this.username+ " "+this.password);
+    //login
+    login($event: any) {
+        if ($event.valid) {
+            var user = new Login(this.username, this.password);
+            //get token
+            var token = this.userService.login(user);
+
+            token.subscribe(t => {
+                this.userService.info(t.access_token).subscribe(t => {
+                        //output
+                        this.onclick.emit({ login: true,userName:t.firstName });
+                        
+                        console.log(t);
+                    });
+                }, error => this.result = true // show label error when login fail 
+            );
+
+        }
     }
 
 }

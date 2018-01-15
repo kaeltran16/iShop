@@ -4,8 +4,7 @@ import { Product } from "../../model/product";
 import { ChangeDetectorRef, TemplateRef, Component, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/observable/combineLatest';
 @Component({
     selector: 'home',
@@ -16,11 +15,8 @@ import 'rxjs/add/observable/combineLatest';
 
 
 export class HomeComponent implements OnInit {
-    products: Product[] = new Array({
-        title: "vu khac hoi",
-        id: 123,
-        price: 10}) ;
-    filterargs = { Title: 'Tôm ni trắng' };
+   
+   
     startPopular: number = 1;
     endPopular: number = 3;
     viewProduct: boolean = false;
@@ -33,11 +29,10 @@ export class HomeComponent implements OnInit {
     exit: boolean = false;
     product: Product;
     modalRef: BsModalRef;
-    max: number = 10;
-    rate: number = 7;
-    isReadonly: boolean = true;
+    
+ 
     constructor(private productService: ProductService, private modalService: BsModalService) {
-       
+        this.productService.getProducts().subscribe(p => console.log(p));
     }
     exitDetail(isExit: boolean) {
         this.exit = isExit;

@@ -11,6 +11,13 @@ export class FilterPipe implements PipeTransform {
         if (!items || !filter) {
             return items;
         }
-        return items.filter((p, i: any, ps: any) => p.title === filter);
+       
+        filter = filter.toLowerCase();
+        return items.filter((p, i: any, ps: any) => {
+            let categories = p.categories.filter((c: any) => c.name.toLowerCase().indexOf(filter) !== -1);
+           
+            if (categories.length) return true;
+            return false;
+        });
     }
 }  

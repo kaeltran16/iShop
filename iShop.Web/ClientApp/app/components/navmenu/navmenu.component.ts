@@ -26,8 +26,9 @@ export class NavMenuComponent implements OnInit{
     ngOnInit() {
         this.isShow = false;
     }
-
-    isShow:boolean=false;
+    userName:string="Đăng nhập";
+    isShow: boolean = false;
+    logged:boolean=false;
     meet: any[] = [
         "Thịt Heo",
         "Thịt Bò",
@@ -46,7 +47,15 @@ export class NavMenuComponent implements OnInit{
     ) {
        
     }
-
+    exitLogin(isLogin: any) {
+        
+        if (isLogin.login) {
+            this.modalRef.hide();
+            this.userName = isLogin.userName;
+            this.logged = true;
+        }
+        
+    }
     openModal(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template);
     }
