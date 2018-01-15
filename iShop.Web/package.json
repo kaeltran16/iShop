@@ -60,7 +60,9 @@
     "zone.js": "0.8.12"
   },
   "dependencies": {
+    "jsonwebtoken": "^8.1.0",
     "ngx-bootstrap": "^2.0.0-rc.0",
+    "ngx-cookie-service": "^1.0.10",
     "tether": "^1.4.3"
   }
 }

@@ -17,3 +17,9 @@
 .parent:hover .child {
     display: block;
 }
+
+#alert-detail {
+    width: 800px;
+    background-color: white;
+    margin-left: -100px;
+}

@@ -1,8 +1,10 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, Output, EventEmitter} from '@angular/core';
 import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
 import { User } from "../../model/User";
 import { UserService } from '../../service/user.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import 'rxjs/add/operator/catch';
 @Component({
     selector: 'register',
     templateUrl: './register.component.html',
@@ -18,21 +20,32 @@ export class RegisterComponent {
     password: string;
     confirmPassword: string;
     telephone: string;
-    street: string;
-    city:string;
+    ward: string;
+    district:string;
     email:string;
-
+    @Output('onclick') onclick = new EventEmitter<boolean>();// when click login then  hidden dialog 
 
     constructor(private userService: UserService, private route: ActivatedRoute,
         private router: Router) {
-        
+      
     }
 
-    register() {
-        var user = new User(this.firstName, this.lastName, this.password, this.email, this.street, this.city);
+    async register($event:any) {
+        var user = new User(this.firstName, this.lastName, this.password, this.email, this.ward, this.district);
+        //create user
         this.userService.createUser(user);
-        alert("Đăng kí thành công");
-        this.router.navigate(['/home']);
+
+        if ($event.valid) {
+            {
+                this.router.navigate(['/home']);
+                this.onclick.emit(true);
+                
+            }
+          
+        }
 
     }
+
+
+    
 }

@@ -34,8 +34,14 @@ import { CartComponent } from './components/cart/cart.component';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { SlideImageComponent } from './components/slide-image/slide-image.component';
 import { OrderComponent } from './components/order/order.component';
+import { ListProductComponent } from './components/list-product/list-product.component';
+//import { CookieService } from 'ngx-cookie-service';
+
+// custom validation 
+import { EqualValidator } from './components/register/custom-validation';
 @NgModule({
     declarations: [
+        EqualValidator,
         AppComponent,
         NavMenuComponent,
         DetailProductComponent,
@@ -51,7 +57,9 @@ import { OrderComponent } from './components/order/order.component';
         CartComponent,
         ShoppingCartComponent,
         SlideImageComponent,
-        OrderComponent
+        OrderComponent,
+        ListProductComponent
+       
     ],
     imports: [
         RatingModule.forRoot(),
@@ -75,7 +83,8 @@ import { OrderComponent } from './components/order/order.component';
     ],
     providers: [
         ProductService,
-        UserService
+        UserService,
+//        CookieService
     ]
 })
 export class AppModuleShared {

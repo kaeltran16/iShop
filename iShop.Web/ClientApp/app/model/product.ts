@@ -1,15 +1,18 @@
-﻿export interface Product {
+﻿
+import { Category } from "./Category";
+import { Image } from "./Image";
+import { Supplier } from "./Supplier";
+export interface Product {
     id: number;
-//    Category: Category;
-
+    category: Category;
+    summary: string;
+    expiredDate: Date;
+    addedDate:Date;
     price: number;
-//    ImageUrl: string;
-    title: string;
-//    Info: string;
-//    Stock: number;
-//    ExpiredDate: Date;
-//    AddedDate: Date;
-//    Image: Image;
+    sku:string;
+    name: string;
+    supplier:Supplier;
+    image: Image;
 }
 
 

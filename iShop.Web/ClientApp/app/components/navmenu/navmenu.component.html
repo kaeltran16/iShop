@@ -45,18 +45,18 @@
                 </li>
                 <li class="float-right mr-4">
                     <div class="dropdown">
-                        <a class="text-success" id="dropdownMenuButton" routerLink="/home" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="text-success"  id="dropdownMenuButton" routerLink="/home" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div>
                                 <img class="cart" src="/image/user.png" alt="User " />
                                 <div class="float-right " style="padding: 10px;">
                                     <div style="margin-top: -10px;">Xin Chào!</div>
-                                    <div class="mt-1">Đăng Nhập</div>
+                                    <div  class="mt-1">{{userName}}</div>
                                 </div>
                             </div>
                         </a>
                         <div class="dropdown-menu pos " id="menuLogin">
-                            <div class="card">
-                                <div>
+                            <div  class="card">
+                                <div *ngIf="!logged">
                                     <a class="dropdown-item" (click)="openModal(login)">Đăng nhập</a>
                                     <ng-template #login>
                                         <div class="modal-header" style="background-color: rgb(245,245,245) ">
@@ -65,7 +65,8 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <login></login>
+                                        <login (onclick)="exitLogin($event)" ></login>
+                                     
                                     </ng-template>
                                     <a class="dropdown-item" (click)="openModal(register)">Đăng kí</a>
                                     <ng-template #register>
@@ -75,10 +76,10 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <register></register>
+                                        <register (onclick)="exitLogin($event)"></register>
                                     </ng-template>
                                 </div>
-                                <div>
+                                <div *ngIf="logged">
                                     <a class="dropdown-item">Giỏ hàng của tôi</a>
                                     <a class="dropdown-item">Đăng Xuất</a>
                                 </div>
