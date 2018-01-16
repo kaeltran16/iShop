@@ -111,7 +111,7 @@ namespace iShop.Web.Server.APIs
 
         //     if (shoppingCarts == null)
         //         return NotFound(
-        //             new ErrorMessage { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+        //             new ApplicationError { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
 
         //     _mapper.Map<SavedShoppingCartResource, ShoppingCart>(shoppingCartResource, shoppingCarts);
 
@@ -119,7 +119,7 @@ namespace iShop.Web.Server.APIs
         //     {
         //         _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
         //         return StatusCode(500,
-        //             new ErrorMessage { Code = 500, Message = "item with id " + id + " failed to saved" }
+        //             new ApplicationError { Code = 500, Message = "item with id " + id + " failed to saved" }
         //                 .ToString());
         //     }
 

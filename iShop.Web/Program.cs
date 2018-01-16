@@ -32,9 +32,8 @@ namespace iShop.Web
                     try
                     {
                         var context = services.GetRequiredService<ApplicationDbContext>();
-                        AppInitializer initializer = new AppInitializer(context);
+                        AppInitializer initializer = new AppInitializer(services, context, logger);
                         initializer.Seed().Wait();
-
                     }
                     catch (Exception ex)
                     {                   

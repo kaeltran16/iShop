@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AspNet.Security.OpenIdConnect.Primitives;
 using iShop.Web.Server.Commons.Helpers;
@@ -14,11 +15,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
 
 namespace iShop.Web.Server.Commons.Extensions
 {
-    public static class MiddlewareConfigurationExtensions
+    public static class ServiceCollectionExtensions
     {
+        static ServiceCollectionExtensions()
+        {
+
+        }
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -42,6 +48,7 @@ namespace iShop.Web.Server.Commons.Extensions
                 // Use OpenIddict
                 options.UseOpenIddict<Guid>();
             });
+
             return services;
         }
 
@@ -49,6 +56,7 @@ namespace iShop.Web.Server.Commons.Extensions
         {
             services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
                 {
+                    // Custom password requirements
                     opt.Password.RequiredLength = 8;
                     opt.Password.RequireUppercase = true;
                     opt.Password.RequireNonAlphanumeric = false;
@@ -59,30 +67,31 @@ namespace iShop.Web.Server.Commons.Extensions
                 // Add token for reseting password, email..
                 .AddDefaultTokenProviders();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Set the type of claim 
+                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+            });
             return services;
         }
 
-
-        public static IServiceCollection AddCustomOpenIddict(this IServiceCollection services)
+        public static IServiceCollection AddCustomAuthenication(this IServiceCollection services)
         {
+            // Get the token settings
             var tokenSettings = new JwtTokenSettings();
             Startup.Configuration.GetSection("JwtTokenSettings").Bind(tokenSettings);
             services.AddSingleton(tokenSettings);
-
-            // Configure Identity to use the same JWT claims as OpenIddict instead
-            // of the legacy WS-Federation claims it uses by default (ClaimTypes),
-            services.Configure<IdentityOptions>(options =>
-                {
-                    options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
-                    options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-                    options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
-                });
-
+        
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
 
             services.AddAuthentication(opt=>
                 {
                     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(opt =>
                 {
@@ -100,7 +109,16 @@ namespace iShop.Web.Server.Commons.Extensions
 
                 });
 
-            services.AddOpenIddict(options =>
+            return services;
+        }
+
+        public static IServiceCollection AddCustomOpenIddict(this IServiceCollection services)
+        {
+            var tokenSettings = new JwtTokenSettings();
+            Startup.Configuration.GetSection("JwtTokenSettings").Bind(tokenSettings);
+            services.AddSingleton(tokenSettings); 
+
+            services.AddOpenIddict<Guid>(options =>
             {
                 options.AddEntityFrameworkCoreStores<ApplicationDbContext>();
 
@@ -135,5 +153,23 @@ namespace iShop.Web.Server.Commons.Extensions
             return services;
         }
 
+        public static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthorization(cfg =>
+            {
+                cfg.AddPolicy("SuperUsers", p => p.RequireClaim("SuperUser", "True"));
+                cfg.AddPolicy("Users", p => p.RequireClaim("User", "True"));
+
+            });
+            return services;
+        }
+        
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+        {
+            services.AddMvc()
+                .AddJsonOptions(opt =>
+                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+            return services;
+        }
     }
 }

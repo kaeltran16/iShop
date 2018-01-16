@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using iShop.Web.Server.Commons.Exceptions;
 using iShop.Web.Server.Commons.Extensions;
 using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Core.Models;
@@ -46,12 +47,12 @@ namespace iShop.Web.Server.APIs
             bool isValid = Guid.TryParse(id, out var categoryId);
 
             if (!isValid)
-                return InvalidId(id);
+               throw new InvalidInputIdException();
 
             var category = await _unitOfWork.CategoryRepository.GetCategory(categoryId);
 
             if (category == null)
-                return NotFound(ItemName.Category, categoryId);
+                throw new NotFoundException();
 
             var categoryResource = _mapper.Map<Category, CategoryResource>(category);
 
@@ -61,7 +62,7 @@ namespace iShop.Web.Server.APIs
 
 
         // POST
-        [Authorize]
+        [Authorize(Policy = "SuperUsers")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryResource categoryResources)
         {
@@ -76,7 +77,7 @@ namespace iShop.Web.Server.APIs
             if (!await _unitOfWork.CompleteAsync())
             {
                 _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Category, category.Id);
-                return FailedToSave(ItemName.Category, category.Id);
+                throw new FailedToSaveException();
             }
 
             category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
@@ -95,18 +96,18 @@ namespace iShop.Web.Server.APIs
             bool isValid = Guid.TryParse(id, out var categoryId);
 
             if (!isValid)
-                return InvalidId(id);
+                throw new InvalidInputIdException();
             var category = await _unitOfWork.CategoryRepository.GetCategory(categoryId);
 
             if (category == null)
-                return NotFound(ItemName.Category, categoryId);
+               throw new NotFoundException();
 
             _unitOfWork.CategoryRepository.Remove(category);
             if (!await _unitOfWork.CompleteAsync())
             {
                 _logger.LogMessage(LoggingEvents.Fail, ItemName.Category, category.Id);
-                return FailedToSave(ItemName.Category, categoryId);
-            }
+                throw new FailedToSaveException();
+          }
 
             _logger.LogMessage(LoggingEvents.Deleted, ItemName.Category, category.Id);
             return NoContent();
@@ -122,22 +123,21 @@ namespace iShop.Web.Server.APIs
             bool isValid = Guid.TryParse(id, out var categoryId);
 
             if (!isValid)
-                return InvalidId(id);
-
+                throw new InvalidInputIdException();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var category = await _unitOfWork.CategoryRepository.GetCategory(categoryId);
 
             if (category == null)
-                return NotFound(ItemName.Category, categoryId);
+                throw new NotFoundException();
 
             _mapper.Map<CategoryResource, Category>(categoryResource, category);
 
             if (!await _unitOfWork.CompleteAsync())
             {
                 _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Category, category.Id);
-                return FailedToSave(ItemName.Category, categoryId);
+                throw new FailedToSaveException();
             }
 
             category = await _unitOfWork.CategoryRepository.GetCategory(category.Id);
