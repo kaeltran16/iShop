@@ -1,68 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using iShop.Web.Server.Commons.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace iShop.Web.Server.APIs
 {
-    public class BaseController: Microsoft.AspNetCore.Mvc.Controller
+    public class BaseController : Microsoft.AspNetCore.Mvc.Controller
     {
-        public IActionResult NotFound(string itemName, Guid itemId)
+        protected IActionResult NotFound(Guid itemId)
         {
             return NotFound(
-                new ErrorMessage { Code = 404, Message = itemName + " with id " + itemId + " not existed" }.ToString());
+                new ApplicationError
+                {
+                    Error = ApplicationConstants.Error.NotFound,
+                    ErrorDescription = "The item with ID: " + itemId + " is not found."
+                }.ToString());
         }
 
-        public IActionResult FailedToSave(string itemName, Guid itemId)
+        protected IActionResult FailedToSave(string itemName, Guid itemId)
         {
             return StatusCode(500,
-                new ErrorMessage { Code = 500, Message = itemName + " with id " + itemId + " failed to saved" }
-                    .ToString());
+                new ApplicationError
+                {
+                    Error = ApplicationConstants.Error.SaveFailed,
+                    ErrorDescription = "The item with ID: " + itemId + " failed to save."
+                }.ToString());
         }
 
-        public IActionResult InvalidId(string itemId)
+        protected IActionResult InvalidId(string itemId)
         {
             return StatusCode(500,
-                new ErrorMessage { Code = 500, Message = "Error occured, please check your input ID" }
-                    .ToString());
+                new ApplicationError
+                {
+                    Error = ApplicationConstants.Error.InvalidFormat,
+                    ErrorDescription = "The input ID is in valid format."
+                }.ToString());
         }
 
-        public IActionResult UnAuthorized()
+        protected IActionResult UnAuthorized()
         {
             return StatusCode(401,
-                new ErrorMessage { Code = 500, Message = "Unauthorized attempt!!" }
-                    .ToString());
-        }
-
-        public IActionResult NullOrEmpty(string itemName)
-        {
-            return BadRequest(new ErrorMessage {Code = 400, Message = "Error occured, please check your " + itemName}
-                .ToString());
-        }
-
-        public IActionResult Oversized(string itemName, int maxSize)
-        {
-            return BadRequest(new ErrorMessage
+                new ApplicationError
                 {
-                    Code = 400,
-                    Message = "Error occured, " + itemName + " has maxmimum size of " + maxSize
-                }
-                .ToString());
+                    Error = ApplicationConstants.Error.Unauthorized,
+                    ErrorDescription = "The action cannot be completed due to unthorization."
+                }.ToString());
         }
 
-        public IActionResult UnSupportedType(string itemName, string[] supportedType)
+        protected IActionResult NullOrEmpty(string itemName)
         {
-            return BadRequest(new ErrorMessage
+            return BadRequest(
+                new ApplicationError
                 {
-                    Code = 400,
-                    Message = itemName + " has invalid type. The support types are " + supportedType
-                }
-                .ToString());
+                    Error = ApplicationConstants.Error.NullOrEmpty,
+                    ErrorDescription = "The input is null or empty."
+
+                }.ToString());
         }
 
+        protected IActionResult InvalidSize(string itemName, int maxSize)
+        {
+            return BadRequest(
+                new ApplicationError
+                {
+                    Error = ApplicationConstants.Error.InvalidSize,
+                    ErrorDescription = "The item has maximum size of " + maxSize + "."
+                }.ToString());
 
+        }
 
+        protected IActionResult UnSupportedType(string itemName, string[] supportedType)
+        {
+            return BadRequest(
+                new ApplicationError
+                {
+                    Error = ApplicationConstants.Error.UnSupportedType,
+                    ErrorDescription = "The type is not supported."
+                }.ToString());
+        }
     }
 }

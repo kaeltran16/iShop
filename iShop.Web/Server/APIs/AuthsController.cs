@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OpenIddict.Core;
-using OpenIddict.Models;
 
 namespace iShop.Web.Server.APIs
 {
@@ -22,7 +20,6 @@ namespace iShop.Web.Server.APIs
         private readonly IOptions<IdentityOptions> _identityOptions;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JwtTokenSettings _tokenSettings;
 
         public AuthsController(IOptions<IdentityOptions> identityOptions, SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager, JwtTokenSettings tokenSettings)
@@ -30,7 +27,6 @@ namespace iShop.Web.Server.APIs
             _identityOptions = identityOptions;
             _signInManager = signInManager;
             _userManager = userManager;
-            _tokenSettings = tokenSettings;
         }
 
         private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, ApplicationUser user, AuthenticationProperties properties = null)
@@ -52,7 +48,6 @@ namespace iShop.Web.Server.APIs
                 {
                     OpenIdConnectConstants.Scopes.OpenId,
                     OpenIdConnectConstants.Scopes.Email,
-                    OpenIdConnectConstants.Scopes.Profile,
                     OpenIdConnectConstants.Scopes.OfflineAccess,
                     OpenIddictConstants.Scopes.Roles
                 }.Intersect(request.GetScopes()));
