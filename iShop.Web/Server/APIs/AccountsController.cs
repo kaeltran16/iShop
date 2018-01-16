@@ -17,17 +17,14 @@ namespace iShop.Web.Server.APIs
     public class AccountsController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountsController> _logger;
         private readonly IMapper _mapper;
 
         public AccountsController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
             ILogger<AccountsController> logger, IMapper mapper)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _logger = logger;
             _mapper = mapper;
         }
@@ -41,15 +38,20 @@ namespace iShop.Web.Server.APIs
 
             var currentUser = _mapper.Map<RegisterResource, ApplicationUser>(model);
             currentUser.UserName = model.Email;
+
             var createResult = await _userManager.CreateAsync(currentUser, model.Password);
-            var addRoleResult = await _userManager.AddToRoleAsync(currentUser, "User");
-            var addClaim = await _userManager.AddClaimAsync(currentUser, new Claim("User", "True"));
-            if (createResult.Succeeded && addRoleResult.Succeeded)
+            var roleResult = await _userManager.AddToRoleAsync(currentUser, ApplicationConstants.RoleName.User);
+
+            var claimResult =
+                await _userManager.AddClaimAsync(currentUser, new Claim(ApplicationConstants.RoleName.User, "true"));
+
+            if (createResult.Succeeded && roleResult.Succeeded && claimResult.Succeeded)
             {
                 _logger.LogInformation(LoggingEvents.Success, model.Email + " created");
                 return Ok();
             }
             _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to create");
+
             return BadRequest(createResult);
         }
     }

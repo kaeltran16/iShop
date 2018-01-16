@@ -31,7 +31,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
-        [HttpGet("{id}", Name = ItemName.Product)]
+        [HttpGet("{id}", Name =  ApplicationConstants.ControllerName.Product)]
         public async Task<IActionResult> Get(string id)
         {
             bool isValid = Guid.TryParse(id, out var productId);
@@ -60,7 +60,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // POST
-        //[Authorize]
+        [Authorize(Policy = "SuperUsers")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SavedProductResource savedProductResources)
         {
@@ -72,21 +72,21 @@ namespace iShop.Web.Server.APIs
             await _unitOfWork.ProductRepository.AddAsync(product);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Product, product.Id);
-                return FailedToSave(ItemName.Category, product.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.Product, product.Id);
+                return FailedToSave(product.Id);
             }
 
             product = await _unitOfWork.ProductRepository.GetProduct(product.Id);
 
             var result = _mapper.Map<Product, ProductResource>(product);
 
-            _logger.LogMessage(LoggingEvents.Created, ItemName.Product, product.Id);
+            _logger.LogMessage(LoggingEvents.Created,  ApplicationConstants.ControllerName.Product, product.Id);
 
-            return CreatedAtRoute(ItemName.Product, new { id = product.Id }, result);
+            return CreatedAtRoute( ApplicationConstants.ControllerName.Product, new { id = product.Id }, result);
         }
 
         // PUT
-        //[Authorize]
+        [Authorize(Policy = "SuperUsers")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] SavedProductResource savedProductResource)
         {
@@ -106,21 +106,21 @@ namespace iShop.Web.Server.APIs
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Product, product.Id);
-                return FailedToSave(ItemName.Category, product.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.Product, product.Id);
+                return FailedToSave(product.Id);
             }
 
             product = await _unitOfWork.ProductRepository.GetProduct(product.Id);
 
             var result = _mapper.Map<Product, SavedProductResource>(product);
 
-            _logger.LogMessage(LoggingEvents.Updated, ItemName.Product, product.Id);
+            _logger.LogMessage(LoggingEvents.Updated,  ApplicationConstants.ControllerName.Product, product.Id);
 
             return Ok(result);
         }
 
         // DELETE
-        //[Authorize]
+        [Authorize(Policy = "SuperUsers")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(string id)
         {
@@ -136,11 +136,11 @@ namespace iShop.Web.Server.APIs
             _unitOfWork.ProductRepository.Remove(product);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Product, product.Id);
-                return FailedToSave(ItemName.Category, product.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.Product, product.Id);
+                return FailedToSave(product.Id);
             }
 
-            _logger.LogMessage(LoggingEvents.Deleted, ItemName.Product, product.Id);
+            _logger.LogMessage(LoggingEvents.Deleted,  ApplicationConstants.ControllerName.Product, product.Id);
 
 
             return NoContent();

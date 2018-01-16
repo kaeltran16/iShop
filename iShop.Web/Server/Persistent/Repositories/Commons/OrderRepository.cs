@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using iShop.Web.Server.Core.Commons;
 using iShop.Web.Server.Core.Models;
@@ -16,39 +16,45 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         {
         }
 
-        public async Task<IEnumerable<Order>> GetUserOrders(Guid userId)
+        public async Task<IEnumerable<Order>> GetOrders(bool isIncludeRelative = true)
         {
-            return await _context.Orders
-                .Include(o => o.OrderedItems)
-                .Include(o => o.Shipping)
-                .Include(o => o.Invoice)
-                .Include(o => o.User)
-                .Where(o => o.UserId == userId)
-                .ToListAsync();
+            return isIncludeRelative
+                ? await GetAllAsync()
+                : await GetAllAsync(includeProperties: source => source
+                    .Include(o => o.OrderedItems)
+                    .Include(o => o.Shipping)
+                    .Include(o => o.Invoice)
+                    .Include(o => o.User));
         }
 
-        public async Task<Order> GetOrder(Guid orderId, bool includeRelated = true)
+        public async Task<IEnumerable<Order>> GetUserOrders(Guid userId, bool isIncludeRelative = true)
         {
-            if (!includeRelated)
-                return await _context.Orders.FindAsync(orderId);
+            Expression<Func<Order, bool>> predicate = o => o.UserId == userId;
 
-            return await _context.Orders
-                .Include(o => o.OrderedItems)
-                .Include(o => o.Shipping)
-                .Include(o => o.Invoice)
-                .Include(o => o.User)
-                .SingleOrDefaultAsync(o => o.Id == orderId);
-        }
-        public async Task<IEnumerable<Order>> GetOrders()
-        {
-            return await _context.Orders
-                .Include(o => o.OrderedItems)
-                .Include(o => o.Shipping)
-                .Include(o => o.Invoice)
-                .Include(o => o.User)
-                .ToListAsync();
+            return isIncludeRelative
+                ? await GetAllAsync(
+                    predicate: predicate,
+                    includeProperties: source => source
+                        .Include(o => o.OrderedItems)
+                        .Include(o => o.Shipping)
+                        .Include(o => o.Invoice)
+                        .Include(o => o.User))
+                : await GetAllAsync(predicate);
         }
 
+        public async Task<Order> GetOrder(Guid orderId, bool isIncludeRelative = true)
+        {
+            Expression<Func<Order, bool>> predicate = o => o.Id == orderId;
+
+            return isIncludeRelative
+                ? await GetSingleAsync(predicate)
+                : await GetSingleAsync(predicate,
+                    includeProperties: source => source
+                        .Include(o => o.OrderedItems)
+                        .Include(o => o.Shipping)
+                        .Include(o => o.Invoice)
+                        .Include(o => o.User));
+        } 
     }
 }
 

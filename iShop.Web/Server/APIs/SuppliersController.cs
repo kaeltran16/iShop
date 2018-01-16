@@ -30,6 +30,7 @@ namespace iShop.Web.Server.APIs
 
 
         // GET
+        [Authorize(Policy = "SuperUsers")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -42,13 +43,16 @@ namespace iShop.Web.Server.APIs
 
 
         // GET
-        [HttpGet("{id}", Name = ItemName.Supplier)]
+        [Authorize(Policy = "SuperUsers")]
+        [HttpGet("{id}", Name =  ApplicationConstants.ControllerName.Supplier)]
         public async Task<IActionResult> Get(string id)
         {
             bool isValid = Guid.TryParse(id, out var supplierId);
 
             if (!isValid)
                 return InvalidId(id);
+
+          
 
             var supplier = await _unitOfWork.SupplierRepository.GetSupplier(supplierId);
 
@@ -63,7 +67,7 @@ namespace iShop.Web.Server.APIs
 
 
         // POST
-        [Authorize]
+        [Authorize(Policy = "SuperUsers")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SupplierResource supplierResource)
         {
@@ -77,25 +81,25 @@ namespace iShop.Web.Server.APIs
             // if something happens and the new item can not be saved, return the error
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Supplier, supplier.Id);
-                return FailedToSave(ItemName.Supplier, supplier.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.Supplier, supplier.Id);
+                return FailedToSave(supplier.Id);
             }
 
             supplier = await _unitOfWork.SupplierRepository.GetSupplier(supplier.Id);
 
             var result = _mapper.Map<Supplier, SupplierResource>(supplier);
 
-            _logger.LogMessage(LoggingEvents.Created, ItemName.Supplier, supplier.Id);
-            return CreatedAtRoute(ItemName.Supplier, new { id = supplier.Id }, result);
+            _logger.LogMessage(LoggingEvents.Created,  ApplicationConstants.ControllerName.Supplier, supplier.Id);
+            return CreatedAtRoute( ApplicationConstants.ControllerName.Supplier, new { id = supplier.Id }, result);
         }
 
         // DELETE
-        [Authorize]
+        [Authorize(Policy = "SuperUsers")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             bool isValid = Guid.TryParse(id, out var supplierId);
-
+           
             if (!isValid)
                 return InvalidId(id);
             var supplier = await _unitOfWork.SupplierRepository.GetSupplier(supplierId);
@@ -106,26 +110,25 @@ namespace iShop.Web.Server.APIs
             _unitOfWork.SupplierRepository.Remove(supplier);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.Fail, ItemName.Supplier, supplier.Id);
-                return FailedToSave(ItemName.Supplier, supplierId);
+                _logger.LogMessage(LoggingEvents.Fail,  ApplicationConstants.ControllerName.Supplier, supplier.Id);
+                return FailedToSave(supplierId);
             }
 
-            _logger.LogMessage(LoggingEvents.Deleted, ItemName.Supplier, supplier.Id);
+            _logger.LogMessage(LoggingEvents.Deleted,  ApplicationConstants.ControllerName.Supplier, supplier.Id);
             return NoContent();
         }
 
 
 
         // PUT
-        [Authorize]
+        [Authorize(Policy = "SuperUsers")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] SupplierResource supplierResource)
         {
             bool isValid = Guid.TryParse(id, out var supplierId);
-
             if (!isValid)
                 return InvalidId(id);
-
+            
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -134,18 +137,19 @@ namespace iShop.Web.Server.APIs
             if (supplier == null)
                 return NotFound(supplierId);
 
+
             _mapper.Map<SupplierResource, Supplier>(supplierResource, supplier);
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Supplier, supplier.Id);
-                return FailedToSave(ItemName.Supplier, supplier.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.Supplier, supplier.Id);
+                return FailedToSave(supplier.Id);
             }
 
             supplier = await _unitOfWork.SupplierRepository.GetSupplier(supplier.Id);
 
             var result = _mapper.Map<Supplier, SupplierResource>(supplier);
-            _logger.LogMessage(LoggingEvents.Updated, ItemName.Supplier, supplier.Id);
+            _logger.LogMessage(LoggingEvents.Updated,  ApplicationConstants.ControllerName.Supplier, supplier.Id);
             return Ok(result);
         }
 

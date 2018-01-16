@@ -126,8 +126,8 @@ namespace iShop.Web.Server.APIs
                 // Retrieve the user profile corresponding to the refresh token.
                 // Note: if you want to automatically invalidate the refresh token
                 // when the user password/roles change, use the following line instead:
-                // var user = _signInManager.ValidateSecurityStampAsync(info.Principal);
-                var user = await _userManager.GetUserAsync(info.Principal);
+                var user = await _signInManager.ValidateSecurityStampAsync(info.Principal);
+                //var user = await _userManager.GetUserAsync(info.Principal);
                 if (user == null)
                 {
                     return BadRequest(new OpenIdConnectResponse
