@@ -46,7 +46,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
-        [Authorize(Roles = "SuperUsers")]
+        [Authorize(Roles = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpGet]
         public async Task<IActionResult> Get()
         {

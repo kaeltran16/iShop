@@ -21,7 +21,7 @@ namespace iShop.Web.Server.APIs
  
         //
         // GET:
-        [Authorize(Roles = "SuperUser, User")]
+        [Authorize]
         [HttpGet("/api/userinfo")]
         public async Task<IActionResult> Userinfo()
         {

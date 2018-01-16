@@ -60,7 +60,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // POST
-        [Authorize(Policy = "SuperUsers")]
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SavedProductResource savedProductResources)
         {
@@ -86,7 +86,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // PUT
-        [Authorize(Policy = "SuperUsers")]
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] SavedProductResource savedProductResource)
         {
@@ -120,7 +120,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // DELETE
-        [Authorize(Policy = "SuperUsers")]
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(string id)
         {

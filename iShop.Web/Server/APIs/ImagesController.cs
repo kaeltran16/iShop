@@ -33,7 +33,7 @@ namespace iShop.Web.Server.APIs
             _imageSettings = imageSettings;
             _logger = logger;
         }
-        [Authorize(Policy = "SuperUsers")]
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpPost]
         public async Task<IActionResult> UpLoad(string productId, IFormFile file)
         {

@@ -19,8 +19,10 @@ namespace iShop.Web.Server.Commons.Extensions
         {
             app.UseCsp(csp =>
             {
-                csp.ByDefaultAllow
-                    .FromNowhere();
+                csp.ByDefaultAllow.FromSelf();
+                csp.AllowScripts.AllowUnsafeEval().FromSelf();
+                csp.AllowStyles.AllowUnsafeInline().FromSelf();
+                csp.AllowImages.From("data:").FromSelf();
                 csp.SetReportOnly();
 
             });
@@ -38,11 +40,13 @@ namespace iShop.Web.Server.Commons.Extensions
                 {
                     HotModuleReplacement = true
                 });
-                //app.UseSwagger();
-                //app.UseSwaggerUI(s =>
-                //{
-                //    s.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
-                //});
+                app.UseSwagger();
+                app.UseSwaggerUI(s => 
+                {
+                    s.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
+                    s.RoutePrefix = "api/swagger";
+
+                });
             }
             else
             {

@@ -43,6 +43,7 @@ namespace iShop.Web.Server.APIs
         [HttpGet("{id}", Name = ApplicationConstants.ControllerName.Category)]
         public async Task<IActionResult> Get(string id)
         {
+            // Validate the input id, make sure it has the correct format
             bool isValid = Guid.TryParse(id, out var categoryId);
 
             if (!isValid)
@@ -61,7 +62,7 @@ namespace iShop.Web.Server.APIs
 
 
         // POST
-        [Authorize(Policy = "SuperUsers")]
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryResource categoryResources)
         {
@@ -88,7 +89,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // DELETE
-        [Authorize(Policy = "SuperUsers")]
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -116,7 +117,7 @@ namespace iShop.Web.Server.APIs
 
 
         // PUT
-        [Authorize(Policy = "SuperUsers")]
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] CategoryResource categoryResource)
         {

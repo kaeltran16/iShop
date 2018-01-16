@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using iShop.Web.Server.Commons.Extensions;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace iShop.Web
 {
@@ -17,9 +18,14 @@ namespace iShop.Web
 
         public static IConfiguration Configuration { get; set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Use this method add your services
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(c =>
+                c.SwaggerDoc("v1", new Info {Title = "iShop APIs", Description = "API endpoints for iShop"}));
             services.AddDependencies();
             services.AddCustomDbContext();
             services.AddCustomIdentity();
@@ -30,14 +36,19 @@ namespace iShop.Web
             services.AddCustomMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        ///  // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="loggerFactory"></param>     
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.AddDevMiddleware();
             app.AddCustomCsp();
             app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.AddDevMiddleware();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

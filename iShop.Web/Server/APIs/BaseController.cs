@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace iShop.Web.Server.APIs
 {
+    /// <summary>
+    /// The base class for every Controllers. Contains bunch of return result
+    /// </summary>
     public class BaseController : Microsoft.AspNetCore.Mvc.Controller
     {
         protected IActionResult NotFound(Guid itemId)
