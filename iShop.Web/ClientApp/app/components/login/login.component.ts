@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
-
+import { UserService } from '../../service/user.service';
+import { Login } from "../../model/User";
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
@@ -11,8 +12,35 @@ import { trigger, transition, state, animate, style, keyframes, useAnimation, qu
     ]
 })
 export class LoginComponent {
-    @Output('onclick') onclick = new EventEmitter<boolean>();
-    exit() {
-        this.onclick.emit(false);
+    username: string="";
+    password: string = "";
+    result:boolean=false;
+    @Output('onclick') onclick = new EventEmitter<any>();
+   
+
+        
+ 
+    constructor(private userService: UserService) {
+        
     }
+    //login
+    login($event: any) {
+        if ($event.valid) {
+            var user = new Login(this.username, this.password);
+            //get token
+            var token = this.userService.login(user);
+
+            token.subscribe(t => {
+                this.userService.info(t.access_token).subscribe(t => {
+                        //output
+                        this.onclick.emit({ login: true,userName:t.firstName });
+                        
+                        console.log(t);
+                    });
+                }, error => this.result = true // show label error when login fail 
+            );
+
+        }
+    }
+
 }

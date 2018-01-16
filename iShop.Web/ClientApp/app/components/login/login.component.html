@@ -1,35 +1,51 @@
-﻿<div (click)="exit();" id="background">
-
-</div>
+﻿
 
 
-<div id="parent" class=" justify-content-center container-child rounded card " >
+<div  class=" justify-content-center container-child " >
 
-        <h4 class=" text-center text-success mt-3" style="font-family: ravie">HAI LÚA</h4>
+      
 
 
     <div >
-        <div  class="text-danger text-center"><small>*Tên đăng nhập hoặc mật khẩu không đúng*</small></div>
-        <div class="card-body pt-3 pr-5 pl-5">
-            <form>
+        <div  *ngIf="result" class="text-danger text-center"><small>*Tên đăng nhập hoặc mật khẩu không đúng*</small></div>
+        <div class="pt-3 pr-5 pl-5">
+            <form #f="ngForm" >
                 <div class="form-group">
                     <label for="Username">Username</label>
                     <div class="input-group">
 
-                        <input #Username="ngModel" [(ngModel)]="username" type="text" id="Username" name="Username" class="form-control" required>
+                        <input #Username="ngModel"
+                               [(ngModel)]="username"
+                               type="text" 
+                               id="Username"
+                               name="Username"
+                               class="form-control"
+                               required
+                               [ngClass]="{'card-outline-danger': Username.errors?.required && (Username.touched ||f.submitted)}">>
                         <span class="input-group-addon col-1" id="basic-addon">@</span>
                     </div>
-                    <div class="alert alert-danger" *ngIf="Username.touched && Username.invalid"> *Bắt buộc* </div>
+                    <div class="alert alert-danger" *ngIf="(Username.touched ||f.submitted) && Username.errors?.required"> *Bắt buộc* </div>
                 </div>
                 <div class="form-group">
                     <label for="Password">Password</label>
                     <div class="input-group">
-                        <input #Password="ngModel" [(ngModel)]="password" type="password" id="Password" name="Password" class="form-control" required>
+                        <input #Password="ngModel"
+                               [(ngModel)]="password"
+                               type="password"
+                               id="Password"
+                               name="Password"
+                               class="form-control"
+                               required
+                               minlength="8"
+                               [ngClass]="{'card-outline-danger': Password.errors?.required && (Password.touched ||f.submitted)}">>
+                               >
                         <span class="input-group-addon col-1" id="basic-addon1">*</span>
                     </div>
-                    <div class="alert alert-danger" *ngIf="Password.touched && Password.invalid"> *Bắt buộc* </div>
+                    <div class="alert alert-danger" *ngIf="(Password.touched ||f.submitted) && Password.errors?.required"> *Bắt buộc* </div>
+                    <div class="alert alert-danger" *ngIf="Password.touched && Password.errors?.minlength"> *Mật khẩu phải có it nhất 8 kí tự* </div>
+
                 </div>
-                <div class="text-center">  <button class="btn btn-info col-6 ">Đăng NHập</button></div>
+                <div class="text-center">  <button class="btn btn-info col-6 " on-click="login(f);">Đăng Nhập</button></div>
                 <div class="text-center mt-2"><a><small>Quên mật khẩu?</small></a></div>
                 <div class="d-inline-block w-100 mt-2 mb-2" >
                     <div class="float-left   mt-3" style="height: 1px; width: 100px;background-color: slategrey"></div>

@@ -1,29 +1,18 @@
-﻿export interface Product {
-    Id: number;
-    Category: Category;
-
-    Price: number;
-    ImageUrl: string;
-    Title: string;
-    Info: string;
-    Stock: number;
-    ExpiredDate: Date;
-    AddedDate: Date;
-    Image: Image;
+﻿
+import { Category } from "./Category";
+import { Image } from "./Image";
+import { Supplier } from "./Supplier";
+export interface Product {
+    id: number;
+    category: Category;
+    summary: string;
+    expiredDate: Date;
+    addedDate:Date;
+    price: number;
+    sku:string;
+    name: string;
+    supplier:Supplier;
+    image: Image;
 }
 
 
-export interface Category {
-    Id: number;
-    Detail: string;
-    Image: Image;
-    Name: string;
-
-}
-
-
-export interface Image {
-    Id: number;
-    FileName: string;
-
-}

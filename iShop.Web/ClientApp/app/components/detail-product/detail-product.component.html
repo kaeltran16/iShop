@@ -1,45 +1,35 @@
-﻿  <head>
-    <!-- Font Awesome Icon Library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-</head>
-<div (click)="exit();" id="background">
+﻿
 
-</div>
 
 <div id="parent">
-    <button (click)="exit();" id="exit" aria-label="Close" class="btn close">
-        <span aria-hidden="true">&times;</span>
-    </button>
     <div class="card" id="container">
-        <div   class="row">
-            <div   class=" col m-1">
-                <img class="card w-100 h-100 ml-3 mt-3 "   src="/image/cachinh.jpg" />
-                
+        <div class="row">
+            <div class=" col m-1">
+                <img class="card w-100 h-100 ml-3 mt-3 " src="/image/xanh3.jpg" />
+
             </div>
             <div class=" col m-1 mr-2">
                 <div style="text-align: center; " class=" card">
 
-                    <h1 class="mt-4">{{product.title}}</h1>
+                    <h1 class="mt-4">{{product.name}}</h1>
                     <h5 class="mt-1">{{product.price}} Đồng/1Kg</h5>
 
 
                     <div style="display: inline-block">
                         <p>Tiêu chuẩn</p>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
+                        <div style="  color: yellow" class="text-center ">
+                            <rating class="h3"  [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"></rating>
+                         
+                        </div>
                     </div>
-                    <div  class="form-group mt-4 d-inline-block">
-                        <button  class="btn btn-success float-left ml-4" (click)="changeValue(false)">-</button>
-                        <input type="text" style="width: 15%;"  value="{{quantity}}" class="form-control float-left text-center mr-1 ml-1" id="usr">
-                        <button class="btn btn-success float-left"  (click)="changeValue(true)">+</button>
+                    <div class="form-group mt-4 d-inline-block">
+                        <button class="btn btn-success float-left ml-4" (click)="changeValue(false)">-</button>
+                        <input type="text" style="width: 15%;" value="{{quantity}}" class="form-control float-left text-center mr-1 ml-1" id="usr">
+                        <button class="btn btn-success float-left" (click)="changeValue(true)">+</button>
                         <div class="m-2">Thành tiền : {{quantity*product.price}} <sup>đ</sup> </div>
-                       
+
                     </div>
-                    <button  class="btn btn-warning w-100 mt-4  ">Mua Hàng</button>
+                    <button class="btn btn-warning w-100 mt-4 " (click)="addToCart()">Mua Hàng</button>
 
                 </div>
                 <div class="card p-2 mt-2">
@@ -47,7 +37,8 @@
                     <div>{{product.info}}</div>
                 </div>
             </div>
-         
+
         </div>
     </div>
+
 </div>

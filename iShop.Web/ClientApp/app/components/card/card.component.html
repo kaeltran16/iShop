@@ -1,12 +1,26 @@
-﻿<div   class="card parent " >
-    <img class="card-img-top w-100"  src="/image/tomCangXanh.jpg" alt="Card image cap">
-    <div class="card-body text-center" style="background-color:beige">
-        <h5 style=" margin-top:30px;" class="card-title">{{product.title}}</h5>
-        <div style=" font-size:20px;" class="card-text">*****</div>
-        <div style=" font-size:20px;" class="card-text">{{product.price}}</div>
-    </div>
+﻿<div   class="card parent "  (click)="openModal(detailproduct)" >
+   <div >
+    <img class="card-img-top w-100 " style="height: 250px;"  src="/image/product/{{product.image}}" alt="Card image cap">
+       <div class="card-body text-center" style="background-color:beige">
+           <h3  class="card-title mt-2">{{product.name}}</h3>
+           <h3 class="card-text">*****</h3>
+           <h4 class="card-text pb-3">{{product.price}}</h4>
+       </div>
+   </div>
     <div class="card child ">
-<!--        <button (click)="click();">hahaha</button>-->
+        <button class="btn btn-warning "  (click)="addToCard()">Mua hàng</button>
     </div>
     
 </div>
+
+<ng-template #detailproduct>
+    <div class="rounded" id="alert-detail">
+        <button type="button" class="close float-right pt-2 mr-2 " aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+
+        <detail-product (onclick)="exitDetail($event)" [product]="product"></detail-product>
+
+    </div>
+</ng-template>
