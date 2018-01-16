@@ -2,10 +2,10 @@
 
 namespace iShop.Web.Server.Commons.Helpers
 {
-    public class ErrorMessage
+    public class ApplicationError
     {
-        public int Code { get; set; }
-        public string Message { get; set; }
+        public string Error { get; set; }
+        public string ErrorDescription { get; set; }
 
         public override string ToString()
         {

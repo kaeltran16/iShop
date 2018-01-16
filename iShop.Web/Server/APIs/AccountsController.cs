@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoMapper;
 using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Core.Models;
@@ -39,17 +40,17 @@ namespace iShop.Web.Server.APIs
                 return BadRequest(ModelState);
 
             var currentUser = _mapper.Map<RegisterResource, ApplicationUser>(model);
-            currentUser.Email = model.Email;
-            currentUser.PhoneNumber = model.PhoneNumber;
             currentUser.UserName = model.Email;
-            var result = await _userManager.CreateAsync(currentUser, model.Password);
-            if (result.Succeeded)
+            var createResult = await _userManager.CreateAsync(currentUser, model.Password);
+            var addRoleResult = await _userManager.AddToRoleAsync(currentUser, "User");
+            var addClaim = await _userManager.AddClaimAsync(currentUser, new Claim("User", "True"));
+            if (createResult.Succeeded && addRoleResult.Succeeded)
             {
                 _logger.LogInformation(LoggingEvents.Success, model.Email + " created");
                 return Ok();
             }
             _logger.LogWarning(LoggingEvents.Fail, model.Email + " failed to create");
-            return BadRequest(result);
+            return BadRequest(createResult);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace iShop.Web.Server.Commons.Extensions
             if (principal == null)
                 throw new ArgumentNullException(nameof(principal));
 
-            var id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var id = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
             return Guid.Parse(id);
         }
