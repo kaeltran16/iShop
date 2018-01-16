@@ -46,7 +46,7 @@ namespace iShop.Web.Server.APIs
             var product = await _unitOfWork.ProductRepository.GetProduct(id, false);
 
             if (product == null)
-                return NotFound(ItemName.Product, id);
+                return NotFound(id);
 
             if (file == null)
                 return NullOrEmpty(ItemName.Image);
@@ -55,7 +55,7 @@ namespace iShop.Web.Server.APIs
                 return NullOrEmpty(ItemName.Image);
 
             if (file.Length > _imageSettings.MaxByte)
-                return Oversized(ItemName.Image, _imageSettings.MaxByte);
+                return InvalidSize(ItemName.Image, _imageSettings.MaxByte);
 
             if (!_imageSettings.IsSupported(file.FileName))
                 return UnSupportedType(ItemName.Image, _imageSettings.AcceptedTypes);

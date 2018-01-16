@@ -41,7 +41,7 @@ namespace iShop.Web.Server.APIs
             var product = await _unitOfWork.ProductRepository.GetProduct(productId);
 
             if (product == null)
-                NotFound(ItemName.Product, productId);
+                NotFound(productId);
 
             var productResource = _mapper.Map<Product, ProductResource>(product);
 
@@ -100,7 +100,7 @@ namespace iShop.Web.Server.APIs
             var product = await _unitOfWork.ProductRepository.GetProduct(productId);
 
             if (product == null)
-                return NotFound(ItemName.Product, productId);
+                return NotFound(productId);
 
             _mapper.Map<SavedProductResource, Product>(savedProductResource, product);
 
@@ -131,7 +131,7 @@ namespace iShop.Web.Server.APIs
             var product = await _unitOfWork.ProductRepository.GetProduct(productId);
 
             if (product == null)
-                return NotFound(ItemName.Product, productId);
+                return NotFound(productId);
 
             _unitOfWork.ProductRepository.Remove(product);
             if (!await _unitOfWork.CompleteAsync())

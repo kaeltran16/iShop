@@ -53,7 +53,7 @@ namespace iShop.Web.Server.APIs
             var supplier = await _unitOfWork.SupplierRepository.GetSupplier(supplierId);
 
             if (supplier == null)
-                return NotFound(ItemName.Supplier, supplierId);
+                return NotFound(supplierId);
 
             var supplierResource = _mapper.Map<Supplier, SupplierResource>(supplier);
 
@@ -101,7 +101,7 @@ namespace iShop.Web.Server.APIs
             var supplier = await _unitOfWork.SupplierRepository.GetSupplier(supplierId);
 
             if (supplier == null)
-                return NotFound(ItemName.Supplier, supplierId);
+                return NotFound(supplierId);
 
             _unitOfWork.SupplierRepository.Remove(supplier);
             if (!await _unitOfWork.CompleteAsync())
@@ -132,7 +132,7 @@ namespace iShop.Web.Server.APIs
             var supplier = await _unitOfWork.SupplierRepository.GetSupplier(supplierId);
 
             if (supplier == null)
-                return NotFound(ItemName.Supplier, supplierId);
+                return NotFound(supplierId);
 
             _mapper.Map<SupplierResource, Supplier>(supplierResource, supplier);
 

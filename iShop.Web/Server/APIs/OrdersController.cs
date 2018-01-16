@@ -74,7 +74,7 @@ namespace iShop.Web.Server.APIs
             var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
             if (order == null)
-                return NotFound(ItemName.Order, orderId);
+                return NotFound(orderId);
 
             var userId = User.GetUserId();
 
@@ -130,7 +130,7 @@ namespace iShop.Web.Server.APIs
             var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
             if (order == null)
-                return NotFound(ItemName.Order, orderId);
+                return NotFound(orderId);
 
             if (order.UserId != User.GetUserId())
                 return UnAuthorized();
@@ -165,7 +165,7 @@ namespace iShop.Web.Server.APIs
             var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
             if (order == null)
-                return NotFound(ItemName.Order, orderId);
+                return NotFound(orderId);
 
             _unitOfWork.OrderRepository.Remove(order);
 
