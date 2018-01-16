@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using iShop.Web.Server.Commons.Extensions;
@@ -9,12 +7,11 @@ using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Core.Resources;
 using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace iShop.Web.Server.APIs
 {
@@ -36,6 +33,7 @@ namespace iShop.Web.Server.APIs
             _imageSettings = imageSettings;
             _logger = logger;
         }
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpPost]
         public async Task<IActionResult> UpLoad(string productId, IFormFile file)
         {
@@ -48,17 +46,14 @@ namespace iShop.Web.Server.APIs
             if (product == null)
                 return NotFound(id);
 
-            if (file == null)
-                return NullOrEmpty(ItemName.Image);
-
-            if (file.Length == 0)
-                return NullOrEmpty(ItemName.Image);
+            if (file == null || file.Length == 0) 
+                return NullOrEmpty();
 
             if (file.Length > _imageSettings.MaxByte)
-                return InvalidSize(ItemName.Image, _imageSettings.MaxByte);
+                return InvalidSize( ApplicationConstants.ControllerName.Image, _imageSettings.MaxByte);
 
             if (!_imageSettings.IsSupported(file.FileName))
-                return UnSupportedType(ItemName.Image, _imageSettings.AcceptedTypes);
+                return UnSupportedType(_imageSettings.AcceptedTypes);
 
 
             var uploadFolderPath = Path.Combine(_host.WebRootPath, "images");
@@ -82,10 +77,10 @@ namespace iShop.Web.Server.APIs
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.Fail, ItemName.Image, image.Id);
-                return FailedToSave(ItemName.Image, image.Id);
+                _logger.LogMessage(LoggingEvents.Fail,  ApplicationConstants.ControllerName.Image, image.Id);
+                return FailedToSave(image.Id);
             }
-            _logger.LogMessage(LoggingEvents.Created, ItemName.Image, image.Id);
+            _logger.LogMessage(LoggingEvents.Created,  ApplicationConstants.ControllerName.Image, image.Id);
 
             return Ok(_mapper.Map<Image, ImageResource>(image));
         }
@@ -98,6 +93,32 @@ namespace iShop.Web.Server.APIs
         //    var imageResource = _mapper.Map<IEnumerable<Image>, IEnumerable<ImageResource>>(images);
         //    return Ok(imageResource);
         //}
+
+        // DELETE
+        [Authorize(Policy = "SuperUsers")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            bool isValid = Guid.TryParse(id, out var imageId);
+
+            if (!isValid)
+                return InvalidId(id);
+
+            var image = await _unitOfWork.ImageRepository.Get(imageId);
+
+            if (image == null)
+                return NullOrEmpty();
+
+            _unitOfWork.ImageRepository.Remove(image);
+            if (!await _unitOfWork.CompleteAsync())
+            {
+                _logger.LogMessage(LoggingEvents.Fail, ApplicationConstants.ControllerName.Category, image.Id);
+                return FailedToSave(image.Id);
+            }
+
+            _logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Category, image.Id);
+            return NoContent();
+        }
     }
 
 }

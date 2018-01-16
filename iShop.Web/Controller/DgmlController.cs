@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using iShop.Web.Server.Commons.Helpers;
 using iShop.Web.Server.Persistent;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace iShop.Web.Controller
 {
- 
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [Route("Dgml")]
         public class DgmlController : Microsoft.AspNetCore.Mvc.Controller
         {

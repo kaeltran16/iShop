@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using iShop.Web.Server.Core.Commons;
 using iShop.Web.Server.Core.Models;
@@ -17,29 +18,30 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         {
         }
 
-        public async Task<Product> GetProduct(Guid id, bool includeRelated = true)
+        public async Task<Product> GetProduct(Guid id, bool isIncludeRelative = true)
         {
-            if (!includeRelated)
-                return await _context.Products.FindAsync(id);
+            Expression<Func<Product, bool>> predicate = p => p.Id == id;
 
-            return await _context.Products
-                .Include(p => p.ProductCategories)
-                .ThenInclude(c => c.Category)
-                .Include(p => p.Images)
-                .Include(p => p.Inventory)
-                .ThenInclude(i=>i.Supplier)
-                .SingleOrDefaultAsync(p => p.Id == id);
-        }
-        public async Task<IEnumerable<Product>> GetProducts()
-        {
-            return await _context.Products
-                .Include(p => p.ProductCategories)
-                .ThenInclude(c => c.Category)
-                .Include(p => p.Images)
-                .Include(p => p.Inventory)
-                .ThenInclude(i => i.Supplier)
-                .ToListAsync();
+            return isIncludeRelative
+                ? await GetSingleAsync(predicate,
+                     includeProperties: src => src
+                    .Include(p => p.ProductCategories)
+                    .ThenInclude(c => c.Category)
+                    .Include(p => p.Images)
+                    .Include(p => p.Inventory)
+                    .ThenInclude(i => i.Supplier))
+                : await GetSingleAsync(predicate);
         }
 
+        public async Task<IEnumerable<Product>> GetProducts(bool isIncludeRelative = true)
+        {
+            return isIncludeRelative
+                ? await GetAllAsync(includeProperties: src => src.Include(p => p.ProductCategories)
+                    .ThenInclude(c => c.Category)
+                    .Include(p => p.Images)
+                    .Include(p => p.Inventory)
+                    .ThenInclude(i => i.Supplier))
+                : await GetAllAsync();
+        }
     }
 }

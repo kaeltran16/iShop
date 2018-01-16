@@ -10,5 +10,6 @@ namespace iShop.Web.Server.Persistent.Repositories.Contracts
     public interface IImagesRepository: IDataRepository<Image>
     {
         Task<IEnumerable<Image>> GetProductImages(Guid productId);
+        Task<Image> Get(Guid id);
     }
 }

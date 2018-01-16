@@ -28,7 +28,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
-        [HttpGet("{id}", Name = ItemName.ShoppingCart)]
+        [HttpGet("{id}", Name =  ApplicationConstants.ControllerName.ShoppingCart)]
         public async Task<IActionResult> Get(string id)
         {
             bool isValid = Guid.TryParse(id, out var shoppingCartId);
@@ -46,6 +46,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
+        [Authorize(Roles = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -59,11 +60,17 @@ namespace iShop.Web.Server.APIs
 
 
         // GET
-        [Authorize]
         [HttpGet("user/{id}")]
-        public async Task<IActionResult> GetUserShoppingCarts(Guid id)
+        public async Task<IActionResult> GetUserShoppingCarts(string id)
         {
-            var shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetUserShoppingCarts(id);
+            bool isValid = Guid.TryParse(id, out var userId);
+            if (!isValid)
+                return InvalidId(id);
+
+            if (userId != User.GetUserId())
+                return UnAuthorized();
+
+            var shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetUserShoppingCarts(userId);
 
             var shoppingCartResource =
                 _mapper.Map<IEnumerable<ShoppingCart>, IEnumerable<ShoppingCartResource>>(shoppingCarts);
@@ -72,7 +79,6 @@ namespace iShop.Web.Server.APIs
         }
 
         // POST
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SavedShoppingCartResource shoppingCartResources)
         {
@@ -86,17 +92,17 @@ namespace iShop.Web.Server.APIs
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.ShoppingCart, shoppingCart.Id);
-                return FailedToSave(ItemName.ShoppingCart, shoppingCart.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                return FailedToSave(shoppingCart.Id);
             }
 
             shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCart.Id);
 
             var result = (_mapper.Map<ShoppingCart, ShoppingCartResource>(shoppingCart));
 
-            _logger.LogMessage(LoggingEvents.Created, ItemName.Product, shoppingCart.Id);
+            _logger.LogMessage(LoggingEvents.Created,  ApplicationConstants.ControllerName.Product, shoppingCart.Id);
 
-            return CreatedAtRoute(ItemName.ShoppingCart, new { id = shoppingCart.Id }, result);
+            return CreatedAtRoute( ApplicationConstants.ControllerName.ShoppingCart, new { id = shoppingCart.Id }, result);
         }
 
         // PUT
@@ -134,7 +140,6 @@ namespace iShop.Web.Server.APIs
 
 
         // DELETE
-        [Authorize]
         [HttpDelete("{id}")]     
         public async Task<IActionResult> Delete(string id)
         {
@@ -147,14 +152,17 @@ namespace iShop.Web.Server.APIs
             if (shoppingCart == null)
                 return NotFound(shoppingCartId);
 
+            if (shoppingCart.UserId != User.GetUserId())
+                return UnAuthorized();
+
             _unitOfWork.ShoppingCartRepository.Remove(shoppingCart);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.ShoppingCart, shoppingCart.Id);
-                return FailedToSave(ItemName.ShoppingCart, shoppingCart.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                return FailedToSave(shoppingCart.Id);
             }
 
-            _logger.LogMessage(LoggingEvents.Deleted, ItemName.ShoppingCart, shoppingCart.Id);
+            _logger.LogMessage(LoggingEvents.Deleted,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
 
             return NoContent();
         }

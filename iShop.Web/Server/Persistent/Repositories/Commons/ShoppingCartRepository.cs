@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using iShop.Web.Server.Core.Commons;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace iShop.Web.Server.Persistent.Repositories.Commons
@@ -16,40 +16,42 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         public ShoppingCartRepository(ApplicationDbContext context)
             : base(context)
         {
-            _context = context;
         }
 
-
-        public async Task<IEnumerable<ShoppingCart>> GetUserShoppingCarts(Guid userId)
+        public async Task<IEnumerable<ShoppingCart>> GetUserShoppingCarts(Guid userId, bool isIncludeRelative = true)
         {
-            return await _context.ShoppingCarts
-                .Include(c => c.Carts)
-                .ThenInclude(p => p.Product)
-                .Include(u => u.UserId)
-                .Where(s => s.UserId == userId).ToListAsync();
+            Expression<Func<ShoppingCart, bool>> predicate = p => p.UserId == userId;
+
+            return isIncludeRelative
+                ? await GetAllAsync(predicate,
+                    includeProperties: src => src
+                        .Include(c => c.Carts)
+                        .ThenInclude(p => p.Product)
+                        .Include(u => u.User))
+                : await GetAllAsync(predicate);
         }
 
-        public async Task<ShoppingCart> GetShoppingCart(Guid id, bool includeRelated = true)
+        public async Task<ShoppingCart> GetShoppingCart(Guid id, bool isIncludeRelative = true)
         {
-            if (!includeRelated)
-                return await _context.ShoppingCarts.FindAsync(id);
+            Expression<Func<ShoppingCart, bool>> predicate = p => p.Id == id;
 
-            return await _context.ShoppingCarts
-                .Include(c => c.Carts)
-                .ThenInclude(p => p.Product)
-                .Include(u => u.User)
-                .SingleOrDefaultAsync(v => v.Id == id);
+            return isIncludeRelative
+                ? await GetSingleAsync(predicate,
+                     includeProperties: src => src
+                    .Include(c => c.Carts)
+                    .ThenInclude(p => p.Product)
+                    .Include(u => u.User))
+                : await GetSingleAsync(predicate);
         }
-        public async Task<IEnumerable<ShoppingCart>> GetShoppingCarts()
+
+        public async Task<IEnumerable<ShoppingCart>> GetShoppingCarts(bool isIncludeRelative = true)
         {
-            return await _context.ShoppingCarts
-                .Include(c => c.Carts)
-                .ThenInclude(p => p.Product)
-                .Include(u => u.User)
-                .ToListAsync();
+            return isIncludeRelative
+                ? await GetAllAsync(includeProperties: src => src
+                    .Include(c => c.Carts)
+                    .ThenInclude(p => p.Product)
+                    .Include(u => u.User))
+                : await GetAllAsync();
         }
-
-
-
     }
 }
