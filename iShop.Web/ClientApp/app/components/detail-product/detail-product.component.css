@@ -5,34 +5,16 @@
     width: 800px;
     height: 550px;
     z-index: 3;
-    position: fixed;
-    top: 10%;
-    left: 22%;
+
 }
 
-#background {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    opacity: 0.7;
-    background-color: azure;
-    z-index: 2;
-}
 
-#exit {
-    float: right;
-    height: 40px;
-    width: 40px;
-    margin-right: 10px;
-    background-color: blanchedalmond
-}
+
 
 #container {
     background-color: white;
     width: 100%;
-    height: 95%;
+    height: 100%;
     border-radius: 10px;
     opacity: 1
 }

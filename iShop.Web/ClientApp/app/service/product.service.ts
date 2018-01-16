@@ -8,12 +8,14 @@ export class ProductService {
     constructor(private http: Http, @Inject('BASE_URL') baseUrl: string) {
         this.Url = baseUrl;
     }
+
+    //get all product 
     getProducts() {
-        return this.http.get(this.Url + '/api/Product/')
+        return this.http.get(this.Url + '/api/Products/')
             .map(res => res.json());
 
     }
-
+     // get product with Id 
     getProduct(id: string) {
         return this.http.get(this.Url + '/api/Product/' + id)
             .map(res => res.json());

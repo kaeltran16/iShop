@@ -1,7 +1,11 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿
 import { ProductService } from '../../service/product.service';
 import { Product } from "../../model/product";
+import { ChangeDetectorRef, TemplateRef, Component, OnInit } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
+import 'rxjs/add/observable/combineLatest';
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
@@ -11,8 +15,8 @@ import { Product } from "../../model/product";
 
 
 export class HomeComponent implements OnInit {
-    products: Product[];
-    filterargs = { Title: 'Tôm ni trắng' };
+   
+   
     startPopular: number = 1;
     endPopular: number = 3;
     viewProduct: boolean = false;
@@ -24,17 +28,23 @@ export class HomeComponent implements OnInit {
     endSeaFood: number = 3;
     exit: boolean = false;
     product: Product;
-    constructor(private productService: ProductService) {
-
+    modalRef: BsModalRef;
+    
+ 
+    constructor(private productService: ProductService, private modalService: BsModalService) {
+        this.productService.getProducts().subscribe(p => console.log(p));
     }
     exitDetail(isExit: boolean) {
         this.exit = isExit;
     }
     onDetail(p: Product) {
         this.product = p;
-        this.exitDetail(true);
+      
     }
-
+    openModal(template: TemplateRef<any>,p:Product) {
+        this.modalRef = this.modalService.show(template);
+        this.product = p;
+    }
 
     ngOnInit() {
       

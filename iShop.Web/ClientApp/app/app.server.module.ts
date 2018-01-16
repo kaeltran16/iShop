@@ -3,6 +3,7 @@ import { ServerModule } from '@angular/platform-server';
 import { AppModuleShared } from './app.shared.module';
 import { AppComponent } from './components/app/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
     bootstrap: [ AppComponent ],
     imports: [
@@ -10,7 +11,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         AppModuleShared,
         BrowserAnimationsModule
 
+    ],
+    providers: [
+       
+       
     ]
+
 })
 export class AppModule {
 }
