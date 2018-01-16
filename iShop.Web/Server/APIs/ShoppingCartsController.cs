@@ -38,7 +38,7 @@ namespace iShop.Web.Server.APIs
             var shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCartId);
 
             if (shoppingCart == null)
-                return NotFound(ItemName.ShoppingCart, shoppingCartId);
+                return NotFound(shoppingCartId);
 
             var shoppingCartResource = _mapper.Map<ShoppingCart, ShoppingCartResource>(shoppingCart);
 
@@ -145,7 +145,7 @@ namespace iShop.Web.Server.APIs
             var shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCartId, false);
 
             if (shoppingCart == null)
-                return NotFound(ItemName.ShoppingCart, shoppingCartId);
+                return NotFound(shoppingCartId);
 
             _unitOfWork.ShoppingCartRepository.Remove(shoppingCart);
             if (!await _unitOfWork.CompleteAsync())
