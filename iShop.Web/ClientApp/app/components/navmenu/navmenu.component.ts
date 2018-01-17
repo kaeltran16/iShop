@@ -1,9 +1,11 @@
-﻿import { Component, TemplateRef,OnInit } from '@angular/core';
+﻿import { Component, TemplateRef,OnInit,Input } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
+import { trigger, transition, state, animate, style } from '@angular/animations';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import 'rxjs/add/operator/switchMap';
+import { ProductService } from '../../service/product.service';
+import { SharedService } from '../../service/shared-service';
+
 @Component({
     selector: 'nav-menu',
     templateUrl: './navmenu.component.html',
@@ -24,11 +26,43 @@ import 'rxjs/add/operator/switchMap';
 })
 export class NavMenuComponent implements OnInit{
     ngOnInit() {
-        this.isShow = false;
+      
+        this.repeat = 0;
+        //  update total sent to navbar component
+        this.sharedService.changeEmitted$.subscribe(info => {
+
+            this.repeat = 0;
+            this.repeat++;
+            
+            this.totalPrice = 0;
+            this.totalQuantity = 0;
+            if (this.repeat ===1) {
+                for (var i = 0; i < localStorage.length; ++i) {
+                    //get local storaage 
+                    let carts = JSON.parse(String(localStorage.getItem(String(localStorage.key(i)))));
+                    this.productService.getProduct(carts.idProduct).subscribe(p => {
+                        //count total price and total quantity
+                        this.totalPrice = this.totalPrice + carts.quantity * p.price;
+                        this.totalQuantity += carts.quantity;
+
+
+                    });
+
+
+                }
+                return;
+            }
+        });
     }
+    repeat:number=0;
+    totalPrice: number=0;
+    totalQuantity:number=0;
+    carts: any[] = [];
+    @Input('infoCart') infoCart:any;
     userName:string="Đăng nhập";
     isShow: boolean = false;
-    logged:boolean=false;
+    logged: boolean = false;
+   
     meet: any[] = [
         "Thịt Heo",
         "Thịt Bò",
@@ -43,10 +77,18 @@ export class NavMenuComponent implements OnInit{
     modalRef: BsModalRef;
     constructor(private modalService: BsModalService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private productService: ProductService,
+        private sharedService: SharedService
+      
     ) {
        
+
+       
     }
+   
+
+
     exitLogin(isLogin: any) {
         
         if (isLogin.login) {
@@ -58,15 +100,20 @@ export class NavMenuComponent implements OnInit{
     }
     openModal(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template);
+       
     }
 
     openShoppingCart() {
 //        this.router.navigate(['/shopping-cart']);
         this.isShow = true;
+        this.carts = [];
+      
+    
+
     }
     closeShoppingCart() {
       
         this.isShow = false;
     }
-  
+   
 }

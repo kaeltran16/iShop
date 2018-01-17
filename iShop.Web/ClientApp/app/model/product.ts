@@ -2,7 +2,7 @@
 import { Category } from "./Category";
 import { Image } from "./Image";
 import { Supplier } from "./Supplier";
-export interface Product {
+export class Product {
     id: number;
     category: Category;
     summary: string;

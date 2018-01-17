@@ -1,34 +1,47 @@
-import { Component, Output, EventEmitter,Input } from '@angular/core';
+import { Component, Output, EventEmitter,Input,OnInit } from '@angular/core';
 //import { CookieService } from 'ngx-cookie-service';
-
+import { Cart } from "../../model/Cart";
 @Component({
     selector: 'detail-product',
     templateUrl: './detail-product.component.html',
     styleUrls: ['./detail-product.component.css']
 })
-export class  DetailProductComponent {
+export class DetailProductComponent implements OnInit {
+    ngOnInit(): void {
+        var currentCart = JSON.parse(String(localStorage.getItem(this.product.id)));
+        if (currentCart) this.quantity = currentCart.quantity;
+    }
+
     @Output() onclick = new EventEmitter<boolean>();
-    @Input('product') product:any;
+    @Input('product') product: any;
+    
     max: number = 5;
     rate: number = 4;
     isReadonly: boolean = true;
     quantity: number = 1;
-//    private cookieService: CookieService
+
     constructor() {
-      
+     
         
     }
 
     addToCart() {
-        var alphas :any;
-        alphas = [{"hoi":"hoidaica"}, "2", "3", "4"];
-        this.onclick.emit(true);
-        localStorage.setItem("someKey", alphas);
-//        this.cookieService.set('Test', alphas);
-        var a = localStorage.getItem("someKey");
-        
-//        console.log(this.cookieService.get('Test'));
 
+
+        this.onclick.emit(true);
+       
+        let cart :Cart = new Cart(this.product.id, this.quantity);
+        localStorage.setItem(this.product.id, JSON.stringify(cart));
+
+        var a = localStorage.getItem(this.product.id);
+        var b = JSON.parse(String(a));
+        console.log(b);
+
+        //get local storage
+//        for (var i = 0; i < localStorage.length; ++i) {
+//            console.log(JSON.parse(String(localStorage.getItem(String(localStorage.key(i))))));
+//        }
+        
     }
 
     changeValue(isChange: boolean) {

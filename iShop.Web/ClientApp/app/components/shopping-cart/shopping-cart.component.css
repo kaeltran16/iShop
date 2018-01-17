@@ -2,9 +2,9 @@ tbody tr td  {
     padding: 25px;
     text-align: center;
 }
-tbody tr  :nth-child(2) {
+tbody tr :nth-child(2) {
     padding: 10px;
-    
+    text-align: left;
 }
 
 
@@ -12,7 +12,7 @@ tfoot tr td {
     padding: 25px;
     text-align: center;
     font-weight: bold
-}
+} 
 
 
  

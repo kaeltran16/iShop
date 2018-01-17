@@ -22,61 +22,20 @@
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td class="text-left">
-                    <img class="rounded-circle mr-2" style="width: 70px; height: 70px;" src="/image/xanh3.jpg" />
-                    Rau xalad
-                </td>
-                <td> 1</td>
-                <td >100.000 <sup>đ</sup></td>
-                <td>100.000 <sup>đ</sup></td>
-                <td><button class="btn btn-outline-success">Xóa</button></td>
-            </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td class="text-left">
-                <img class="rounded-circle mr-2" style="width: 70px; height: 70px;" src="/image/xanh3.jpg" />
-                Rau xalad
-            </td>
-            <td> 1</td>
-            <td >100.000 <sup>đ</sup></td>
-            <td>100.000 <sup>đ</sup></td>
-            <td><button class="btn btn-outline-success">Xóa</button></td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td class="text-left">
-                <img class="rounded-circle mr-2" style="width: 70px; height: 70px;" src="/image/xanh3.jpg" />
-                Rau xalad
-            </td>
-            <td> 1</td>
-            <td >100.000 <sup>đ</sup></td>
-            <td>100.000 <sup>đ</sup></td>
-            <td><button class="btn btn-outline-success">Xóa</button></td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td class="text-left">
-                <img class="rounded-circle mr-2" style="width: 70px; height: 70px;" src="/image/xanh3.jpg" />
-                Rau xalad
-            </td>
-            <td> 1</td>
-            <td >100.000 <sup>đ</sup></td>
-            <td>100.000 <sup>đ</sup></td>
-            <td><button class="btn btn-outline-success">Xóa</button></td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td class="text-left">
-                <img class="rounded-circle mr-2" style="width: 70px; height: 70px;" src="/image/xanh3.jpg" />
-                Rau xalad
-            </td>
-            <td> 1</td>
-            <td >100.000 <sup>đ</sup></td>
-            <td>100.000 <sup>đ</sup></td>
-            <td><button class="btn btn-outline-success">Xóa</button></td>
-        </tr>
+           
+                <tr *ngFor="let cart of carts |fill:-1:a ; let i=index">
+                    <th scope="row">{{i}}</th>
+                    <td>
+                        <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/product/{{cart.product.images[0].fileName}}"/>
+                        {{cart.product.name}}
+                    </td>
+                    <td > {{cart.quantity}} <span class="ml-1">{{cart.product.sku}}</span></td>
+                    <td>{{cart.product.price}}<sup>đ</sup></td>
+                
+                <td>{{cart.product.price*cart.quantity}}<sup>đ</sup></td>
+                <td><button class="btn btn-outline-success" (click)="deleteItemCart(cart)">Xóa</button></td>
+                </tr>
+       
         </tbody>
         <tfoot>
         <tr>
@@ -86,7 +45,7 @@
             </td>
             <td>Tổng cộng</td>
             <td>
-                100000<sup>đ</sup>
+                {{totalPrice}}<sup>đ</sup>
             </td>
         </tr>
        

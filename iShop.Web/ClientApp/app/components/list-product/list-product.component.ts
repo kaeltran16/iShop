@@ -14,19 +14,21 @@ export class ListProductComponent {
     @Input('title') title: string;
     products: Product[]=[];
     bought:boolean=false;
-    start: number = 0;
-    end: number = 2;
+    start: number = -1;
+    end: number = 3;
     viewProduct: boolean = false;
     product: Product;
     modalRef: BsModalRef;
+
+
     constructor(private productService: ProductService) {
         this.productService.getProducts().subscribe(p =>this.products = p);
     }
   
 
    
-
-    nextPopular() {
+    //next button
+    next() {
         if (this.end < 10) {
             this.start += 2;
             this.end += 2;
@@ -35,8 +37,8 @@ export class ListProductComponent {
             }
         }
     }
-
-    prePopular() {
+    //previous button
+    pre() {
         if (this.start > 1) {
             this.start -= 2;
             this.end -= 2;

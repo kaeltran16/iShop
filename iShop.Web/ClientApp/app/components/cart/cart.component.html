@@ -1,6 +1,6 @@
 ﻿
 
-<div style="width:500px;"   class="card " >
+<div  style="width:500px;"   class="card " >
     <table class="table table-hover ">
         <thead>
         <tr>
@@ -12,69 +12,25 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
+        <tr *ngFor="let cart of carts |fill:-1:a ; let i=index">
+            <th scope="row">{{i}}</th>
             <td>
-                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/xanh3.jpg"/>
-                Rau xalad
+                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/product/{{cart.product.images[0].fileName}}"/>
+                {{cart.product.name}}
             </td>
-            <td > 1</td>
-            <td   >100.000</td>
+            <td > {{cart.quantity}} <span class="ml-1">{{cart.product.sku}}</span></td>
+            <td>{{cart.product.price*cart.quantity}}<sup>đ</sup></td>
         </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>
-                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/xanh3.jpg"/>
-                Rau xalad
-            </td>
-            <td > 1</td>
-            <td   >100.000</td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>
-                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/xanh3.jpg"/>
-                Rau xalad
-            </td>
-            <td > 1</td>
-            <td   >100.000</td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>
-                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/xanh3.jpg"/>
-                Rau xalad
-            </td>
-            <td > 1</td>
-            <td   >100.000</td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>
-                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/xanh3.jpg"/>
-                Rau xalad
-            </td>
-            <td > 1</td>
-            <td   >100.000</td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>
-                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/xanh3.jpg"/>
-                Rau xalad
-            </td>
-            <td > 1</td>
-            <td   >100.000</td>
-        </tr>
+      
         </tbody>
         <tfoot>
         <tr>
             <th></th>
             <td colspan="2">
-                <a class="text-success h2">Xem giỏ hàng</a>
+                <div class="text-center w-100">   <a class="text-success h2 " routerLink="/shopping-cart">Xem giỏ hàng</a></div>
             </td>
             <td>
-                <button class="btn-warning  p-2 w-100">Thanh toán</button>
+                <button class="btn-warning  p-2 w-100" routerLink="/order" >Thanh toán</button>
             </td>
         </tr>
         </tfoot>

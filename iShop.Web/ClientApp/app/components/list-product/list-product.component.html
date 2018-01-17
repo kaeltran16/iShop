@@ -6,7 +6,7 @@
     </div>
 
     <div style="display: inline-block;">
-        <div *ngFor="let item of products |filter:name  |fill:start: end "
+        <div *ngFor="let item of products |filter:name  |fill:start:end "
              class="product">
 
             <card   [product]="item"></card>

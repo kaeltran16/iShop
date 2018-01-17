@@ -1,7 +1,7 @@
 ﻿import {Product} from "./Product";
 
 
-export interface Image {
+export class Image {
     fileName: string;
     product:Product;
 }

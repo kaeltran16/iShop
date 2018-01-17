@@ -3,6 +3,7 @@ tbody tr td  {
 }
 tbody tr  :nth-child(2) {
     padding: 10px;
+    text-align: left;
 }
  
 

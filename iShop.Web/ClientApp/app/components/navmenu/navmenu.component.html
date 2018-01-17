@@ -3,7 +3,7 @@
 
 <body>
 
-
+<!--    header-->
     <div class="background">
         <span>
             <span>Đặt hàng qua số điện thoại | </span>
@@ -16,46 +16,51 @@
     </div>
     <div>
 
-
-
+       
+        <!--         nav search-->
         <div class="search">
             <ul>
                 <li><a> <img class="cart  " src="/icon/cart.PNG" alt="Girl" /></a></li>
                 <li> <a>  <input type="text" placeholder="Search" /></a> </li>
 
-                <li class="float-right" style="margin-right: 50px;">
-                    <a class="text-success" (click)="openShoppingCart();" routerLink="/shopping-cart"   >
+                <li class="float-right mr-5">
+                    <a class="text-success" (click)="openShoppingCart();" routerLink="/shopping-cart">
                         <div>
-                            <span class="quantity badge badge-pill badge-success">10</span>
-                            <img class="cart  " src="/icon/cart.PNG" alt="Cart" />
+                            <span>
 
+                                <img class="cart  " src="/icon/cart.PNG" alt="Cart" />
+                                <span class="quantity badge badge-pill badge-success">
+                                    {{totalQuantity||0}}
+                                </span>
+                            </span>
                             <div style="float: right">
 
                                 <div>Đơn hàng</div>
-                                <div class="pt-1">100.000 đồng</div>
+                                <div class="pt-1">{{totalPrice||0}} đồng</div>
                             </div>
                         </div>
-                        <div class="display ">
-                            <div [class.notShow]="isShow">
-                                <cart></cart>
-                            </div>
-
-                        </div>
+                       
                     </a>
+                    <div class="display " >
+                        <div [class.notShow]="isShow">
+                            <cart ></cart>
+                        </div>
+
+                    </div>
                 </li>
                 <li class="float-right mr-4">
                     <div class="dropdown">
-                        <a class="text-success"  id="dropdownMenuButton" routerLink="/home" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="text-success " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div>
                                 <img class="cart" src="/image/user.png" alt="User " />
                                 <div class="float-right " style="padding: 10px;">
-                                    <div style="margin-top: -10px;">Xin Chào!</div>
-                                    <div  class="mt-1">{{userName}}</div>
+                                    <div style="margin-top: -10px;">Xin chào!</div>
+                                    <div class="mt-1">{{userName}}</div>
                                 </div>
                             </div>
                         </a>
                         <div class="dropdown-menu pos " id="menuLogin">
-                            <div  class="card">
+                            <div class="card">
                                 <div *ngIf="!logged">
                                     <a class="dropdown-item" (click)="openModal(login)">Đăng nhập</a>
                                     <ng-template #login>
@@ -65,8 +70,8 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <login (onclick)="exitLogin($event)" ></login>
-                                     
+                                        <login (onclick)="exitLogin($event)"></login>
+
                                     </ng-template>
                                     <a class="dropdown-item" (click)="openModal(register)">Đăng kí</a>
                                     <ng-template #register>
@@ -88,12 +93,12 @@
                         </div>
                     </div>
                 </li>
-
+          
             </ul>
         </div>
     </div>
 
-
+<!--    nav menu product-->
     <div class="nav">
         <ul>
             <li><a (click)="closeShoppingCart();" routerLink="/home" >Trang chủ</a></li>
@@ -110,8 +115,8 @@
 
                 </item-menu>
             </li>
-            <li><a routerLink="/home">Về chúng tôi</a></li>
-            <li><a routerLink="/home">Liên hệ</a></li>
+            <li><a >Về chúng tôi</a></li>
+            <li><a >Liên hệ</a></li>
             <li class="float-right"><a routerLink="/home"><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
             <li class="float-right"><a routerLink="/home"><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
             <li class="float-right"><a routerLink="/home"><img style="height: 20px;" src="/image/fb.png" alt="facebook icon" /></a></li>
