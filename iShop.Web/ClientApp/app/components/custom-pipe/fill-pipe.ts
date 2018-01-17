@@ -11,6 +11,6 @@ export class FillPipe implements PipeTransform {
         if (!items || !fillStart || !fillEnd) {
             return items;
         }
-        return items.filter((p, i: any, ps: any) => i <= fillEnd && i >= fillStart);
+        return items.filter((p, i: any, ps: any) => i < fillEnd && i > fillStart);
     }
 }  

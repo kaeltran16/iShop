@@ -134,14 +134,15 @@
     color: black;
 }
 
-.search ul li a:hover div.display {
+.search ul li:hover div.display {
     display: block;
 }
 
 .quantity {
-    position:   absolute;
-    top: 53px;
-    right: 170px;
+    position:   relative;
+   top: -20px;
+
+ right: 20px;
  
 }
 .notShow {
@@ -153,4 +154,9 @@
 
 .back {
     background-color: aqua;
+}
+
+
+a{
+    cursor: pointer
 }

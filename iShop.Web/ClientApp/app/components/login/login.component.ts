@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
 import { UserService } from '../../service/user.service';
 import { Login } from "../../model/User";
+import { Observable } from 'rxjs/Rx';
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
@@ -31,12 +32,15 @@ export class LoginComponent {
             var token = this.userService.login(user);
 
             token.subscribe(t => {
+                localStorage.setItem("token", t.access_token);
+                   
                 this.userService.info(t.access_token).subscribe(t => {
                         //output
                         this.onclick.emit({ login: true,userName:t.firstName });
                         
-                        console.log(t);
-                    });
+                        
+                });
+                    
                 }, error => this.result = true // show label error when login fail 
             );
 

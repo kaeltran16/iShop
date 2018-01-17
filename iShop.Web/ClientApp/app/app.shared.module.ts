@@ -9,12 +9,10 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 
-
 //service 
 import { ProductService } from "./service/product.service";
 import { UserService } from "./service/user.service";
-
-
+import { SharedService } from "./service/shared-service";
 
 
 import { AppComponent } from './components/app/app.component';
@@ -35,7 +33,7 @@ import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.
 import { SlideImageComponent } from './components/slide-image/slide-image.component';
 import { OrderComponent } from './components/order/order.component';
 import { ListProductComponent } from './components/list-product/list-product.component';
-//import { CookieService } from 'ngx-cookie-service';
+
 
 // custom validation 
 import { EqualValidator } from './components/register/custom-validation';
@@ -84,7 +82,7 @@ import { EqualValidator } from './components/register/custom-validation';
     providers: [
         ProductService,
         UserService,
-//        CookieService
+        SharedService
     ]
 })
 export class AppModuleShared {

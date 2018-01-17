@@ -17,7 +17,7 @@ export class ProductService {
     }
      // get product with Id 
     getProduct(id: string) {
-        return this.http.get(this.Url + '/api/Products/' + id)
+        return this.http.get(this.Url + '/api/Product/' + id)
             .map(res => res.json());
 
     }

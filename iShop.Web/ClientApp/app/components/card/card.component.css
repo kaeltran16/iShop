@@ -1,11 +1,12 @@
 .parent {
     position: relative;
     width: 100%;
-    height: 100%
+    height: 100%;
+    cursor: pointer;
 }
 
 .child {
-    display: none;
+/*    display: none;*/
     height: 100%;
     width:100%;
 
@@ -14,8 +15,30 @@
     position: absolute; top: 0px; left: 0px; 
 }
 
-.parent:hover .child {
-    display: block;
+/*.parent:hover .child {*/
+/*    display: block;*/
+/*}*/
+/**/
+/*.parent:hover .ccc {*/
+/*    display: block;*/
+/*}*/
+
+.btnAddCart {
+    /*    display: none;*/
+    position: absolute;
+    top: 30%;
+    left: 35%;
+    background-color: rgb(127, 180, 40);
+    z-index: 100
+}
+
+.bagDetail {
+    position: absolute;
+    bottom: 0%;
+    background-color: rgb(127, 180, 40);
+    width: 100%;
+    z-index: 100;
+   opacity: 0.9;
 }
 
 #alert-detail {

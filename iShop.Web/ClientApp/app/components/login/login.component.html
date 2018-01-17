@@ -21,7 +21,7 @@
                                name="Username"
                                class="form-control"
                                required
-                               [ngClass]="{'card-outline-danger': Username.errors?.required && (Username.touched ||f.submitted)}">>
+                               [ngClass]="{'card-outline-danger': Username.errors?.required && (Username.touched ||f.submitted)}">
                         <span class="input-group-addon col-1" id="basic-addon">@</span>
                     </div>
                     <div class="alert alert-danger" *ngIf="(Username.touched ||f.submitted) && Username.errors?.required"> *Bắt buộc* </div>
@@ -37,8 +37,8 @@
                                class="form-control"
                                required
                                minlength="8"
-                               [ngClass]="{'card-outline-danger': Password.errors?.required && (Password.touched ||f.submitted)}">>
-                               >
+                               [ngClass]="{'card-outline-danger': Password.errors?.required && (Password.touched ||f.submitted)}">
+                               
                         <span class="input-group-addon col-1" id="basic-addon1">*</span>
                     </div>
                     <div class="alert alert-danger" *ngIf="(Password.touched ||f.submitted) && Password.errors?.required"> *Bắt buộc* </div>

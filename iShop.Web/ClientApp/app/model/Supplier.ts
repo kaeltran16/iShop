@@ -1,4 +1,4 @@
-﻿export interface Supplier {
+﻿export class Supplier {
     name: string;
     description: string;
  
