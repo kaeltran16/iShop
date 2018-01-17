@@ -31,6 +31,7 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -43,7 +44,6 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
-        [Authorize]
         [HttpGet("user/{id}")]
         public async Task<IActionResult> GetUserOrders(string id)
         {
@@ -64,21 +64,19 @@ namespace iShop.Web.Server.APIs
         }
 
         // GET
-        [Authorize]
-        [HttpGet("{id}", Name = ItemName.Order)]
+        [HttpGet("{id}", Name = ApplicationConstants.ControllerName.Order)]
         public async Task<IActionResult> Get(string id)
         {
             bool isValid = Guid.TryParse(id, out var orderId);
             if (!isValid)
                 return InvalidId(id);
+
             var order = await _unitOfWork.OrderRepository.GetOrder(orderId);
 
             if (order == null)
                 return NotFound(orderId);
 
-            var userId = User.GetUserId();
-
-            if (order.UserId != userId)
+            if (order.UserId != User.GetUserId())
                 return UnAuthorized();
 
             var orderResource = _mapper.Map<Order, OrderResource>(order);
@@ -88,7 +86,6 @@ namespace iShop.Web.Server.APIs
 
 
         // POST
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SavedOrderResource resource)
         {
@@ -101,22 +98,21 @@ namespace iShop.Web.Server.APIs
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Order, order.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
 
-                return FailedToSave(ItemName.Order, order.Id);
+                return FailedToSave(order.Id);
             }
 
             order = await _unitOfWork.OrderRepository.GetOrder(order.Id, false);
             var result = (_mapper.Map<Order, OrderResource>(order));
 
-            _logger.LogMessage(LoggingEvents.Created, ItemName.Order, order.Id);
+            _logger.LogMessage(LoggingEvents.Created, ApplicationConstants.ControllerName.Order, order.Id);
 
-            return CreatedAtRoute(ItemName.Order,
+            return CreatedAtRoute(ApplicationConstants.ControllerName.Order,
                 new { id = order.Id }, result);
         }
 
         //PUT
-        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody]SavedOrderResource savedOrderResource)
         {
@@ -135,26 +131,25 @@ namespace iShop.Web.Server.APIs
             if (order.UserId != User.GetUserId())
                 return UnAuthorized();
 
-            _mapper.Map<SavedOrderResource, Order>(savedOrderResource, order);
+            _mapper.Map(savedOrderResource, order);
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Order, order.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
 
-                return FailedToSave(ItemName.Order, order.Id);
+                return FailedToSave(order.Id);
             }
 
             order = await _unitOfWork.OrderRepository.GetOrder(order.Id);
 
             var result = _mapper.Map<Order, SavedOrderResource>(order);
 
-            _logger.LogMessage(LoggingEvents.Updated, ItemName.Order, order.Id);
+            _logger.LogMessage(LoggingEvents.Updated, ApplicationConstants.ControllerName.Order, order.Id);
 
             return Ok(result);
         }
 
         // DELETE
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(string id)
         {
@@ -167,16 +162,19 @@ namespace iShop.Web.Server.APIs
             if (order == null)
                 return NotFound(orderId);
 
+            if (order.UserId != User.GetUserId())
+                return NotFound(orderId);
+
             _unitOfWork.OrderRepository.Remove(order);
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ItemName.Order, order.Id);
+                _logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
 
-                return FailedToSave(ItemName.Order, order.Id);
+                return FailedToSave(order.Id);
             }
 
-            _logger.LogMessage(LoggingEvents.Deleted, ItemName.Order, order.Id);
+            _logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Order, order.Id);
 
             return NoContent();
         }

@@ -19,7 +19,12 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
 
         public async Task<IEnumerable<Image>> GetProductImages(Guid productId)
         {
-            return await _context.Images.Where(i => i.ProductId == productId).ToListAsync();
+            return await GetAllAsync(i => i.ProductId == productId);
+        }
+
+        public async Task<Image> Get(Guid id)
+        {
+            return await GetSingleAsync(i => i.Id == id);
         }
     }
 }

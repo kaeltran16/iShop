@@ -6,8 +6,6 @@ namespace iShop.Web.Server.Mapping
 {
     public class SupplierProfile : BaseProfile
     {
-       
-
         protected override void CreateMap()
         {
             CreateMap<Supplier, SupplierResource>();

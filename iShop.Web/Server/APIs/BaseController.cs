@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace iShop.Web.Server.APIs
 {
+    /// <summary>
+    /// The base class for every Controllers. Contains bunch of return result
+    /// </summary>
     public class BaseController : Microsoft.AspNetCore.Mvc.Controller
     {
         protected IActionResult NotFound(Guid itemId)
@@ -16,7 +19,7 @@ namespace iShop.Web.Server.APIs
                 }.ToString());
         }
 
-        protected IActionResult FailedToSave(string itemName, Guid itemId)
+        protected IActionResult FailedToSave(Guid itemId)
         {
             return StatusCode(500,
                 new ApplicationError
@@ -46,14 +49,13 @@ namespace iShop.Web.Server.APIs
                 }.ToString());
         }
 
-        protected IActionResult NullOrEmpty(string itemName)
+        protected IActionResult NullOrEmpty()
         {
             return BadRequest(
                 new ApplicationError
                 {
                     Error = ApplicationConstants.Error.NullOrEmpty,
                     ErrorDescription = "The input is null or empty."
-
                 }.ToString());
         }
 
@@ -68,13 +70,13 @@ namespace iShop.Web.Server.APIs
 
         }
 
-        protected IActionResult UnSupportedType(string itemName, string[] supportedType)
+        protected IActionResult UnSupportedType(string[] supportedType)
         {
             return BadRequest(
                 new ApplicationError
                 {
                     Error = ApplicationConstants.Error.UnSupportedType,
-                    ErrorDescription = "The type is not supported."
+                    ErrorDescription = "The type is not supported. The supported types are: " + supportedType
                 }.ToString());
         }
     }

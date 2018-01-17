@@ -18,12 +18,12 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
 
         public async Task<IEnumerable<Supplier>> GetSuppliers()
         {
-            return await _context.Suppliers.ToListAsync();
+            return await GetAllAsync();
         }
 
         public async Task<Supplier> GetSupplier(Guid supplierId)
         {
-            return await _context.Suppliers.SingleOrDefaultAsync(i => i.Id == supplierId);
+            return await GetSingleAsync(i => i.Id == supplierId);
         }
     }
 }

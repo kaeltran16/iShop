@@ -1,24 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using iShop.Web.Server.Persistent;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using NLog.Web;
 
 namespace iShop.Web
 {
     public class Program
-    {
-        
+    {      
         public static void Main(string[] args)
         {
-            // NLog: setup the logger first to catch all errors
+            // Setting NLog, see nlog.config for the output configurations
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
             try
@@ -31,6 +24,7 @@ namespace iShop.Web
 
                     try
                     {
+                        // Set the databas
                         var context = services.GetRequiredService<ApplicationDbContext>();
                         AppInitializer initializer = new AppInitializer(services, context, logger);
                         initializer.Seed().Wait();

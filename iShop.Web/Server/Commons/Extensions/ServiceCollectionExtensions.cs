@@ -21,10 +21,6 @@ namespace iShop.Web.Server.Commons.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        static ServiceCollectionExtensions()
-        {
-
-        }
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -157,8 +153,11 @@ namespace iShop.Web.Server.Commons.Extensions
         {
             services.AddAuthorization(cfg =>
             {
-                cfg.AddPolicy("SuperUsers", p => p.RequireClaim("SuperUser", "True"));
-                cfg.AddPolicy("Users", p => p.RequireClaim("User", "True"));
+                cfg.AddPolicy(ApplicationConstants.PolicyName.SuperUsers,
+                    p => p.RequireClaim(ApplicationConstants.RoleName.SuperUser, "true"));
+
+                cfg.AddPolicy(ApplicationConstants.PolicyName.Users,
+                    p => p.RequireClaim(ApplicationConstants.RoleName.User, "true"));
 
             });
             return services;

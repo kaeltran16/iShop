@@ -15,6 +15,9 @@ using OpenIddict.Core;
 
 namespace iShop.Web.Server.APIs
 {
+    /// <summary>
+    /// This Controller is reponsible for creating and validate JWT
+    /// </summary>
     public class AuthsController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly IOptions<IdentityOptions> _identityOptions;
@@ -28,7 +31,13 @@ namespace iShop.Web.Server.APIs
             _signInManager = signInManager;
             _userManager = userManager;
         }
-
+        /// <summary>
+        /// Method for creating a new Token
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="user"></param>
+        /// <param name="properties"></param>
+        /// <returns></returns>
         private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, ApplicationUser user, AuthenticationProperties properties = null)
         {
             // Create a new ClaimsPrincipal containing the claims that
@@ -39,6 +48,7 @@ namespace iShop.Web.Server.APIs
             var ticket = new AuthenticationTicket(principal, properties,
                 OpenIdConnectServerDefaults.AuthenticationScheme);
 
+            // The token is a new one
             if (!request.IsRefreshTokenGrantType())
             {
                 // Set the list of scopes granted to the client application.
@@ -54,11 +64,11 @@ namespace iShop.Web.Server.APIs
             }
 
             ticket.SetResources("resource_server");
-        
-
-
+            
+            // Adding Claim to the token
             foreach (var claim in ticket.Principal.Claims)
             {
+                // skip the securityStampClaim
                 if (claim.Type == _identityOptions.Value.ClaimsIdentity.SecurityStampClaimType)
                 {
                     continue;
@@ -83,14 +93,19 @@ namespace iShop.Web.Server.APIs
             return ticket;
         }
 
+        /// <summary>
+        /// Method for creating new Token for authenicated User or refresh the old one
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("~/connect/token")]
-
         public async Task<IActionResult> Exchange(OpenIdConnectRequest request)
         {
-
+            // New token 
             if (request.IsPasswordGrantType())
             {
+                // Find the user's info
                 var user = await _userManager.FindByNameAsync(request.Username);
                 if (user == null)
                 {
@@ -115,9 +130,11 @@ namespace iShop.Web.Server.APIs
                 // Create a new authentication ticket.
                 var ticket = await CreateTicketAsync(request, user);
 
+                // Log the user in
                 return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
             }
 
+            // Refresh an old Token, more security measures may be added later
             else if (request.IsRefreshTokenGrantType())
             {
                 // Retrieve the claims principal stored in the refresh token.
@@ -126,8 +143,8 @@ namespace iShop.Web.Server.APIs
                 // Retrieve the user profile corresponding to the refresh token.
                 // Note: if you want to automatically invalidate the refresh token
                 // when the user password/roles change, use the following line instead:
-                // var user = _signInManager.ValidateSecurityStampAsync(info.Principal);
-                var user = await _userManager.GetUserAsync(info.Principal);
+                var user = await _signInManager.ValidateSecurityStampAsync(info.Principal);
+                //var user = await _userManager.GetUserAsync(info.Principal);
                 if (user == null)
                 {
                     return BadRequest(new OpenIdConnectResponse
@@ -161,7 +178,10 @@ namespace iShop.Web.Server.APIs
             });
         }
 
-
+        /// <summary>
+        /// Log the user out
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("~/connect/logout"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
