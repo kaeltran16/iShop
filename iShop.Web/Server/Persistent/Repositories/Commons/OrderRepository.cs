@@ -19,12 +19,12 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         public async Task<IEnumerable<Order>> GetOrders(bool isIncludeRelative = true)
         {
             return isIncludeRelative
-                ? await GetAllAsync()
-                : await GetAllAsync(includeProperties: source => source
+                ? await GetAllAsync(includeProperties: source => source
                     .Include(o => o.OrderedItems)
                     .Include(o => o.Shipping)
                     .Include(o => o.Invoice)
-                    .Include(o => o.User));
+                    .Include(o => o.User))
+                : await GetAllAsync();
         }
 
         public async Task<IEnumerable<Order>> GetUserOrders(Guid userId, bool isIncludeRelative = true)
