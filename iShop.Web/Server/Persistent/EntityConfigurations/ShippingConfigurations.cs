@@ -26,11 +26,7 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
                 .Property(s => s.PhoneNumber)
                 .IsRequired();
 
-            builder
-                .HasOne(s => s.Order)
-                .WithOne(o => o.Shipping)
-                .HasForeignKey<Order>(s => s.ShippingId)
-                .OnDelete(DeleteBehavior.Restrict);
+           
 
         }
     }

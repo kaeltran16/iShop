@@ -18,9 +18,8 @@ namespace iShop.Web.Server.Mapping
             CreateMap<Shipping, ShippingResource>();
 
             CreateMap<ShippingResource, Shipping>()
-                .ForMember(s => s.Id, opt => opt.Ignore());
-
-            //.AfterMap((sr, s) => { s.Order.ShippingId = sr.Id; });
+                .ForMember(s => s.Id, opt => opt.Ignore())
+                .ForMember(s => s.Order, opt => opt.Ignore());
 
         }
     }

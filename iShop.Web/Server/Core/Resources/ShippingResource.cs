@@ -32,8 +32,6 @@ namespace iShop.Web.Server.Core.Resources
         [StringLength(50)]
         public string PhoneNumber { get; set; }
         public Guid OrderId { get; set; }
-        public OrderResource Order { get; set; }
-
         public ShippingResource()
         {
             ShippingState = ShippingState.None;

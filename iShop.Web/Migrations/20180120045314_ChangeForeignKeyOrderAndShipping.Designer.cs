@@ -12,9 +12,10 @@ using System;
 namespace iShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180120045314_ChangeForeignKeyOrderAndShipping")]
+    partial class ChangeForeignKeyOrderAndShipping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,11 +202,19 @@ namespace iShop.Web.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid>("InvoiceId");
+
                     b.Property<DateTime>("OrderedDate");
+
+                    b.Property<Guid?>("ShippingId");
 
                     b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ShippingId")
+                        .IsUnique()
+                        .HasFilter("[ShippingId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -289,9 +298,6 @@ namespace iShop.Web.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
 
                     b.ToTable("Shippings");
                 });
@@ -564,11 +570,16 @@ namespace iShop.Web.Migrations
                     b.HasOne("iShop.Web.Server.Core.Models.Order", "Order")
                         .WithOne("Invoice")
                         .HasForeignKey("iShop.Web.Server.Core.Models.Invoice", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Order", b =>
                 {
+                    b.HasOne("iShop.Web.Server.Core.Models.Shipping", "Shipping")
+                        .WithOne("Order")
+                        .HasForeignKey("iShop.Web.Server.Core.Models.Order", "ShippingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("iShop.Web.Server.Core.Models.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
@@ -598,14 +609,6 @@ namespace iShop.Web.Migrations
                     b.HasOne("iShop.Web.Server.Core.Models.Product", "Product")
                         .WithMany("ProductCategories")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("iShop.Web.Server.Core.Models.Shipping", b =>
-                {
-                    b.HasOne("iShop.Web.Server.Core.Models.Order", "Order")
-                        .WithOne("Shipping")
-                        .HasForeignKey("iShop.Web.Server.Core.Models.Shipping", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

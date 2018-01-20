@@ -35,7 +35,7 @@ namespace iShop.Web.Server.APIs
         {
             var shipping = await _unitOfWork.ShippingRepository.GetShippings();
 
-            var shippingResource = _mapper.Map<IEnumerable<Shipping>, IEnumerable<Shipping>>(shipping);
+            var shippingResource = _mapper.Map<IEnumerable<Shipping>, IEnumerable<ShippingResource>>(shipping);
 
             return Ok(shippingResource);
         }

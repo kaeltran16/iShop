@@ -7,7 +7,6 @@ namespace iShop.Web.Server.Core.Models
 {
     public class Product : EntityBase
     {
-        public Guid InventoryId { get; set; }
         public Inventory Inventory { get; set; }
         public string Sku { get; set; }
         public string Name { get; set; }
