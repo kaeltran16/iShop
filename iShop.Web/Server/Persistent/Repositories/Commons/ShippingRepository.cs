@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using iShop.Web.Server.Core.Commons;
 using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace iShop.Web.Server.Persistent.Repositories.Commons
 {
@@ -14,14 +16,23 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
         {
         }
 
-        public async Task<Shipping> GetShipping(Guid id)
+        public async Task<Shipping> GetShipping(Guid id, bool isIncludeRelative = true)
         {
-            return await GetSingleAsync(c => c.Id == id);
+            Expression<Func<Shipping, bool>> predicate = o => o.Id == id;
+              return isIncludeRelative
+                ? await GetSingleAsync(
+                    predicate: predicate,
+                    includeProperties: source => source
+                        .Include(o => o.Order))
+                : await GetSingleAsync(predicate);
         }
 
-        public async Task<IEnumerable<Shipping>> GetShippings()
+        public async Task<IEnumerable<Shipping>> GetShippings(bool isIncludeRelative = true)
         {
-            return await GetAllAsync();
+            return isIncludeRelative
+                ? await GetAllAsync(includeProperties: source => source
+                    .Include(o => o.Order))
+                : await GetAllAsync();
         }
     }
 }

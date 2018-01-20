@@ -12,9 +12,10 @@ using System;
 namespace iShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180120044652_MakeOrderShippingZeroOrOne")]
+    partial class MakeOrderShippingZeroOrOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,7 +202,11 @@ namespace iShop.Web.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid>("InvoiceId");
+
                     b.Property<DateTime>("OrderedDate");
+
+                    b.Property<Guid?>("ShippingId");
 
                     b.Property<Guid>("UserId");
 
@@ -564,7 +569,7 @@ namespace iShop.Web.Migrations
                     b.HasOne("iShop.Web.Server.Core.Models.Order", "Order")
                         .WithOne("Invoice")
                         .HasForeignKey("iShop.Web.Server.Core.Models.Invoice", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Order", b =>

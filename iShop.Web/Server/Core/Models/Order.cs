@@ -10,10 +10,8 @@ namespace iShop.Web.Server.Core.Models
         public Guid UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-        public Guid ShippingId { get; set; }
         public Shipping Shipping { get; set; }
 
-        public Guid InvoiceId { get; set; }
         public Invoice Invoice { get; set; }
 
         public ICollection<OrderedItem> OrderedItems { get; set; }
