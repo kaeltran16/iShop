@@ -15,15 +15,16 @@ export class UserService {
     //create User 
     createUser(user: User) {
         //
-        return this.http.post(this.url + '/api/accounts/register',
+        return this.http.post(this.url + 'api/Accounts/register',
             {
                 firstname: user.firstName,
                 lastname: user.lastName,
                 password: user.password,
                 email: user.email,
                 ward: user.ward,
-                district: user.district
-            });
+                district: user.district,
+                phoneNumber: user.phoneNumber
+    });
 
 
     }

@@ -5,14 +5,16 @@
      public lastName: string;
      public email: string;
      public ward: string;
-     public district:string;
-    constructor(firstName: string, lastName: string, password: string,email: string, ward: string, district: string) {
+     public district: string;
+     public phoneNumber:string;
+     constructor(firstName: string, lastName: string, password: string, email: string, ward: string, district: string, phoneNumber:string) {
          this.password = password;
          this.firstName = firstName;
          this.lastName = lastName;
          this.email = email;
          this.ward = ward;
          this.district = district;
+         this.phoneNumber = phoneNumber;
      }
 
 

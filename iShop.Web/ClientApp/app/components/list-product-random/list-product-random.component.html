@@ -1,12 +1,11 @@
 ﻿<div class="card" style=" height: 430px; margin-top: 30px;">
     <div class="card" style="height: 45px;">
         <div style="padding-left: 10px; font-size: 20px; font-weight: bold;">{{title}}</div>
-        <button [routerLink]="['/more-product',name]" class="btn btn-primary" style=" position: absolute;  right: 0px; top: 2px; background-color: springgreen; ">Xem tất cả</button>
 
     </div>
 
     <div style="display: inline-block;">
-        <div *ngFor="let item of products |filter:name  |fill:start:end "
+        <div *ngFor="let item of products  |fill:start:end "
              class="product">
 
             <card   [product]="item"></card>
