@@ -15,6 +15,7 @@ namespace iShop.Web.Server.Persistent.UnitOfWork.Contracts
         IOrderRepository OrderRepository { get; }
         IImagesRepository ImageRepository { get; }
         ISupplierRepository SupplierRepository { get; }
+        IShippingRepository ShippingRepository { get; }
         Task<bool> CompleteAsync();
     }
 

@@ -9,10 +9,6 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
         public void Configure(EntityTypeBuilder<Shipping> builder)
         {
             builder
-                .Property(s => s.OrderId)
-                .IsRequired();
-
-            builder
                 .Property(s => s.Charge)
                 .IsRequired();
 
@@ -21,7 +17,7 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
                 .IsRequired();
 
             builder
-                .Property(s => s.Disctrict)
+                .Property(s => s.District)
                 .IsRequired();
             builder
                 .Property(s => s.Ward)
@@ -33,7 +29,7 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
             builder
                 .HasOne(s => s.Order)
                 .WithOne(o => o.Shipping)
-                .HasForeignKey<Shipping>(s => s.OrderId)
+                .HasForeignKey<Order>(s => s.ShippingId)
                 .OnDelete(DeleteBehavior.Restrict);
 
         }

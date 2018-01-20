@@ -17,6 +17,7 @@ namespace iShop.Web.Server.Persistent.UnitOfWork.Commons
         private IOrderRepository _orderRepository;
         private ImageRepository _imageRepository;
         private SupplierRepository _supplierRepository;
+        private ShippingRepository _shippingRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -42,6 +43,10 @@ namespace iShop.Web.Server.Persistent.UnitOfWork.Commons
         public ISupplierRepository SupplierRepository =>
             _supplierRepository ?? (_supplierRepository
                 = new SupplierRepository(_context));
+
+        public IShippingRepository ShippingRepository =>
+            _shippingRepository ?? (_shippingRepository
+                = new ShippingRepository(_context));
         // Complete current unit of work, save changes to the database
         public async Task<bool> CompleteAsync()
         {
