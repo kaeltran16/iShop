@@ -105,38 +105,39 @@ namespace iShop.Web.Server.APIs
             return CreatedAtRoute( ApplicationConstants.ControllerName.ShoppingCart, new { id = shoppingCart.Id }, result);
         }
 
-        // PUT
-        //[HttpPut("{id}")]
-        //[Authorize]
-        // public async Task<IActionResult> Update(Guid id, [FromBody]SavedShoppingCartResource shoppingCartResource)
-        // {
-        //     if (!ModelState.IsValid)
-        //         return BadRequest(ModelState);
+        //PUT
+       [HttpPut("{id}")]
+       [Authorize]
+         public async Task<IActionResult> Update(string id, [FromBody]SavedShoppingCartResource shoppingCartResource)
+        {
+            bool isValid = Guid.TryParse(id, out var shoppingCartId);
+            if (!isValid)
+                return InvalidId(id);
 
-        //     var shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        //     if (shoppingCarts == null)
-        //         return NotFound(
-        //             new ApplicationError { Code = 404, Message = "item with id " + id + " not existed" }.ToString());
+            var shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCartId);
 
-        //     _mapper.Map<SavedShoppingCartResource, ShoppingCart>(shoppingCartResource, shoppingCarts);
+            if (shoppingCart == null)
+                return NotFound(shoppingCartId);
 
-        //     if (!await _unitOfWork.CompleteAsync())
-        //     {
-        //         _logger.LogError(LoggingEvents.Fail, "item with id " + id + " failed to saved");
-        //         return StatusCode(500,
-        //             new ApplicationError { Code = 500, Message = "item with id " + id + " failed to saved" }
-        //                 .ToString());
-        //     }
+            _mapper.Map(shoppingCartResource, shoppingCart);
 
-        //     shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCarts.Id);
+            if (!await _unitOfWork.CompleteAsync())
+            {
+                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                return FailedToSave(shoppingCart.Id);
+            }
 
-        //     var result = _mapper.Map<ShoppingCart, SavedShoppingCartResource>(shoppingCarts);
+            shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCart.Id);
 
-        //     _logger.LogInformation(LoggingEvents.Updated, "item with id " + id + " updated");
+            var result = _mapper.Map<ShoppingCart, SavedShoppingCartResource>(shoppingCart);
 
-        //     return Ok(result);
-        // }
+            _logger.LogMessage(LoggingEvents.Updated, ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+
+            return Ok(result);
+        }
 
 
         // DELETE

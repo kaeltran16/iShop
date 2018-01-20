@@ -7,8 +7,8 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
     public class OrderConfigurations: IEntityTypeConfiguration<Order>
     {
         public void Configure(EntityTypeBuilder<Order> builder)
-        {
-              
+        {      
+           
         }
     }
 }

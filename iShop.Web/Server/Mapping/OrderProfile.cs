@@ -21,7 +21,7 @@ namespace iShop.Web.Server.Mapping
                 .ForMember(or => or.Shipping, opt => opt.MapFrom(o => o.Shipping))
                 .ForMember(or => or.Invoice, opt => opt.MapFrom(o => o.Invoice));
 
-            CreateMap<OrderResource, Order>()
+            CreateMap<Order, SavedOrderResource>()
                 .ForMember(o => o.Id, opt => opt.Ignore())
                 .ForMember(d => d.OrderedItems, opt => opt.Ignore());
 
@@ -39,31 +39,14 @@ namespace iShop.Web.Server.Mapping
                             new OrderedItem() { ProductId = oir.ProductId, Quantity = oir.Quantity, OrderId = or.Id })
                         .ToList();
 
+                    var removedOrderedItems =
+                        o.OrderedItems.Where(oi => or.OrderedItems.Any(oir=>oir.ProductId!=oi.ProductId)).ToList();
+                    foreach (var oi in removedOrderedItems)
+                        o.OrderedItems.Remove(oi);
+
                     // Add it to the database
                     foreach (var oi in addedOrderedItems)
                         o.OrderedItems.Add(oi);
-
-                    var removedFeatures =
-                        o.OrderedItems.Where(oi => or.OrderedItems.Any(oir => oir.ProductId != oi.ProductId)).ToList();
-
-                    foreach (var oi in removedFeatures)
-                        o.OrderedItems.Remove(oi);
-
-                    // create the invoice base on the data from order
-                    var invoice = new Invoice() { Id = Guid.NewGuid(), OrderId = or.Id };
-                    o.Invoice = invoice;
-
-                    // create the shipping base on the data from order
-                    var shipping = new Shipping()
-                    {
-                        Id = Guid.NewGuid(),
-                    };
-                    Mapper.Map<ShippingResource, Shipping>(or.Shipping, shipping);
-                    o.Shipping = shipping;
-
-                    // assign value in the order table
-                    o.InvoiceId = o.Invoice.Id;
-                    o.ShippingId = o.Shipping.Id;
                 });
 
 

@@ -30,10 +30,10 @@ namespace iShop.Web.Server.Mapping
                     foreach (var c in addedCarts)
                         s.Carts.Add(c);
 
-                    var removedCarts =
-                        s.Carts.Where(c => sr.Carts.Any(cr => cr.ProductId != c.ProductId)).ToList();
-                    foreach (var c in removedCarts)
-                        s.Carts.Remove(c);
+                    var removedCartItems =
+                        s.Carts.Where(oi => sr.Carts.Any(oir=>oir.ProductId!=oi.ProductId)).ToList();
+                    foreach (var oi in removedCartItems)
+                        s.Carts.Remove(oi);
                 });
         }
 

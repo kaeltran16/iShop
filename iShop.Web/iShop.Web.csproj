@@ -64,6 +64,8 @@
     <Compile Remove="Migrations\20180106070048_InitialModel.Designer.cs" />
     <Compile Remove="Migrations\20180106070245_InitialModel.cs" />
     <Compile Remove="Migrations\20180106070245_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20180119174528_ChangeRelationshipOrderShippingToZeroOrOne.cs" />
+    <Compile Remove="Migrations\20180119174528_ChangeRelationshipOrderShippingToZeroOrOne.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

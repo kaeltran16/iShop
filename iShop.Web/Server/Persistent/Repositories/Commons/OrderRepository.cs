@@ -47,13 +47,13 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
             Expression<Func<Order, bool>> predicate = o => o.Id == orderId;
 
             return isIncludeRelative
-                ? await GetSingleAsync(predicate)
-                : await GetSingleAsync(predicate,
+                ? await GetSingleAsync(predicate,
                     includeProperties: source => source
                         .Include(o => o.OrderedItems)
                         .Include(o => o.Shipping)
                         .Include(o => o.Invoice)
-                        .Include(o => o.User));
+                        .Include(o => o.User))
+                : await GetSingleAsync(predicate);
         } 
     }
 }

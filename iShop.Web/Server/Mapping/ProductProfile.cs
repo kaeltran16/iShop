@@ -41,9 +41,9 @@ namespace iShop.Web.Server.Mapping
                     foreach (var pc in addedCategories)
                         p.ProductCategories.Add(pc);
 
-                    var removedFeatures =
+                    var removedCategories =
                         p.ProductCategories.Where(c => !pr.Categories.Contains(c.CategoryId)).ToList();
-                    foreach (var pc in removedFeatures)
+                    foreach (var pc in removedCategories)
                         p.ProductCategories.Remove(pc);
                 })
 

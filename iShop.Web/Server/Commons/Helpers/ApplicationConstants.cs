@@ -27,6 +27,7 @@ namespace iShop.Web.Server.Commons.Helpers
             public const string ShoppingCart = "ShoppingCart";
             public const string Image = "Image";
             public const string Supplier = "Supplier";
+            public const string Shipping = "Shipping";
         }
         public static class RoleName
         {
@@ -37,6 +38,12 @@ namespace iShop.Web.Server.Commons.Helpers
         {
             public const string Users = "Users";
             public const string SuperUsers = "SuperUsers";
+        }
+
+        public static class ClaimName
+        {
+            public const string User = "User";
+            public const string SuperUser = "SuperUser";
         }
     }
 }
