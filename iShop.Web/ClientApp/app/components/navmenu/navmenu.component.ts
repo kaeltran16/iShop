@@ -5,7 +5,7 @@ import { trigger, transition, state, animate, style } from '@angular/animations'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ProductService } from '../../service/product.service';
 import { SharedService } from '../../service/shared-service';
-
+import { UserService } from '../../service/user.service';
 @Component({
     selector: 'nav-menu',
     templateUrl: './navmenu.component.html',
@@ -27,31 +27,33 @@ import { SharedService } from '../../service/shared-service';
 export class NavMenuComponent implements OnInit{
     ngOnInit() {
       
-        this.repeat = 0;
+   
         //  update total sent to navbar component
         this.sharedService.changeEmitted$.subscribe(info => {
 
-            this.repeat = 0;
-            this.repeat++;
-            
-            this.totalPrice = 0;
-            this.totalQuantity = 0;
-            if (this.repeat ===1) {
-                for (var i = 0; i < localStorage.length; ++i) {
-                    //get local storaage 
-                    let carts = JSON.parse(String(localStorage.getItem(String(localStorage.key(i)))));
-                    this.productService.getProduct(carts.idProduct).subscribe(p => {
-                        //count total price and total quantity
-                        this.totalPrice = this.totalPrice + carts.quantity * p.price;
-                        this.totalQuantity += carts.quantity;
+            setTimeout(() => {
+                    this.totalPrice = 0;
+                    this.totalQuantity = 0;
+                
+                    for (var i = 0; i < localStorage.length; ++i) {
+                        //get local storage 
+                        if (localStorage.key(i) !== "token") {
+                            let carts = JSON.parse(String(localStorage.getItem(String(localStorage.key(i)))));
+                            this.productService.getProduct(carts.productId).subscribe(p => {
+                                //count total price and total quantity
+                                this.totalPrice = this.totalPrice + carts.quantity * p.price;
+                                this.totalQuantity += carts.quantity;
 
 
-                    });
+                            });
+                        }
 
 
-                }
-                return;
-            }
+                    }
+                },
+                1000);
+
+
         });
     }
     repeat:number=0;
@@ -79,21 +81,35 @@ export class NavMenuComponent implements OnInit{
         private route: ActivatedRoute,
         private router: Router,
         private productService: ProductService,
-        private sharedService: SharedService
+        private sharedService: SharedService,
+        private userService:UserService
+
       
     ) {
-       
-
-       
+        // get current user when token valid
+        let currentToken = localStorage.getItem("token");
+        if (currentToken)
+           
+                this.userService.info(currentToken).subscribe(user => {
+                    this.userName = user.lastName.toUpperCase();
+                    this.logged = true;
+                },
+                    err => {
+                        this.logged = false;
+//                         localStorage.removeItem("token");
+                    });
+          
+        // when token change ,  update user 
+        this.sharedService.changeTokenEmitted$.subscribe(user => this.userName = user.lastName.toUpperCase());
     }
    
 
 
-    exitLogin(isLogin: any) {
+    exitLogin(isLogin: boolean) {
         
-        if (isLogin.login) {
+        if (isLogin) {
             this.modalRef.hide();
-            this.userName = isLogin.userName;
+         
             this.logged = true;
         }
         
@@ -114,6 +130,14 @@ export class NavMenuComponent implements OnInit{
     closeShoppingCart() {
       
         this.isShow = false;
+    }
+    // logout
+    logout() {
+        let token = localStorage.getItem("token");
+        this.userService.logout(token);
+        this.logged = false;
+        this.userName = "Đăng nhập";
+        localStorage.removeItem("token");
     }
    
 }

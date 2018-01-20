@@ -161,6 +161,11 @@
       "integrity": "sha1-TgzvrQnfXsSMjdQEM1EvhLFWjWE=",
       "dev": true
     },
+    "@types/underscore": {
+      "version": "1.8.7",
+      "resolved": "https://registry.npmjs.org/@types/underscore/-/underscore-1.8.7.tgz",
+      "integrity": "sha512-vMSV6VOWFVBcud1bBUKJVVhXmmx136Run3p1xK00XViC2pQnXXrveU79S13h2+Im/TBhtMtTufid+dbysd3m/g=="
+    },
     "@types/webpack-env": {
       "version": "1.13.0",
       "resolved": "https://registry.npmjs.org/@types/webpack-env/-/webpack-env-1.13.0.tgz",
@@ -4434,7 +4439,7 @@
     "ngx-cookie-service": {
       "version": "1.0.10",
       "resolved": "https://registry.npmjs.org/ngx-cookie-service/-/ngx-cookie-service-1.0.10.tgz",
-      "integrity": "sha512-TAXpQsIONAupTqkUDcH44hFQsLTvsXpxM80eKgxvy3vhBFfT1uIdR7BRhM7VpUW5J7BN9qCbGNgLN5lsnVu7pw=="
+      "integrity": "sha1-3Bf/TxoCJM87DHp/Ur/yt5g5bj0="
     },
     "no-case": {
       "version": "2.3.1",
@@ -6597,6 +6602,11 @@
       "resolved": "https://registry.npmjs.org/ultron/-/ultron-1.0.2.tgz",
       "integrity": "sha1-rOEWq1V80Zc4ak6I9GhTeMiy5Po=",
       "dev": true
+    },
+    "underscore": {
+      "version": "1.8.3",
+      "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.8.3.tgz",
+      "integrity": "sha1-Tz+1OxBuYJf8+ctBCfKl6b36UCI="
     },
     "union-value": {
       "version": "0.2.4",

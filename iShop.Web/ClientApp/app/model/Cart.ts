@@ -1,8 +1,8 @@
 ﻿export class Cart {
-    idProduct: string;
+    productId: string;
     quantity: number;
     constructor(idProduct:string, quantity:number) {
-        this.idProduct = idProduct;
+        this.productId = idProduct;
         this.quantity = quantity;
     }
 }

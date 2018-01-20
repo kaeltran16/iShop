@@ -13,7 +13,8 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProductService } from "./service/product.service";
 import { UserService } from "./service/user.service";
 import { SharedService } from "./service/shared-service";
-
+import { OrderService } from "./service/order.service";
+import { PagerService } from "./service/page.service";
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -37,6 +38,9 @@ import { ListProductComponent } from './components/list-product/list-product.com
 
 // custom validation 
 import { EqualValidator } from './components/register/custom-validation';
+
+
+
 @NgModule({
     declarations: [
         EqualValidator,
@@ -82,7 +86,8 @@ import { EqualValidator } from './components/register/custom-validation';
     providers: [
         ProductService,
         UserService,
-        SharedService
+        SharedService,
+        OrderService, PagerService
     ]
 })
 export class AppModuleShared {

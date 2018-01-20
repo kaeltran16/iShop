@@ -11,6 +11,8 @@ tfoot tr td {
     font-weight: bold
 }
 
-
+.firstUpperCase {
+    text-transform: capitalize;
+}
  
 
