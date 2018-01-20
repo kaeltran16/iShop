@@ -84,9 +84,9 @@
                                         <register (onclick)="exitLogin($event)"></register>
                                     </ng-template>
                                 </div>
-                                <div *ngIf="logged">
+                                <div *ngIf="logged" >
                                     <a class="dropdown-item">Giỏ hàng của tôi</a>
-                                    <a class="dropdown-item">Đăng Xuất</a>
+                                    <a class="dropdown-item" on-click="logout();">Đăng Xuất</a>
                                 </div>
                             </div>
 

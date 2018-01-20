@@ -10,7 +10,14 @@ export class SharedService {
     // Service message commands
     // call when have any value change 
     emitChange(change: any) {
-     
         this.emitChangeSource.next(change);
+    }
+
+   // value change token
+    private emitChangeTokenSource = new Subject<any>();
+
+    changeTokenEmitted$ = this.emitChangeTokenSource.asObservable();
+    emitChangeToken(change: any) {
+        this.emitChangeTokenSource.next(change); 
     }
 }

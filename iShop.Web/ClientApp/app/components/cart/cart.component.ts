@@ -19,21 +19,21 @@ export class CartComponent implements OnInit {
         
         this._sharedService.changeEmitted$.subscribe(info => {
             this.carts = [];
-            this.a = localStorage.length;
+            this.a = localStorage.length+1;
             if (this.carts.length < localStorage.length) {
                 for (var i = 0; i < localStorage.length; ++i) {
-                    
-                    let cart = JSON.parse(String(localStorage.getItem(String(localStorage.key(i)))));
-                    this.productService.getProduct(cart.idProduct).subscribe(p => {
-                        this.carts.push({
-                           
-                            product: p,
-                            quantity: cart.quantity
+                    if (localStorage.key(i) !== "token") {
+                        let cart = JSON.parse(String(localStorage.getItem(String(localStorage.key(i)))));
+
+                        this.productService.getProduct(cart.productId).subscribe(p => {
+                            this.carts.push({
+                                product: p,
+                                quantity: cart.quantity
+                            });
+
                         });
 
-                    });
-
-
+                    } else this.a = localStorage.length;
                 }
             }
            

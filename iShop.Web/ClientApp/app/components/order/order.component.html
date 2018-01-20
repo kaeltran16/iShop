@@ -15,60 +15,112 @@
     <div class="col-7 card w-100">
         <div class="card h3 pt-3 text-center text-success">Chọn địa chỉ giao hàng </div>
         <br/>
-        <div>Địa chỉ 1</div>
-        <div class="card p-2 " (click)="chooseAddress(true);" [class.card-outline-success]="outline">
-            <div> Tên khách hàng : <span class="h5">Vũ Khắc Hợi</span></div>
-            <div> Địa chỉ : <span>Số 111 Tân Lâm Đạ đờn Lâm hà Lâm đông</span></div>
-        </div>
+        <div *ngIf="logged" >
+        <div>Địa chỉ </div>
+            <div class="card p-2 " (click)="chooseAddress(true);" [class.card-outline-success]="outline">
+                <div> Tên khách hàng : 
+                <span class="h5 firstUpperCase">
+                    <span>{{user?.firstName}}</span>
+                    <span class="ml-1 ">{{ user?.lastName }}</span>
+                </span></div>
+                <div> Địa chỉ :
+                    <span  class="firstUpperCase" >
+                        <span>{{user?.ward}}</span>
+                        <span class="ml-1">{{user?.district}}</span>
+                        <span class="ml-1">{{user?.city}}</span>
+                    </span>
+                </div>
+                <div> Điện thoại liên lạc :
+                    <span>{{user?.phoneNumber}} </span>
+                </div>
+            </div>
+            </div>
         <br/>
-        <div>Địa chỉ 2</div>
-        <div class="card p-2" (click)="chooseAddress(false);" [class.card-outline-success]="!outline">
-            <div> Tên khách hàng : <span class="h5">Vũ Khắc Hợi</span></div>
-            <div> Địa chỉ : <span>Số 111 Tân Lâm Đạ đờn Lâm hà Lâm đông</span></div>
-        </div>
+       
         
-        
+        <div  (click)="chooseAddress(false);">
         <a class="text-info pt-4" data-toggle="collapse" href="#newAddress" aria-expanded="false" aria-controls="collapseExample">
           Thêm địa chỉ
         </a>
        
         
-        <div class="collapse" id="newAddress">
-            <div class="card card-block">
-                <form>
-                    <div class="form-group">
-                        <label for="Name">Họ và Tên</label>
-                        <div class="input-group">
-                            <input #Name="ngModel" [(ngModel)]="name" type="text" id="Name" name="Name" class="form-control">
+            <div class="collapse " [class.show]="!logged" id="newAddress">
+                <div class="card card-block" [class.card-outline-success]="!outline">
+                    <form #f="ngForm">
+                        
+                        
+                        <div class="form-group">
+                            <label for="Name">Họ và Tên</label>
+                            <div class="input-group">
+                                <input #Name="ngModel"
+                                       [(ngModel)]="name"
+                                       type="text"
+                                       id="Name"
+                                       name="Name"
+                                       class="form-control"
+                                       required
+                                       [ngClass]="{'card-outline-danger': Name.errors?.required && (Name.touched ||f.submitted)}">
+                            </div>
+                            <div class="alert alert-danger" *ngIf="(Name.touched ||f.submitted) && Name.errors?.required"> *Bắt buộc*</div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="City">Thành Phố</label>
-                        <div class="input-group">
-                            <input #City="ngModel" [(ngModel)]="city" type="text" id="City" name="City" class="form-control">
+                        <div class="form-group">
+                            <label for="City">Thành Phố</label>
+                            <div class="input-group">
+                                <input #City="ngModel"
+                                       [(ngModel)]="city"
+                                       [disabled]="'true'"
+                                       type="text" id="City"
+                                       name="City"
+                                       class="form-control"
+                                       required
+                                       [ngClass]="{'card-outline-danger': City.errors?.required && (City.touched ||f.submitted)}">
+                            </div>
+                            <div class="alert alert-danger" *ngIf="(City.touched ||f.submitted) && City.errors?.required"> *Bắt buộc*</div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="District">Quận/Huyện</label>
-                        <div class="input-group">
-                            <input #District="ngModel" [(ngModel)]="district" type="text" id="District" name="District" class="form-control">
+                        <div class="form-group">
+                            <label for="District">Quận/Huyện</label>
+                            <div class="input-group">
+                                <input #District="ngModel"
+                                       [(ngModel)]="district"
+                                       type="text" id="District"
+                                       name="District"
+                                       class="form-control"
+                                       required
+                                       [ngClass]="{'card-outline-danger': District.errors?.required && (District.touched ||f.submitted)}">
+                            </div>
+                            <div class="alert alert-danger" *ngIf="(District.touched ||f.submitted) && District.errors?.required"> *Bắt buộc*</div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="Ward">Xã/Phường</label>
-                        <div class="input-group">
-                            <input #Ward="ngModel" [(ngModel)]="ward" type="text" id="Ward" name="Ward" class="form-control">
+                        <div class="form-group">
+                            <label for="Ward">Xã/Phường</label>
+                            <div class="input-group">
+                                <input #Ward="ngModel"
+                                       [(ngModel)]="ward"
+                                       type="text" id="Ward"
+                                       name="Ward"
+                                       class="form-control"
+                                       required
+                                       [ngClass]="{'card-outline-danger': Ward.errors?.required && (Ward.touched ||f.submitted)}">
+                            </div>
+                            <div class="alert alert-danger" *ngIf="(Ward.touched ||f.submitted) && Ward.errors?.required"> *Bắt buộc*</div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="Telephone">Số điện thoại</label>
-                        <div class="input-group">
-                            <input #Telephone="ngModel" [(ngModel)]="telephone" type="text" id="Telephone" name="Telephone" class="form-control">
+                        <div class="form-group">
+                            <label for="Telephone">Số điện thoại</label>
+                            <div class="input-group">
+                                <input #Telephone="ngModel"
+                                       [(ngModel)]="telephone"
+                                       type="text"
+                                       id="Telephone"
+                                       name="Telephone"
+                                       class="form-control"
+                                       required
+                                       [ngClass]="{'card-outline-danger': Telephone.errors?.required && (Telephone.touched ||f.submitted)}">
+                            </div>
+                            <div class="alert alert-danger" *ngIf="(Telephone.touched ||f.submitted) && Telephone.errors?.required"> *Bắt buộc*</div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+            </div>
     </div>
     
     
@@ -85,71 +137,29 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1.</th>
+            <tr *ngFor="let cart of carts; let i=index">
+                <th scope="row">{{i+1}}.</th>
                 <td class="text-left">
-                   
-                    Rau xalad
+                    {{cart.product.name}}
                 </td>
-                <td> 1</td>
-                <td >100.000 <sup>đ</sup></td>
+                <td> {{cart.quantity}}</td>
+                <td>{{cart.product.price*cart.quantity}} <sup>đ</sup></td>
                
             </tr>
-            <tr>
-                <th scope="row">2.</th>
-                <td class="text-left">
-                   
-                    Rau xalad
-                </td>
-                <td> 1</td>
-                <td >100.000 <sup>đ</sup></td>
-                
-            </tr>
-            <tr>
-                <th scope="row">3.</th>
-                <td class="text-left">
-                  
-                    Rau xalad
-                </td>
-                <td> 1</td>
-                <td >100.000 <sup>đ</sup></td>
-              
-            </tr>
-            <tr>
-                <th scope="row">4.</th>
-                <td class="text-left">
-                  
-                    Rau xalad
-                </td>
-                <td> 1</td>
-                <td >100.000 <sup>đ</sup></td>
-               
-            </tr>
-            <tr>
-                <th scope="row">5.</th>
-                <td class="text-left">
-                 
-                    Rau xalad
-                </td>
-                <td> 1</td>
-                <td >100.000 <sup>đ</sup></td>
-             
-            </tr>
+
             </tbody>
             <tfoot >
            
             <tr>
                 <th></th>
-                <td >
-
-                </td>
-                <td>
-                    <div class="font-weight-normal text-success pb-3" >Phí vận chuyển</div>
+               
+                <td colspan="2">
+                    <div class="font-weight-normal text-success pb-3 " >Phí vận chuyển</div>
                     <div>Tổng cộng</div>
                 </td>
                 <td>
                     <div class="font-weight-normal text-success pb-3" >Miễn phí</div>
-                    <div> 100000<sup>đ</sup></div>
+                    <div> {{totalPrice}}<sup>đ</sup></div>
                 </td>
             </tr>
 
@@ -162,7 +172,7 @@
                 </td>
 
                 <td colspan="2">
-                    <button class="btn-warning  p-2 w-100 rounded">Đặt hàng</button>
+                    <button class="btn-warning  p-2 w-100 rounded" on-click="book(f)">Đặt hàng</button>
                 </td>
             </tr>
             </tfoot>
@@ -171,3 +181,4 @@
 
     </div>
 </div>
+
