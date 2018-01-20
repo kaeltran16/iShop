@@ -37,8 +37,16 @@ export class UserService {
             ({ headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }) as any).map(t=>t.json());
     }
 
-    logout() {
-        
+    logout(token: any) {
+        return this.http.get(this.url + 'connect/logout',
+            ({
+                headers: {
+                    //USE credentials mode
+                    withCredentials: true,
+                    'Authorization': 'Bearer ' + token
+                }
+            }) as any
+        )
     }
     //Get info of User
     info(token: any) {
@@ -51,7 +59,6 @@ export class UserService {
                 }
             }) as any
            ).map(u=>u.json());
-    }
-
+    } 
 
 }

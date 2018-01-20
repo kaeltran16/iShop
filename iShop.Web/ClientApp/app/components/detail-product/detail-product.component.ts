@@ -33,14 +33,9 @@ export class DetailProductComponent implements OnInit {
         let cart :Cart = new Cart(this.product.id, this.quantity);
         localStorage.setItem(this.product.id, JSON.stringify(cart));
 
-        var a = localStorage.getItem(this.product.id);
-        var b = JSON.parse(String(a));
-        console.log(b);
+        
 
-        //get local storage
-//        for (var i = 0; i < localStorage.length; ++i) {
-//            console.log(JSON.parse(String(localStorage.getItem(String(localStorage.key(i))))));
-//        }
+
         
     }
 

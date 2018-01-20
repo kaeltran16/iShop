@@ -2,11 +2,11 @@
 
 
 export class ShoppingCart {
-    id: string;
+   
     userId: string;
-    carts: Cart[];
-    constructor(id: string, userId: string, carts: Cart[]) {
-        this.id = id;
+    carts: Cart[]=[];
+    constructor( userId: string, carts: Cart[]) {
+      
         this.userId = userId;
         this.carts = carts;
     }
