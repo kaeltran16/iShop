@@ -29,6 +29,7 @@ namespace iShop.Web.Server.Commons.Extensions
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IImagesRepository, ImageRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<IShippingRepository, ShippingRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
@@ -59,9 +60,7 @@ namespace iShop.Web.Server.Commons.Extensions
                     opt.User.RequireUniqueEmail = true;
                 })
                 // Specify where this data will be stored
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                // Add token for reseting password, email..
-                .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -100,7 +99,8 @@ namespace iShop.Web.Server.Commons.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenSettings.Key)),
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        ValidAudience = tokenSettings.Audience
+                        ValidAudience = tokenSettings.Audience,
+                        RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                     };
 
                 });
@@ -154,10 +154,12 @@ namespace iShop.Web.Server.Commons.Extensions
             services.AddAuthorization(cfg =>
             {
                 cfg.AddPolicy(ApplicationConstants.PolicyName.SuperUsers,
-                    p => p.RequireClaim(ApplicationConstants.RoleName.SuperUser, "true"));
+                    opt=>opt.RequireClaim(ApplicationConstants.ClaimName.SuperUser, "true"));
+                //cfg.AddPolicy(ApplicationConstants.PolicyName.SuperUsers,
+                //    p => p.RequireRole(ApplicationConstants.RoleName.SuperUser));
 
                 cfg.AddPolicy(ApplicationConstants.PolicyName.Users,
-                    p => p.RequireClaim(ApplicationConstants.RoleName.User, "true"));
+                    p => p.RequireClaim(ApplicationConstants.ClaimName.User, "true"));
 
             });
             return services;

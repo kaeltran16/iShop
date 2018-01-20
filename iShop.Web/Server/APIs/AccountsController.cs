@@ -55,9 +55,9 @@ namespace iShop.Web.Server.APIs
             // Add roles to the User 
             var roleResult = await _userManager.AddToRoleAsync(currentUser, ApplicationConstants.RoleName.User);
 
+            var claimResult = await _userManager.AddClaimAsync(currentUser, new Claim(ApplicationConstants.ClaimName.User, "true"));
             // Add claims as well
-            var claimResult =
-                await _userManager.AddClaimAsync(currentUser, new Claim(ApplicationConstants.RoleName.User, "true"));
+           
 
             // Everything is fine, return 200 and log 
             if (createResult.Succeeded && roleResult.Succeeded && claimResult.Succeeded)

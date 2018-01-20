@@ -13,6 +13,10 @@ namespace iShop.Web.Server.Core.Resources
         [Required]
         public DateTime ShippingDate { get; set; }
         public ShippingState ShippingState { get; set; }
+        [Required] 
+        public string FirstName { get; set; }
+        [Required] 
+        public string LastName { get; set; }
         [Required]
         public double Charge { get; set; }
         [Required]
@@ -20,14 +24,15 @@ namespace iShop.Web.Server.Core.Resources
         public string Ward { get; set; }
         [Required]
         [StringLength(50)]
-        public string Disctrict { get; set; }
+        public string District { get; set; }
         [Required]
         [StringLength(50)]
         public string City { get; set; }
         [Required]
         [StringLength(50)]
         public string PhoneNumber { get; set; }
-
+        public Guid OrderId { get; set; }
+        public OrderResource Order { get; set; }
 
         public ShippingResource()
         {
