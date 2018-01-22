@@ -3,7 +3,7 @@ import { SharedService } from '../../service/shared-service';
 import { Cart } from "../../model/Cart";
 import {ShoppingCart } from "../../model/ShoppingCart";
 
-import { UserService } from '../../service/user.service';
+
 
 
 
@@ -64,26 +64,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
 
-        this.sharedService.changeEmitted$.subscribe(
-            info => {
-                this.infoCart = info;
-            });
-
     }
-    carts:Cart[]=[];
-    infoCart:any;
-    shoppingCart:ShoppingCart;
+   
     constructor(
-        private sharedService: SharedService,
-    
-        private userService: UserService
     ) {
-    
     }
 
 
   
     ngOnDestroy(): void {
-//        localStorage.setItem("token", "hoi");
+        
     }
 }

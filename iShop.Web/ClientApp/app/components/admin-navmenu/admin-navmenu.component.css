@@ -1,0 +1,31 @@
+
+
+.backgroundLeft {
+    background-color: rgb(42,63,84);
+    color: white;
+
+}
+.backgroundRight {
+    background-color: whitesmoke;
+    height: 2000px;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    width: 100%;
+    background-color: rgb(42,63,84);
+}
+
+
+ ul li a {
+    display: block;
+  
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul li a:hover {
+    background-color: rgb(127, 180, 1);
+}

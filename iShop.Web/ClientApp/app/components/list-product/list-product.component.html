@@ -1,7 +1,7 @@
 ﻿<div class="card" style=" height: 430px; margin-top: 30px;">
     <div class="card" style="height: 45px;">
-        <div style="padding: 12px 16px; font-size: 20px; font-weight: bold;">{{title}}</div>
-        <button routerLink="/more-product" class="btn btn-primary" style=" position: absolute;  right: 0px; top: 2px; background-color: springgreen; ">Xem tất cả</button>
+        <div style="padding-left: 10px; font-size: 20px; font-weight: bold;">{{title}}</div>
+        <button [routerLink]="['/more-product',name]" class="btn btn-primary" style=" position: absolute;  right: 0px; top: 2px; background-color: springgreen; ">Xem tất cả</button>
 
     </div>
 
@@ -12,9 +12,9 @@
             <card   [product]="item"></card>
             
         </div>
-        <a *ngIf="!viewProduct" (click)="nextPopular();"> <img src="" style="position: absolute; width: 100px; top: 40%; right: -20px;" /></a>
-        <a *ngIf="startPopular!=1" (click)="prePopular();"> <img src="" style="position: absolute; width: 100px; top: 40%; left: -20px;" /></a>
-        <a *ngIf="viewProduct"> <img src="" style="position: absolute; top: 50%; right: 10px;" /></a>
+<!--        <a *ngIf="!viewProduct" (click)="nextPopular();"> <img src="" style="position: absolute; width: 100px; top: 40%; right: -20px;" /></a>-->
+<!--        <a *ngIf="startPopular!=1" (click)="prePopular();"> <img src="" style="position: absolute; width: 100px; top: 40%; left: -20px;" /></a>-->
+<!--        <a *ngIf="viewProduct"> <img src="" style="position: absolute; top: 50%; right: 10px;" /></a>-->
     </div>
 
 </div>

@@ -1,9 +1,9 @@
  
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { Http } from '@angular/http';
-
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import 'rxjs/add/operator/map'
-
+import { SharedService } from '../../service/shared-service';
 import * as _ from 'underscore';
 import { PagerService } from '../../service/page.service';
 import { ProductService } from '../../service/product.service';
@@ -14,11 +14,16 @@ import { ProductService } from '../../service/product.service';
     styleUrls: ['./more-product.component.css']
 })
 export class MoreProductComponent implements OnInit {
-    constructor(private http: Http, private pagerService: PagerService, private productService: ProductService ) { }
-
+    constructor(private http: Http,
+        private pagerService: PagerService,
+        private productService: ProductService,
+        private route: ActivatedRoute,
+        private sharedService: SharedService
+    ) { }
+   
     // array of all items to be paged
     private allItems: any[];
-
+    category: string | null;
     // pager object
     pager: any = {};
 
@@ -27,12 +32,25 @@ export class MoreProductComponent implements OnInit {
 
     ngOnInit() {
         this.productService.getProducts().subscribe(p => {
+            // set items to json response
+            this.allItems = p;
+            this.category = this.route.snapshot.paramMap.get('title');
+
+            // initialize to page 1
+            this.setPage(1);
+        });
+        this.sharedService.changeCategoryEmitted$.subscribe(info => {
+            
+            this.productService.getProducts().subscribe(p => {
                 // set items to json response
                 this.allItems = p;
+                this.category = this.route.snapshot.paramMap.get('title');
 
                 // initialize to page 1
                 this.setPage(1);
             });
+        });
+       
     }
 
     setPage(page: number) {

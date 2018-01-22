@@ -10,6 +10,7 @@
             <span class="green"><a>01665240627</a> </span>
         </span>
         <div class="language">
+            <span><button class="btn btn-success">Quản Lý</button></span>
             <span>Tiếng việt</span>
             <span>Trợ giúp?</span>
         </div>
@@ -23,9 +24,9 @@
                 <li><a> <img class="cart  " src="/icon/cart.PNG" alt="Girl" /></a></li>
                 <li> <a>  <input type="text" placeholder="Search" /></a> </li>
 
-                <li class="float-right mr-5">
-                    <a class="text-success" (click)="openShoppingCart();" routerLink="/shopping-cart">
-                        <div>
+                <li class="float-right mr-5" >
+                    <a class="text-success" (click)="openShoppingCart();"   routerLink="/shopping-cart">
+                        <div>   
                             <span>
 
                                 <img class="cart  " src="/icon/cart.PNG" alt="Cart" />
@@ -103,7 +104,7 @@
         <ul>
             <li><a (click)="closeShoppingCart();" routerLink="/home" >Trang chủ</a></li>
             <li>
-                <item-menu [title]="'Thịt và Trứng'" [categories]="meet">
+                <item-menu [title]="'Thịt và Trứng'" [short]="'t'" >
 
                 </item-menu>
             </li>
@@ -111,7 +112,7 @@
 
 
             <li>
-                <item-menu [title]="'Thủy Hải Sản'" [categories]="seaFood">
+                <item-menu [title]="'Thủy Hải Sản'" [short]="'o'" >
 
                 </item-menu>
             </li>

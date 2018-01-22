@@ -3,13 +3,13 @@
 export class Order {
 
     userId: string;
-    shipping:any;
-    carts: any[] = [];
-    constructor(userId: string, carts: any[], shipping: any = {}) {
+ 
+    orderedItems: any[] = [];
+    constructor(userId: string, orderedItems: any[]) {
 
         this.userId = userId;
-        this.carts = carts;
-        this.shipping = shipping;
+        this.orderedItems = orderedItems;
+       
     }
  
 }

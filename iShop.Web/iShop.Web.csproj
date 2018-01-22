@@ -72,6 +72,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\custom-pipe\fill-pipe.ts" />
+    <None Remove="ClientApp\app\components\custom-pipe\filter-category-pipe.ts" />
     <None Remove="ClientApp\app\components\custom-pipe\filter-pipe.ts" />
     <None Remove="ClientApp\app\components\footer\footer.component.ts" />
     <None Remove="ClientApp\app\components\register\custom-validation.ts" />
@@ -94,6 +95,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\fill-pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\filter-category-pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\custom-pipe\filter-pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\footer\footer.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\register\custom-validation.ts" />

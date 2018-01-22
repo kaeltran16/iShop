@@ -203,7 +203,7 @@ namespace iShop.Web.Migrations
 
                     b.Property<DateTime>("OrderedDate");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid?>("UserId");
 
                     b.HasKey("Id");
 
@@ -285,6 +285,8 @@ namespace iShop.Web.Migrations
 
                     b.Property<int>("ShippingState");
 
+                    b.Property<string>("UserName");
+
                     b.Property<string>("Ward")
                         .IsRequired();
 
@@ -303,7 +305,7 @@ namespace iShop.Web.Migrations
 
                     b.Property<DateTime>("PlacedDate");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid?>("UserId");
 
                     b.HasKey("Id");
 
