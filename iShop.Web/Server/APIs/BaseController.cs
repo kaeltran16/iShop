@@ -76,7 +76,7 @@ namespace iShop.Web.Server.APIs
                 new ApplicationError
                 {
                     Error = ApplicationConstants.Error.UnSupportedType,
-                    ErrorDescription = "The type is not supported. The supported types are: " + supportedType
+                    ErrorDescription = "The type is not supported."
                 }.ToString());
         }
     }

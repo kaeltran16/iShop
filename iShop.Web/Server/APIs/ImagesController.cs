@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace iShop.Web.Server.APIs
 {
@@ -25,12 +26,12 @@ namespace iShop.Web.Server.APIs
         private readonly ILogger<ImagesController> _logger;
 
         public ImagesController(IHostingEnvironment host, IUnitOfWork unitOfWork, IMapper mapper,
-            ImageSettings imageSettings, ILogger<ImagesController> logger)
+            IOptionsSnapshot<ImageSettings> imageSettings, ILogger<ImagesController> logger)
         {
             _host = host;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _imageSettings = imageSettings;
+            _imageSettings = imageSettings.Value;
             _logger = logger;
         }
         [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]

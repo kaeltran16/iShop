@@ -7,6 +7,8 @@ using iShop.Web.Server.Core.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using OpenIddict.Core;
 
 namespace iShop.Web.Server.APIs
 {
@@ -38,8 +40,12 @@ namespace iShop.Web.Server.APIs
 
             var userResource = Mapper.Map<ApplicationUser, ApplicationUserResource>(user);
 
+            var roles = await _userManager.GetRolesAsync(user);
 
-            return Ok(userResource);
+            var userData = new {userInfo = userResource, roles = roles};
+          
+
+            return Ok(userData);
         }
     }
 }

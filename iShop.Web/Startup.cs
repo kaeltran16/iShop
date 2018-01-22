@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using iShop.Web.Server.Commons.Extensions;
+using iShop.Web.Server.Commons.Helpers;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace iShop.Web
@@ -24,6 +25,7 @@ namespace iShop.Web
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ImageSettings>(Configuration.GetSection("ImageSettings"));
             services.AddSwaggerGen(c =>
                 c.SwaggerDoc("v1", new Info {Title = "iShop APIs", Description = "API endpoints for iShop"}));
             services.AddDependencies();

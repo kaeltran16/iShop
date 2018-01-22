@@ -10,8 +10,8 @@ namespace iShop.Web.Server.Commons.Helpers
 
         public bool IsSupported(string fileName)
         {
-            return AcceptedTypes.All(s => s != Path.GetExtension(fileName).ToLower());
-
+            var extension = Path.GetExtension(fileName);
+            return AcceptedTypes.Any(s => s == extension.ToLower());
         }
     }
 }
