@@ -28,4 +28,13 @@ export class SharedService {
     emitChangeCategory(change: any) {
         this.emitChangeCategorySource.next(change);
     }
+
+
+    //change outlet menu
+    private emitChangeOutletSource = new Subject<any>();
+
+    changeOutletEmitted$ = this.emitChangeOutletSource.asObservable();
+    emitChangeOutlet(change: any) {
+        this.emitChangeOutletSource.next(change);
+    }
 }

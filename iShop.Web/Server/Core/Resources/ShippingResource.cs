@@ -13,10 +13,7 @@ namespace iShop.Web.Server.Core.Resources
         [Required]
         public DateTime ShippingDate { get; set; }
         public ShippingState ShippingState { get; set; }
-        [Required] 
-        public string FirstName { get; set; }
-        [Required] 
-        public string LastName { get; set; }
+      
         [Required]
         public double Charge { get; set; }
         [Required]
@@ -31,6 +28,7 @@ namespace iShop.Web.Server.Core.Resources
         [Required]
         [StringLength(50)]
         public string PhoneNumber { get; set; }
+        public string UserName { get; set; }
         public Guid OrderId { get; set; }
         public ShippingResource()
         {

@@ -63,7 +63,7 @@ namespace iShop.Web.Server.APIs
 
 
         // POST
-        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
+       
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ShippingResource shippingResource)
         {

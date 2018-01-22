@@ -17,16 +17,12 @@ export class OrderService {
   
  
      // get shoppingcart  with Id user
-    getProduct(id: string) {
-        return this.http.get(this.Url + '/api/ShoppingCarts/user/' + id)
-            .map(res => res.json());
-
-    }
+   
 
 
-    createOrder(userId: string, shipping: any = {}) {
+    createOrder(userId: string="") {
         let orderItems: any[]=[];
-        for (var i = 0; i < localStorage.length - 1; ++i) {
+        for (var i = 0; i < localStorage.length; ++i) {
             //get local storage 
             if (localStorage.key(i) !== "token") {
                 orderItems.push(JSON.parse(String(localStorage.getItem(String(localStorage.key(i))))));
@@ -34,17 +30,30 @@ export class OrderService {
 
 
         }
-      
-        let order: Order = shipping ? new Order(userId, orderItems, shipping) : new Order(userId, orderItems);
+        console.log(orderItems);
+        let order: Order = new Order(userId, orderItems);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
-    
-        return this.http.post(this.Url + '/api/ShoppingCarts/', JSON.stringify(order), options )
+        return this.http.post(this.Url + 'api/Orders/', JSON.stringify(order), options )
             .map(res => {
-                console.log(order);
+                   
+                        for (var i = 0; i < localStorage.length; ++i) {
+                            //get local storage 
+                            if (localStorage.key(i) !== "token") {
+                                console.log(String(localStorage.key(i)) + i);
+                                localStorage.removeItem(String(localStorage.key(i)));
+                                i--;
+                            }
+                        }
+                
+                
+
+                   console.log(order);
                 return res.json();
-            });
+            },
+                (err: any)=>console.log(err)
+        );
 
     }
 

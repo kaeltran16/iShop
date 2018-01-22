@@ -8,11 +8,11 @@ import { Cart} from "../../model/Cart";
 import { Observable } from 'rxjs';
 import * as $ from 'jquery';
 @Component({
-    selector: 'admin',
-    templateUrl: './admin.component.html',
-    styleUrls: ['./admin.component.css']
+    selector: 'admin-navmenu',
+    templateUrl: './admin-navmenu.component.html',
+    styleUrls: ['./admin-navmenu.component.css']
 })
-export class AdminComponent implements  OnInit {
+export class AdminMenuComponent implements  OnInit {
     ngOnInit(): void {
        
 //        const arr = [1, 2, 3, 4, 5];

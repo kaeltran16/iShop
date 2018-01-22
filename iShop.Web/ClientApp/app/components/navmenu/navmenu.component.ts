@@ -66,7 +66,7 @@ export class NavMenuComponent implements OnInit{
     totalPrice: number=0;
     totalQuantity:number=0;
     carts: any[] = [];
-    @Input('infoCart') infoCart: any;
+ 
 
     userName:string="Đăng nhập";
     isShow: boolean = false;

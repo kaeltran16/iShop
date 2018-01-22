@@ -60,6 +60,7 @@
     "zone.js": "0.8.12"
   },
   "dependencies": {
+    "@types/jquery": "^3.2.18",
     "@types/underscore": "^1.8.7",
     "jsonwebtoken": "^8.1.0",
     "ngx-bootstrap": "^2.0.0-rc.0",
