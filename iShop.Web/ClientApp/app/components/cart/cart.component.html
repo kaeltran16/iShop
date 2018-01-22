@@ -30,7 +30,7 @@
                 <div class="text-center w-100">   <a class="text-success h2 " routerLink="/shopping-cart">Xem giỏ hàng</a></div>
             </td>
             <td>
-                <button class="btn-warning  p-2 w-100" routerLink="/order" >Thanh toán</button>
+                <button class="btn-warning  p-2 w-100" [disabled]="!carts.length" routerLink="/order" >Thanh toán</button>
             </td>
         </tr>
         </tfoot>

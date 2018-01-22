@@ -1,17 +1,17 @@
 ﻿
 
 
-<slide-image></slide-image>
+<!--<slide-image></slide-image>-->
 
 <!-- items being paged -->
 <div name="begin" class="card" style="height: 45px;">
-    <div style="padding: 12px 16px; font-size: 20px; font-weight: bold;">Sản Phẩm Bán Chạy</div>
+    <div style="padding: 12px 16px; font-size: 20px; font-weight: bold;">{{category}}</div>
 
 </div>
 
 <div class="col card">
     <div class="row">
-        <ng-container *ngFor="let p of pagedItems ; let i=index">
+        <ng-container *ngFor="let p of pagedItems |filter:category ; let i=index">
             <div class="col-4 mt-5">
                 <card (click)="onDetail(p);" [product]="p"></card>
             </div>

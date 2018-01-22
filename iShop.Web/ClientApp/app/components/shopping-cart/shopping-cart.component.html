@@ -60,7 +60,7 @@
                 <a class="text-success  w-100  " routerLink="/home"><h3>Tiếp tục mua hàng</h3></a>
             </td>
             <td>
-                <button class="btn-warning  p-2 w-100" routerLink="/order">Thanh toán</button>
+                <button class="btn-warning  p-2 w-100" routerLink="/order" [disabled]="!carts.length">Thanh toán</button>
             </td>
         </tr>
         </tfoot>

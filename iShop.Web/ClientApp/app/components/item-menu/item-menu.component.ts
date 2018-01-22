@@ -1,5 +1,9 @@
 import { Component,Input } from '@angular/core';
 import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
+import { CategoryService } from '../../service/category.service';
+import { Category} from "../../model/Category";
+import { SharedService } from '../../service/shared-service';
+
 
 @Component({
     selector: 'item-menu',
@@ -28,13 +32,34 @@ import { trigger, transition, state, animate, style, keyframes, useAnimation, qu
 export class ItemMenuComponent {
 
     @Input('title') title: any;
-    @Input('categories') categories:any[];
+    @Input('short') short:any;
     is: boolean = false;
+    categories: Category[] = [];
+
+    constructor(private categoryService: CategoryService, private sharedService: SharedService) {
+        this.categoryService.getCategories().subscribe(c => {
+            this.categories = c;
+        });
+
+        
+    }
     hover() {
         this.is = true;
+      
     }
     leave() {
         this.is = false;
+    
     }
-    link: string = "more-product";
+    click() {
+        this.sharedService.emitChangeCategory(true); 
+        this.is = false;
+    }
+    getCategories() {
+        this.categoryService.getCategories().subscribe(c => {
+            this.categories = c;
+        });
+
+    }
+    
 }

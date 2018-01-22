@@ -7,7 +7,7 @@ namespace iShop.Web.Server.Core.Models
 {
     public class Order : EntityBase
     {
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         public Shipping Shipping { get; set; }

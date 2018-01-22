@@ -7,7 +7,7 @@ namespace iShop.Web.Server.Core.Models
 {
     public class ShoppingCart : EntityBase
     {
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
         public ApplicationUser User { get; set; }
         public ICollection<Cart> Carts { get; set; }
         public DateTime PlacedDate { get; set; }

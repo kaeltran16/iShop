@@ -1,13 +1,18 @@
 ﻿
 
                     <div (mouseleave)="leave();" (mouseenter)="hover();" class="dropdown"  >
-                        <a class="nav-link dropdown-toggle" routerLink="/home" aria-expanded="false" aria-controls="collapseExample">
+                        <a class="nav-link dropdown-toggle"  aria-expanded="false" aria-controls="collapseExample">
                             {{title}}
                         </a>
                         <div  *ngIf="is" class="pos" @show >
-                            <div class="card card-block " >
-                                <a *ngFor="let c of categories" class="dropdown-item text-left p-3" routerLink="/{{link}}" style="color: black;" href="#">{{c}}</a>
-                               
+                            <div class="card card-block" >
+                                <a *ngFor="let c of categories |filterCategories:short"
+                                   class="dropdown-item text-left p-3" 
+                                   [routerLink]="['/more-product',c.name]" 
+                                   style="color: black;"  
+                                   (click)="click()" >{{c.name}}</a>
+                                <a  class="dropdown-item text-left p-3"  [routerLink]="['/more-product',short]" style="color: black;"   (click)="click()">Các Loại Sản Phẩm Khác</a>
+
                             </div>
                          
                      

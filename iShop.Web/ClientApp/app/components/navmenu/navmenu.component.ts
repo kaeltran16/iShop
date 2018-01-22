@@ -6,6 +6,12 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ProductService } from '../../service/product.service';
 import { SharedService } from '../../service/shared-service';
 import { UserService } from '../../service/user.service';
+
+
+import * as _ from 'underscore';
+
+
+
 @Component({
     selector: 'nav-menu',
     templateUrl: './navmenu.component.html',
@@ -60,21 +66,13 @@ export class NavMenuComponent implements OnInit{
     totalPrice: number=0;
     totalQuantity:number=0;
     carts: any[] = [];
-    @Input('infoCart') infoCart:any;
+ 
+
     userName:string="Đăng nhập";
     isShow: boolean = false;
     logged: boolean = false;
    
-    meet: any[] = [
-        "Thịt Heo",
-        "Thịt Bò",
-        "Thịt Gà và Trứng"
-    ];
-    seaFood: any[] = [
-        "Cá Đồng",
-        "Cá Biển",
-        "Các Loại Thủy Hải Sản Khác"
-    ];
+    
 
     modalRef: BsModalRef;
     constructor(private modalService: BsModalService,
@@ -82,7 +80,8 @@ export class NavMenuComponent implements OnInit{
         private router: Router,
         private productService: ProductService,
         private sharedService: SharedService,
-        private userService:UserService
+        private userService: UserService,
+  
 
       
     ) {
@@ -96,13 +95,17 @@ export class NavMenuComponent implements OnInit{
                 },
                     err => {
                         this.logged = false;
-//                         localStorage.removeItem("token");
+                         localStorage.removeItem("token");
                     });
           
         // when token change ,  update user 
         this.sharedService.changeTokenEmitted$.subscribe(user => this.userName = user.lastName.toUpperCase());
+      
+      
     }
    
+   
+
 
 
     exitLogin(isLogin: boolean) {
@@ -112,6 +115,10 @@ export class NavMenuComponent implements OnInit{
          
             this.logged = true;
         }
+//        return Math.floor(Math.random() * (max - min + 1)) + min;
+       
+            
+        
         
     }
     openModal(template: TemplateRef<any>) {
