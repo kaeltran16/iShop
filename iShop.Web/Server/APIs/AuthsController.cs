@@ -16,7 +16,7 @@ using OpenIddict.Core;
 namespace iShop.Web.Server.APIs
 {
     /// <summary>
-    /// This Controller is reponsible for creating and validate JWT
+    /// This Controller is reponsible for creating and validating JWT
     /// </summary>
     public class AuthsController : Microsoft.AspNetCore.Mvc.Controller
     {
@@ -37,7 +37,7 @@ namespace iShop.Web.Server.APIs
         /// <param name="request"></param>
         /// <param name="user"></param>
         /// <param name="properties"></param>
-        /// <returns></returns>
+        /// <returns>The new token or token that has been refreshed base on the input grant_type</returns>
         private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, ApplicationUser user, AuthenticationProperties properties = null)
         {
             // Create a new ClaimsPrincipal containing the claims that
@@ -65,10 +65,10 @@ namespace iShop.Web.Server.APIs
 
             ticket.SetResources("resource_server");
             
-            // Adding Claim to the token
+            // Adding Claims to the token
             foreach (var claim in ticket.Principal.Claims)
             {
-                // skip the securityStampClaim
+                // Skip the SecurityStampClaim
                 if (claim.Type == _identityOptions.Value.ClaimsIdentity.SecurityStampClaimType)
                 {
                     continue;
@@ -102,11 +102,13 @@ namespace iShop.Web.Server.APIs
         [HttpPost("~/connect/token")]
         public async Task<IActionResult> Exchange(OpenIdConnectRequest request)
         {
-            // New token 
+            // The grant_type is password, creating new token 
             if (request.IsPasswordGrantType())
             {
-                // Find the user's info
+                // Check if the username is in the database or not
                 var user = await _userManager.FindByNameAsync(request.Username);
+
+                // Username is not existed
                 if (user == null)
                 {
                     return BadRequest(new OpenIdConnectResponse
@@ -117,7 +119,10 @@ namespace iShop.Web.Server.APIs
                 }
 
                 // Validate the username/password parameters and ensure the account is not locked out.
+                // Check the password associated with the username
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
+
+                // Username and password are match
                 if (!result.Succeeded)
                 {
                     return BadRequest(new OpenIdConnectResponse
