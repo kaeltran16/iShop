@@ -28,6 +28,7 @@ namespace iShop.Web.Server.Commons.Helpers
             public const string Image = "Image";
             public const string Supplier = "Supplier";
             public const string Shipping = "Shipping";
+            public const string User = "User";
         }
         public static class RoleName
         {

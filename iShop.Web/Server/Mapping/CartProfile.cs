@@ -9,7 +9,9 @@ namespace iShop.Web.Server.Mapping
         protected override void CreateMap()
         {
             CreateMap<Cart, CartResource>();
-            CreateMap<CartResource, Cart>();
+            CreateMap<CartResource, Cart>()
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
         }
     }
 }

@@ -19,7 +19,9 @@ namespace iShop.Web.Server.Mapping
 
             CreateMap<ShippingResource, Shipping>()
                 .ForMember(s => s.Id, opt => opt.Ignore())
-                .ForMember(s => s.Order, opt => opt.Ignore());
+                .ForMember(s => s.Order, opt => opt.Ignore())
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
 
         }
     }

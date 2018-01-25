@@ -11,7 +11,9 @@ namespace iShop.Web.Server.Mapping
         protected override void CreateMap()
         {
             CreateMap<Image, ImageResource>();
-            CreateMap<ImageResource, Image>();
+            CreateMap<ImageResource, Image>()
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
         }
     }
 }

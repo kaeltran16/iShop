@@ -34,7 +34,9 @@ namespace iShop.Web.Server.Mapping
                         s.Carts.Where(oi => sr.Carts.Any(oir=>oir.ProductId!=oi.ProductId)).ToList();
                     foreach (var oi in removedCartItems)
                         s.Carts.Remove(oi);
-                });
+                })
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
         }
 
     }

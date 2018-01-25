@@ -14,7 +14,9 @@ namespace iShop.Web.Server.Mapping
         {
             CreateMap<Invoice, InvoiceResource>();
             CreateMap<InvoiceResource, Invoice>()
-                .ForMember(sr => sr.Id, opt => opt.Ignore());
+                .ForMember(sr => sr.Id, opt => opt.Ignore())
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
 
         }
     }

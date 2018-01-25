@@ -9,8 +9,6 @@ namespace iShop.Web.Server.Mapping
 {
     public class OrderProfile : BaseProfile
     {
-
-
         protected override void CreateMap()
         {
             CreateMap<Order, SavedOrderResource>();
@@ -47,7 +45,9 @@ namespace iShop.Web.Server.Mapping
                     // Add it to the database
                     foreach (var oi in addedOrderedItems)
                         o.OrderedItems.Add(oi);
-                });
+                })
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
 
 
 

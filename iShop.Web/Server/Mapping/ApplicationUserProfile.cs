@@ -10,7 +10,11 @@ namespace iShop.Web.Server.Mapping
         protected override void CreateMap()
         {
             CreateMap<ApplicationUser, ApplicationUserResource>();
-            CreateMap<ApplicationUserResource, ApplicationUser>();
+            CreateMap<ApplicationUserResource, ApplicationUser>()
+                .ForMember(a=>a.Id, opt=>opt.Ignore())
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
+                
             CreateMap<RegisterResource, ApplicationUser>();
             CreateMap<ApplicationUser, RegisterResource>();
         }

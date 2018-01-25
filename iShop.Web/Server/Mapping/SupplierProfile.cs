@@ -11,7 +11,9 @@ namespace iShop.Web.Server.Mapping
             CreateMap<Supplier, SupplierResource>();
             CreateMap<SupplierResource, Supplier>()
                 .ForMember(cr => cr.Id, opt => opt.Ignore())
-                .ForMember(c => c.Inventories, opt => opt.Ignore());
+                .ForMember(c => c.Inventories, opt => opt.Ignore())
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
         }
     }
 }

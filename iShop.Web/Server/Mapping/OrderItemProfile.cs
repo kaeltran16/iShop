@@ -9,7 +9,9 @@ namespace iShop.Web.Server.Mapping
         protected override void CreateMap()
         {
             CreateMap<OrderedItem, OrderedItemResource>();
-            CreateMap<OrderedItemResource, OrderedItem>();
+            CreateMap<OrderedItemResource, OrderedItem>()
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
         }
     }
 }

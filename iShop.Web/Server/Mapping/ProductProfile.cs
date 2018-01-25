@@ -49,7 +49,9 @@ namespace iShop.Web.Server.Mapping
                     var inventory = new Inventory() { ProductId = pr.Id, SupplierId = pr.SupplierId, Stock = pr.Stock };
                     p.Inventory = inventory;
                   
-                });
+                })
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
 
         }
     }

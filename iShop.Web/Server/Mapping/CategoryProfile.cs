@@ -18,7 +18,9 @@ namespace iShop.Web.Server.Mapping
 
             CreateMap<CategoryResource, Category>()
                 .ForMember(cr => cr.Id, opt => opt.Ignore())
-                .ForMember(c => c.ProductCategories, opt => opt.Ignore());
+                .ForMember(c => c.ProductCategories, opt => opt.Ignore())
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
         }
     }
 }

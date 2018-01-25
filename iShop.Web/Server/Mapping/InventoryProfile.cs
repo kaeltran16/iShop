@@ -11,7 +11,9 @@ namespace iShop.Web.Server.Mapping
         protected override void CreateMap()
         {
             CreateMap<Inventory, InventoryResource>();
-            CreateMap<InventoryResource, Inventory>();
+            CreateMap<InventoryResource, Inventory>()
+                .ForAllMembers(opt => opt.Condition(
+                    (source, destination, sourceMember, destMember) => (sourceMember != null)));
         }
     }
 }
