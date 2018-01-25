@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace iShop.Web.Server.APIs
 {
     /// <summary>
-    /// The base class for every Controllers. Contains bunch of return result
+    /// The base class for every Controllers. Contains bunch of return results
+    /// NOTE: As the application grows, these return messages should be separated into another class/module
     /// </summary>
     public class BaseController : Microsoft.AspNetCore.Mvc.Controller
     {

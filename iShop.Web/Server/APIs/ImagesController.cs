@@ -16,6 +16,9 @@ using Microsoft.Extensions.Options;
 
 namespace iShop.Web.Server.APIs
 {
+    /// <summary>
+    /// This controller handles create request for creating a image associated with a given product  
+    /// </summary>
     [Route("/api/product/{productId}/[controller]")]
     public class ImagesController : BaseController
     {
@@ -42,6 +45,7 @@ namespace iShop.Web.Server.APIs
 
             if (!isValid)
                 return InvalidId(productId);
+
             var product = await _unitOfWork.ProductRepository.GetProduct(id, false);
 
             if (product == null)
@@ -59,6 +63,7 @@ namespace iShop.Web.Server.APIs
 
             var uploadFolderPath = Path.Combine(_host.WebRootPath, "images");
 
+            // Create a folder if the folder does not exist
             if (!Directory.Exists(uploadFolderPath))
             {
                 Directory.CreateDirectory(uploadFolderPath);

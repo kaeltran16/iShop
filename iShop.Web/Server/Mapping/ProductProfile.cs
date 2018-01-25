@@ -19,7 +19,6 @@ namespace iShop.Web.Server.Mapping
                     opt => opt.MapFrom(p =>
                         p.ProductCategories.Select(pc => pc.Category)))
                 .ForMember(pr => pr.Inventory, opt => opt.MapFrom(p => p.Inventory))
-                .ForMember(pr => pr.Images, opt => opt.MapFrom(p => p.Images))
                 .ForMember(pr => pr.SupplierId, opt => opt.MapFrom(p => p.Inventory.SupplierId));
 
 

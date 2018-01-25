@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 namespace iShop.Web.Server.APIs
 {
+    /// <summary>
+    /// This controller handles crud request for Cactegory
+    /// </summary>
     [Route("/api/[controller]")]
     public class CategoriesController : BaseController
     {

@@ -64,7 +64,7 @@ namespace iShop.Web.Server.Commons.Extensions
 
             services.Configure<IdentityOptions>(options =>
             {
-                // Set the type of claim 
+                // Set the type of claims
                 options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
                 options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
                 options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
