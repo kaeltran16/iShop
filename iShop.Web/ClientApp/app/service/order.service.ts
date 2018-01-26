@@ -16,10 +16,15 @@ export class OrderService {
 
   
  
-     // get shoppingcart  with Id user
-   
+     // get all order
+    geOrders() {
+        return this.http.get(this.Url + '/api/Orders/')
+            .map(res => res.json());
+    }
 
 
+
+    //create
     createOrder(userId: string="") {
         let orderItems: any[]=[];
         for (var i = 0; i < localStorage.length; ++i) {

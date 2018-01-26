@@ -3,17 +3,17 @@
     <img class="card-img-top w-100 " style="height: 250px;"  src="/images/{{product.images[0].fileName}}" alt="Card image cap">
        <div class="card-body text-center" style="background-color:beige">
            <h3  class="card-title mt-2">{{product.name}}</h3>
-           <rating [(ngModel)]="rate" [max]="5" [readonly]="'true'"></rating>
+           <h3 class="card-text">*****</h3>
            <h4 class="card-text pb-3">{{product.price}}</h4>
        </div>
    </div>
     <div *ngIf="isHover" class="card child ">
         
     </div>
-    <button   *ngIf="isHover && !add" @translate class="btn  btnAddCart " (click)="addToCart()" >Mua hàng</button>
-    <div @translateBottom *ngIf="isHover && !add" class=" text-center  bagDetail" >
+    <button   *ngIf="isHover" @translate class="btn  btnAddCart "  >Tùy chọn sản phầm</button>
+    <div @translateBottom *ngIf="isHover" class=" text-center  bagDetail" >
         <h3  class="card-title mt-2">{{product.name}}</h3>
-        <rating [(ngModel)]="rate" [max]="5" [readonly]="'true'"></rating>
+        <h3 class="card-text">*****</h3>
         <h4 class="card-text pb-3">{{product.price}}</h4>
     </div>
    
@@ -26,7 +26,7 @@
         </button>
 
 
-        <detail-product (onclick)="exitDetail($event)" [product]="product"></detail-product>
+        <admin-edit-product (onclick)="exitDetail($event)" [product]="product"></admin-edit-product>
 
     </div>
 </ng-template>

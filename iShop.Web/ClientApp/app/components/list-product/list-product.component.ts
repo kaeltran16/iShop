@@ -22,7 +22,10 @@ export class ListProductComponent {
 
 
     constructor(private productService: ProductService) {
-        this.productService.getProducts().subscribe(p =>this.products = p);
+        this.productService.getProducts().subscribe(p => {
+            this.products = p;
+            console.log(p);
+        } );
     }
   
 

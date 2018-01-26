@@ -13,7 +13,7 @@
     <div class="row">
         <ng-container *ngFor="let p of pagedItems |filter:category ; let i=index">
             <div class="col-4 mt-5">
-                <card (click)="onDetail(p);" [product]="p"></card>
+                <card  [product]="p"></card>
             </div>
             <div *ngIf="(i+1)%3===0" class="w-100"></div>
         </ng-container>
@@ -43,4 +43,3 @@
     </li>
 </ul>
 
-<a href="" >hahahaa</a>

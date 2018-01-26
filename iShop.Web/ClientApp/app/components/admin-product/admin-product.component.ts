@@ -1,9 +1,10 @@
  
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, TemplateRef } from '@angular/core';
 import { Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map'
-
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import * as _ from 'underscore';
 import { PagerService } from '../../service/page.service';
 import { ProductService } from '../../service/product.service';
@@ -14,11 +15,12 @@ import { ProductService } from '../../service/product.service';
     styleUrls: ['./admin-product.component.css']
 })
 export class AdminProductComponent implements OnInit {
+    modalRef: BsModalRef;
     constructor(private http: Http,
         private pagerService: PagerService,
         private productService: ProductService,
         private route: ActivatedRoute,
-     
+        private modalService: BsModalService
     ) { }
    
     // array of all items to be paged
@@ -34,8 +36,7 @@ export class AdminProductComponent implements OnInit {
         this.productService.getProducts().subscribe(p => {
             // set items to json response
             this.allItems = p;
-            
-
+//console.log(p);
             // initialize to page 1
             this.setPage(1);
         });
@@ -55,6 +56,11 @@ export class AdminProductComponent implements OnInit {
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
 
-    
+    openModal(template: TemplateRef<any>) {
+
+        this.modalRef = this.modalService.show(template);
+
+
+    }
 
 }

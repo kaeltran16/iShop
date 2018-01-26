@@ -1,6 +1,8 @@
 ﻿import { Injectable, Inject } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, RequestOptions, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Product}  from "../model/Product";
+
 
 @Injectable()
 export class ProductService {
@@ -20,6 +22,45 @@ export class ProductService {
         return this.http.get(this.Url + '/api/Products/' + id)
             .map(res => res.json());
 
+    }
+
+
+
+
+
+    // update product 
+    editProduct(product: Product, token: string) {
+
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(this.Url + '/api/Products/'+product.id, JSON.stringify(product)
+            ,
+            ({
+                headers: {
+                    //USE credentials mode
+                    withCredentials: true,
+                    'Authorization': 'Bearer ' + token
+                }
+            }) as any
+        ).map(res => res.json());
+    }
+
+
+    //createProduct
+    createProduct(product: Product, token: string) {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+    
+        return this.http.post(this.Url + '/api/Products/', product
+                ,
+                ({
+                    headers: {
+                        //USE credentials mode
+                        withCredentials: true,
+                        'Authorization': 'Bearer ' +token
+                    }
+                }) as any)
+            .map(res => res.json());
     }
 
 

@@ -8,9 +8,9 @@ import { Cart} from "../../model/Cart";
 
 
 @Component({
-    selector: 'card',
-    templateUrl: './card.component.html',
-    styleUrls: ['./card.component.css'],
+    selector: 'admin-card',
+    templateUrl: './admin-card.component.html',
+    styleUrls: ['./admin-card.component.css'],
     animations: [
         trigger('translate', [
 
@@ -47,56 +47,31 @@ import { Cart} from "../../model/Cart";
     
 
 })
-export class CardComponent implements  OnInit {
+export class AdminCardComponent implements  OnInit {
     ngOnInit(): void {
-        this.rate = Math.floor((Math.random() * 2) + 3);
         setTimeout(() => {
                 this.sharedService.emitChange(false);
             },
             1000);
-      
+     
       
     }
 
     @Input('product') product: any;
     quantity: number = 1;
-    rate:number=0;
-    add: boolean = false;
+   
     isHover:boolean=false;
     modalRef: BsModalRef;
     constructor(private modalService: BsModalService, private sharedService: SharedService) {
         
     }
-    addToCart() {
-        this.add = true;
-        var currentCart = JSON.parse(String(localStorage.getItem(this.product.id)));
-       
-        if (currentCart) {
-            this.quantity = currentCart.quantity;
-            this.quantity++;
-        }
-
-        //set local storage
-        let cart: Cart = new Cart(this.product.id, this.quantity);
-        localStorage.setItem(this.product.id, JSON.stringify(cart));
-        // close alert 
-        this.isHover = false;
-     
-        
-       
-        // call shared service 
-        this.sharedService.emitChange(true);
-        var a = localStorage.getItem(this.product.id);
-        var b = JSON.parse(String(a));
-
-        
-    }
+   
 
 
   
    
     openModal(template: TemplateRef<any>) {
-     if(!this.add)
+   
             this.modalRef = this.modalService.show(template);
             
         
@@ -107,7 +82,7 @@ export class CardComponent implements  OnInit {
     }
     leaving() {
         this.isHover = false;
-        this.add = false;
+       
     }
     exitDetail(isExit: boolean) {
         this.modalRef.hide();
