@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,5 +18,12 @@ namespace iShop.Web.Server.Core.Resources
         public Guid SupplierId { get; set; }
         public InventoryResource Inventory { get; set; }
         public ICollection<CategoryResource> Categories { get; set; }
+        public ICollection<ImageResource> Images { get; set; }
+
+        public ProductResource()
+        {
+            Categories = new Collection<CategoryResource>();
+            Images = new Collection<ImageResource>();
+        }
     }
 }
