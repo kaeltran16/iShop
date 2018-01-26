@@ -89,9 +89,11 @@ export class NavMenuComponent implements OnInit{
         let currentToken = localStorage.getItem("token");
         if (currentToken)
            
-                this.userService.info(currentToken).subscribe(user => {
-                    this.userName = user.lastName.toUpperCase();
+            this.userService.info(currentToken).subscribe(user => {
+                    console.log(user);
+                    this.userName = user.userInfo.lastName.toUpperCase();
                     this.logged = true;
+
                 },
                     err => {
                         this.logged = false;
@@ -99,7 +101,7 @@ export class NavMenuComponent implements OnInit{
                     });
           
         // when token change ,  update user 
-        this.sharedService.changeTokenEmitted$.subscribe(user => this.userName = user.lastName.toUpperCase());
+        this.sharedService.changeTokenEmitted$.subscribe(user => this.userName = user.userInfo.lastName.toUpperCase());
       
       
     }

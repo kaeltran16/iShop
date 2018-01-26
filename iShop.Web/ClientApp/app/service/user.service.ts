@@ -47,7 +47,7 @@ export class UserService {
                     'Authorization': 'Bearer ' + token
                 }
             }) as any
-        )
+        );
     }
     //Get info of User
     info(token: any) {

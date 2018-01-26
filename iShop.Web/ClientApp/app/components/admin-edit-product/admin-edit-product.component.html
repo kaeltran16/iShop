@@ -1,0 +1,110 @@
+﻿
+
+
+<div id="parent">
+    <div class="card" id="container">
+        <div class="row">
+            <div class=" col m-1">
+                <a>  <img class="card w-100 h-100 ml-3 mt-3 " src="/images/{{product.images[0].fileName}}" /></a>
+<!--                <label for="exampleInput" class="btn btn-primary">-->
+<!--                    Click me-->
+<!--                </label>-->
+<!--                <input type="file" id="exampleInput" style="display: none" />-->
+              
+                
+<!--                <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".png,.jpg">-->
+            </div>
+            <div class=" col m-1 mr-2">
+              
+
+                <form #f="ngForm">
+
+                    <div style="text-align: center;" class=" card">
+                        <div class=" form-group">
+                            <input type="text" class="form-control  text-center font-weight-bold text-capitalize"
+                                   value={{product.name}}
+                                   style="font-size: 30px;"
+                                   id="Title"
+                                   name="Title"
+                                   #Title="ngModel"
+                                   [(ngModel)]="itemProduct.name"
+                                   required
+                                   placeholder="Tên sản phẩm"
+                                   [ngClass]="{'card-outline-danger': Title.errors?.required && (Title.touched ||f.submitted)}">
+                        </div>
+                        <div class="alert alert-danger" *ngIf="(Title.touched ||f.submitted) && Title.errors?.required"> *Bắt buộc* </div>
+
+                        <div class="mt-1 h5 text-center form-group  ">
+
+                            <div class="d-inline-block ">
+                                <input type="number" class="form-control w-50 font-weight-bold text-capitalize text-center float-left"
+                                       value={{product.price}}
+                                       id="Price" placeholder="Giá"
+                                       name="Price"
+                                       #Price="ngModel"
+                                       required
+                                       [(ngModel)]="itemProduct.price"
+                                       [ngClass]="{'card-outline-danger': Price.errors?.required && (Price.touched ||f.submitted)}">
+                                <div class="alert alert-danger" *ngIf="(Price.touched ||f.submitted) && Price.errors?.required"> *Bắt buộc* </div>
+
+                                <div class="float-left mt-2"> Đồng/1Kg</div>
+                            </div>
+                        </div>
+                        <div class="form-group text-left font-weight-bold">
+                            <label for="Stock" class="text-left ml-1">Số lượng sản phẩm</label>
+                            <input type="number" class="form-control  text-center font-weight-bold"
+                                   value={{product.inventory?.stock||0}}
+                                   id="Stock"
+                                   name="Stock"
+                                   #Stock="ngModel"
+                                   [(ngModel)]="itemProduct.inventory.stock"
+                                   required
+                                   placeholder="Số lượng sản phẩm"
+                                   [ngClass]="{'card-outline-danger': Stock.errors?.required && (Stock.touched ||f.submitted)}">
+                        </div>
+                        <div class="alert alert-danger" *ngIf="(Stock.touched ||f.submitted) && Stock.errors?.required"> *Bắt buộc* </div>
+                        
+                        <div class="form-group text-left ml-1 font-weight-bold">
+                            <label for="Sku" >Đơn vị sản phẩm</label>
+                            <input type="text" class="form-control  text-center font-weight-bold"
+                                   value={{product.sku}}
+                                   id="Sku"
+                                   name="Sku"
+                                   #Sku="ngModel"
+                                   [(ngModel)]="itemProduct.sku"
+                                   required
+                                   placeholder="Đơn vị sản phẩm"
+                                   [ngClass]="{'card-outline-danger': Sku.errors?.required && (Sku.touched ||f.submitted)}">
+                        </div>
+                        <div class="alert alert-danger" *ngIf="(Sku.touched ||f.submitted) && Sku.errors?.required"> *Bắt buộc* </div>
+
+                        
+
+                    </div>
+
+
+                    <div class="card p-2 mt-2">
+                        <h3>Chi tiết</h3>
+                        <input type="text" class="form-control  "
+                               value={{product.summary}}
+                               id="Summary"
+                               #Summary="ngModel"
+                               name="Summary"
+                               required
+                               [(ngModel)]="itemProduct.summary"
+                               placeholder="Chi tiết"
+                               [ngClass]="{'card-outline-danger': Summary.errors?.required && (Summary.touched ||f.submitted)}">
+                        <div class="alert alert-danger" *ngIf="(Summary.touched ||f.submitted) && Summary.errors?.required"> *Bắt buộc* </div>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="text-right d-inline-block fixed-bottom badge-danger ignorePaddingParent">
+            <button class="btn btn-outline-success float-right" style="color: white" (click)="editProduct()">CẬP NHẬT</button>
+            <button class="btn btn-outline-success float-right" style="color: white">XÓA</button>
+        </div>
+    </div>
+
+</div>

@@ -2,17 +2,44 @@
 import { Category } from "./Category";
 import { Image } from "./Image";
 import { Supplier } from "./Supplier";
+import { Inventory } from "./Inventory";
 export class Product {
     id: number;
-    category: Category;
+    categories: string[];
     summary: string;
     expiredDate: Date;
     addedDate:Date;
     price: number;
     sku:string;
     name: string;
-    supplier:Supplier;
-    image: Image;
+    supplierId:string;
+    images: Image[];
+    inventory: Inventory;
+    stock:number;
+    constructor(category: string[]=[], summary: string="",  price: number, sku: string,
+        name: string,
+        supplier: string,
+      
+        stock:number
+       ) {
+      
+        this.categories = category;
+        this.summary = summary;
+      
+        this.stock = stock;
+        this.price = price;
+        this.sku = sku;
+        this.name = name;
+        this.supplierId = supplier;
+   
+      
+    }
+
+
 }
+
+
+
+
 
 

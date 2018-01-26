@@ -9,7 +9,7 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 //service 
 import { ProductService } from "./service/product.service";
 import { UserService } from "./service/user.service";
@@ -18,7 +18,7 @@ import { OrderService } from "./service/order.service";
 import { PagerService } from "./service/page.service";
 import { CategoryService } from "./service/category.service";
 import { ShippingService } from "./service/shipping.service";
-
+import { SupplierService } from "./service/supplier.service";
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -43,6 +43,10 @@ import { AdminMenuComponent } from './components/admin-navmenu/admin-navmenu.com
 import { CustomerComponent } from './components/customer/customer.component';
 import { DashbroadComponent } from './components/dashbroad/dashboard.component';
 import { AdminProductComponent } from './components/admin-product/admin-product.component';
+import { AdminCardComponent } from './components/admin-card/admin-card.component';
+import { AdminEditProductComponent } from './components/admin-edit-product/admin-edit-product.component';
+import { AdminCreateProductComponent } from './components/admin-create-product/admin-create-product.component';
+
 
 // custom validation 
 import { EqualValidator } from './components/register/custom-validation';
@@ -51,6 +55,7 @@ import { EqualValidator } from './components/register/custom-validation';
 import { FilterPipe } from './components/custom-pipe/filter-pipe';
 import { FillPipe } from './components/custom-pipe/fill-pipe';
 import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pipe';
+
 
 
 @NgModule({
@@ -78,10 +83,15 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         CustomerComponent,
         DashbroadComponent,
 
+       
+
         // admin
         AdminComponent,
         AdminMenuComponent,
-        AdminProductComponent
+        AdminCardComponent,
+        AdminEditProductComponent,
+        AdminProductComponent,
+        AdminCreateProductComponent
        
     ],
     imports: [
@@ -91,7 +101,7 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
         TabsModule.forRoot(),
-
+        BsDatepickerModule.forRoot(),
 
         BrowserAnimationsModule,
         CommonModule,
@@ -135,7 +145,8 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         OrderService,
         PagerService,
         CategoryService,
-        ShippingService
+        ShippingService,
+        SupplierService
     ]
 })
 export class AppModuleShared {

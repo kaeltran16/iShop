@@ -15,7 +15,7 @@
         <tr *ngFor="let cart of carts |fill:-1:a-1 ; let i=index">
             <th scope="row">{{i+1}}</th>
             <td>
-                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/image/product/{{cart.product.images[0].fileName}}"/>
+                <img class="rounded-circle " style="width: 50px; height: 50px;" src="/images/{{cart.product.images[0].fileName}}"/>
                 {{cart.product.name}}
             </td>
             <td > {{cart.quantity}} <span class="ml-1">{{cart.product.sku}}</span></td>

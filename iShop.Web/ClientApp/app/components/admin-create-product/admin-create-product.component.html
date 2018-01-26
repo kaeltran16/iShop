@@ -1,0 +1,145 @@
+﻿
+
+
+<div id="parent">
+    
+    <div class="card " id="container">
+        <div class="row">
+            <div class=" col m-1">
+                <a> <img class="card w-100 h-100 ml-3 mt-3 " src="/images/{{image.fileName}}"/></a>
+                <!-- <label for="exampleInput" class="btn btn-primary">-->
+                <!-- Click me-->
+                <!-- </label>-->
+                <!-- <input type="file" id="exampleInput" style="display: none"/>-->
+                <!-- <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".png,.jpg">-->
+            </div>
+            <div class=" col m-1 mr-2">
+
+
+                <form #f="ngForm">
+
+                    <div style="text-align: center;" class=" card">
+                        <div class=" form-group">
+                            <input type="text" class="form-control  text-center font-weight-bold text-capitalize"
+                                   value={{itemProduct?.name}
+                                   style="font-size: 30px;"
+                                   id="Title"
+                                   name="Title"
+                                   #Title="ngModel"
+                                   [(ngModel)]="itemProduct.name"
+                                   required
+                                   placeholder="Tên sản phẩm"
+                                   [ngClass]="{'card-outline-danger': Title.errors?.required && (Title.touched ||f.submitted)}">
+                        </div>
+                        <div class="alert alert-danger" *ngIf="(Title.touched ||f.submitted) && Title.errors?.required"> *Bắt buộc* </div>
+
+                        <div class="mt-1 h5 text-center form-group  ">
+
+                            <div class="d-inline-block ">
+                                <input type="number" class="form-control w-50 font-weight-bold text-capitalize text-center float-left"
+                                       value={{itemProduct.price}}
+                                       id="Price" placeholder="Giá"
+                                       name="Price"
+                                       #Price="ngModel"
+                                       required
+                                       [(ngModel)]="itemProduct.price"
+                                       [ngClass]="{'card-outline-danger': Price.errors?.required && (Price.touched ||f.submitted)}">
+                                <div class="alert alert-danger" *ngIf="(Price.touched ||f.submitted) && Price.errors?.required"> *Bắt buộc* </div>
+
+                                <div class="float-left mt-2"> Đồng/1Kg</div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+
+                            <div class="form-group text-center font-weight-bold col">
+                                <label for="Stock" class="text-left ml-1">Số lượng</label>
+                                <input type="number" class="form-control  text-center font-weight-bold"
+                                       value={{itemProduct?.stock||0}}
+                                       id="Stock"
+                                       name="Stock"
+                                       #Stock="ngModel"
+                                       [(ngModel)]="itemProduct.stock"
+                                       required
+                                       [ngClass]="{'card-outline-danger': Stock.errors?.required && (Stock.touched ||f.submitted)}">
+                            </div>
+                            <div class="alert alert-danger" *ngIf="(Stock.touched ||f.submitted) && Stock.errors?.required"> *Bắt buộc* </div>
+
+                            <div class="form-group text-center ml-1 font-weight-bold col">
+                                <label for="Sku">Đơn vị</label>
+                                <input type="text" class="form-control  text-center font-weight-bold"
+                                       value={{itemProduct.sku}}
+                                       id="Sku"
+                                       name="Sku"
+                                       #Sku="ngModel"
+                                       [(ngModel)]="itemProduct.sku"
+                                       required
+                                       [ngClass]="{'card-outline-danger': Sku.errors?.required && (Sku.touched ||f.submitted)}">
+                            </div>
+                            <div class="alert alert-danger" *ngIf="(Sku.touched ||f.submitted) && Sku.errors?.required"> *Bắt buộc* </div>
+
+                        </div>
+
+
+                        <div class="card form-group">
+                            <div *ngIf="itemProduct.categories.length" class="font-weight-bold">Danh sách loại sản phẩm được chọn</div>
+                            <div class="text-left pl-2  text-capitalize badge-success" style="font-size: 15px; height: 30px;" *ngFor="let c of categories">{{c?.name}}</div>
+                            <!-- list categories-->
+                            <div *ngIf="!itemProduct.categories.length" class="font-weight-bold text-left">Loại sản phẩm</div>
+                            <select style="height: 40px"
+                                    [(ngModel)]="category"
+                                    name="Category" (change)="show();"
+                                    id="Category"
+                                    #Category="ngModel"
+                                    required
+                                    [ngClass]="{'card-outline-danger': Category.errors?.required && (Category.touched ||f.submitted)}">
+                                <option class="p-2" name="cate" *ngFor="let x of categoriesSelect; let i=index;" value="{{i}}">{{x.name}}</option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(Category.touched ||f.submitted) && Category.errors?.required"> *Bắt buộc* </div>
+                        </div>
+                        <div class="card form-group">
+                            <!-- suppliers-->
+                            <label for="Supplier" class="font-weight-bold text-left">Nhà cung cấp</label>
+                            <select style="height: 40px"
+                                    [(ngModel)]="itemProduct.supplierId"
+                                    id="Supplier"   
+                                    #Supplier="ngModel"
+                                    name="Supplier"
+                                    required
+                                    [ngClass]="{'card-outline-danger': Supplier.errors?.required && (Supplier.touched ||f.submitted)}">
+                                <option class="p-2" name="cate" *ngFor="let x of suppliers; let i=index;" value="{{x.id}}">{{x.name}}</option>
+                            </select>
+                        </div>
+                        <div class="alert alert-danger" *ngIf="(Supplier.touched ||f.submitted) && Supplier.errors?.required"> *Bắt buộc* </div>
+
+                    </div>
+
+
+                    <div class="card p-2 mt-2 form-group ">
+
+                        <input type="text" class="form-control  "
+                               value={{itemProduct.summary}}
+                               id="Summary"
+                               #Summary="ngModel"
+                               name="Summary"
+                               required
+                               [(ngModel)]="itemProduct.summary"
+                               placeholder="Chi tiết"
+                               [ngClass]="{'card-outline-danger': Summary.errors?.required && (Summary.touched ||f.submitted)}">
+                        <div class="alert alert-danger" *ngIf="(Summary.touched ||f.submitted) && Summary.errors?.required"> *Bắt buộc* </div>
+
+                    </div>
+            
+                   
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="  ignorePaddingParent">
+        <button class="btn btn-success w-100" style="color: white" (click)="createProduct(f)">Thêm</button>
+
+    </div>
+</div>
