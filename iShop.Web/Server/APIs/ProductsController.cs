@@ -112,7 +112,7 @@ namespace iShop.Web.Server.APIs
 
             product = await _unitOfWork.ProductRepository.GetProduct(product.Id);
 
-            var result = _mapper.Map<Product, SavedProductResource>(product);
+            var result = _mapper.Map<Product, ProductResource>(product);
 
             _logger.LogMessage(LoggingEvents.Updated,  ApplicationConstants.ControllerName.Product, product.Id);
 

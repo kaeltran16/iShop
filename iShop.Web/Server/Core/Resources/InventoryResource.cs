@@ -8,6 +8,7 @@ namespace iShop.Web.Server.Core.Resources
 {
     public class InventoryResource
     {
+        public Guid Id { get; set; }
         public Guid ProductId { get; set; }
         [Required]
         public int Stock { get; set; }
