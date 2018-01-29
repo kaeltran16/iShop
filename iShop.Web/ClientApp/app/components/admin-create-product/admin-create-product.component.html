@@ -1,25 +1,28 @@
 ﻿
-
-
 <div id="parent">
-    
+   
     <div class="card " id="container">
         <div class="row">
             <div class=" col m-1">
-                <a> <img class="card w-100 h-100 ml-3 mt-3 " src="/images/{{image.fileName}}"/></a>
-                <!-- <label for="exampleInput" class="btn btn-primary">-->
-                <!-- Click me-->
-                <!-- </label>-->
-                <!-- <input type="file" id="exampleInput" style="display: none"/>-->
-                <!-- <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".png,.jpg">-->
+                <a> <img class="card w-100  ml-3 mt-3 " src="{{image.fileName}}"/></a>
+                 <label for="exampleInput" class="btn btn-primary">
+                 Click me
+                 </label>
+                 <input type="file" id="exampleInput" (change)="loadImage($event,itemProduct.id)" style="display: none" accept=".png,.jpg"/>
+<!--                 <input type="file" (change)="loadImage($event)" placeholder="Upload file" accept=".png,.jpg">-->
+
+            
             </div>
             <div class=" col m-1 mr-2">
-
+                    
 
                 <form #f="ngForm">
 
                     <div style="text-align: center;" class=" card">
+
                         <div class=" form-group">
+
+
                             <input type="text" class="form-control  text-center font-weight-bold text-capitalize"
                                    value={{itemProduct?.name}
                                    style="font-size: 30px;"
@@ -49,69 +52,83 @@
                                 <div class="float-left mt-2"> Đồng/1Kg</div>
                             </div>
                         </div>
+                    
+                        <div class="card form-group">
+                            <label for="Date" class="font-weight-bold text-left">Ngày hết hạn</label>
+                            <input type="text"
+                                   class="form-control"
+                                   [minDate]="minDate"
+                                   [maxDate]="maxDate"
+                                   name="Date"
+                                   id="Date"
+                                   #dp="bsDatepicker"
+                                   bsDatepicker [(bsValue)]="itemProduct.expiredDate">
+                        </div>
+
                         <div class="row">
-
-
-                            <div class="form-group text-center font-weight-bold col">
-                                <label for="Stock" class="text-left ml-1">Số lượng</label>
-                                <input type="number" class="form-control  text-center font-weight-bold"
-                                       value={{itemProduct?.stock||0}}
-                                       id="Stock"
-                                       name="Stock"
-                                       #Stock="ngModel"
-                                       [(ngModel)]="itemProduct.stock"
-                                       required
-                                       [ngClass]="{'card-outline-danger': Stock.errors?.required && (Stock.touched ||f.submitted)}">
-                            </div>
-                            <div class="alert alert-danger" *ngIf="(Stock.touched ||f.submitted) && Stock.errors?.required"> *Bắt buộc* </div>
-
-                            <div class="form-group text-center ml-1 font-weight-bold col">
-                                <label for="Sku">Đơn vị</label>
-                                <input type="text" class="form-control  text-center font-weight-bold"
-                                       value={{itemProduct.sku}}
-                                       id="Sku"
-                                       name="Sku"
-                                       #Sku="ngModel"
-                                       [(ngModel)]="itemProduct.sku"
-                                       required
-                                       [ngClass]="{'card-outline-danger': Sku.errors?.required && (Sku.touched ||f.submitted)}">
-                            </div>
-                            <div class="alert alert-danger" *ngIf="(Sku.touched ||f.submitted) && Sku.errors?.required"> *Bắt buộc* </div>
-
+                        <div class="form-group text-center font-weight-bold col">
+                            <label for="Stock" class="text-left ml-1">Số lượng</label>
+                            <input type="number" class="form-control  text-center font-weight-bold"
+                                   value={{itemProduct?.stock||0}}
+                                   id="Stock"
+                                   name="Stock"
+                                   #Stock="ngModel"
+                                   [(ngModel)]="itemProduct.stock"
+                                   required
+                                   [ngClass]="{'card-outline-danger': Stock.errors?.required && (Stock.touched ||f.submitted)}">
                         </div>
+                        <div class="alert alert-danger" *ngIf="(Stock.touched ||f.submitted) && Stock.errors?.required"> *Bắt buộc* </div>
 
-
-                        <div class="card form-group">
-                            <div *ngIf="itemProduct.categories.length" class="font-weight-bold">Danh sách loại sản phẩm được chọn</div>
-                            <div class="text-left pl-2  text-capitalize badge-success" style="font-size: 15px; height: 30px;" *ngFor="let c of categories">{{c?.name}}</div>
-                            <!-- list categories-->
-                            <div *ngIf="!itemProduct.categories.length" class="font-weight-bold text-left">Loại sản phẩm</div>
-                            <select style="height: 40px"
-                                    [(ngModel)]="category"
-                                    name="Category" (change)="show();"
-                                    id="Category"
-                                    #Category="ngModel"
-                                    required
-                                    [ngClass]="{'card-outline-danger': Category.errors?.required && (Category.touched ||f.submitted)}">
-                                <option class="p-2" name="cate" *ngFor="let x of categoriesSelect; let i=index;" value="{{i}}">{{x.name}}</option>
-                            </select>
-                            <div class="alert alert-danger" *ngIf="(Category.touched ||f.submitted) && Category.errors?.required"> *Bắt buộc* </div>
+                        <div class="form-group text-center ml-1 font-weight-bold col">
+                            <label for="Sku">Đơn vị</label>
+                            <input type="text" class="form-control  text-center font-weight-bold"
+                                   value={{itemProduct.sku}}
+                                   id="Sku"
+                                   name="Sku"
+                                   #Sku="ngModel"
+                                   [(ngModel)]="itemProduct.sku"
+                                   required
+                                   [ngClass]="{'card-outline-danger': Sku.errors?.required && (Sku.touched ||f.submitted)}">
                         </div>
-                        <div class="card form-group">
-                            <!-- suppliers-->
-                            <label for="Supplier" class="font-weight-bold text-left">Nhà cung cấp</label>
-                            <select style="height: 40px"
-                                    [(ngModel)]="itemProduct.supplierId"
-                                    id="Supplier"   
-                                    #Supplier="ngModel"
-                                    name="Supplier"
-                                    required
-                                    [ngClass]="{'card-outline-danger': Supplier.errors?.required && (Supplier.touched ||f.submitted)}">
-                                <option class="p-2" name="cate" *ngFor="let x of suppliers; let i=index;" value="{{x.id}}">{{x.name}}</option>
-                            </select>
-                        </div>
-                        <div class="alert alert-danger" *ngIf="(Supplier.touched ||f.submitted) && Supplier.errors?.required"> *Bắt buộc* </div>
+                        <div class="alert alert-danger" *ngIf="(Sku.touched ||f.submitted) && Sku.errors?.required"> *Bắt buộc* </div>
 
+                    </div>
+
+
+                    <div class="card form-group">
+                        <div *ngIf="itemProduct.categories.length" class="font-weight-bold">Danh sách loại sản phẩm được chọn</div>
+                        <div class="text-left pl-2  text-capitalize badge-success" style="font-size: 15px; height: 30px;" *ngFor="let c of categories">{{c?.name}}</div>
+                        <!-- list categories-->
+                        <div *ngIf="!itemProduct.categories.length" class="font-weight-bold text-left">Loại sản phẩm</div>
+                        <select style="height: 40px"
+                                [(ngModel)]="category"
+                                name="Category" (change)="show();"
+                                id="Category"
+                                #Category="ngModel"
+                                required
+                                [ngClass]="{'card-outline-danger': Category.errors?.required && (Category.touched ||f.submitted)}">
+                            <option class="p-2" name="cate" *ngFor="let x of categoriesSelect; let i=index;" value="{{i}}">{{x.name}}</option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="(Category.touched ||f.submitted) && Category.errors?.required"> *Bắt buộc* </div>
+                    </div>
+                    <div class="card form-group">
+                        <!-- suppliers-->
+                        <label for="Supplier" class="font-weight-bold text-left">Nhà cung cấp</label>
+                        <select style="height: 40px"
+                                [(ngModel)]="itemProduct.supplierId"
+                                id="Supplier"
+                                #Supplier="ngModel"
+                                name="Supplier"
+                                required
+                                [ngClass]="{'card-outline-danger': Supplier.errors?.required && (Supplier.touched ||f.submitted)}">
+                            <option class="p-2" name="cate" *ngFor="let x of suppliers; let i=index;" value="{{x.id}}">{{x.name}}</option>
+                        </select>
+                    </div>
+                    <div class="alert alert-danger"
+                         *ngIf="(Supplier.touched ||f.submitted) && Supplier.errors?.required">*Bắt buộc*</div>
+
+                        
+                      
                     </div>
 
 
@@ -129,8 +146,8 @@
                         <div class="alert alert-danger" *ngIf="(Summary.touched ||f.submitted) && Summary.errors?.required"> *Bắt buộc* </div>
 
                     </div>
-            
-                   
+
+
 
                 </form>
             </div>

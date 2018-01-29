@@ -8,6 +8,9 @@ import { Image } from "../../model/Image";
 import { Category } from "../../model/category";
 import { CategoryService } from "../../service/category.service";
 import { SupplierService } from "../../service/supplier.service";
+import { ImageService } from "../../service/image.service";
+
+
 @Component({
     selector: "admin-create-product",
     templateUrl: "./admin-create-product.component.html",
@@ -16,7 +19,8 @@ import { SupplierService } from "../../service/supplier.service";
 export class AdminCreateProductComponent implements OnInit {
     ngOnInit(): void {
         //suppliers
-        this.supplierService.getSuppliers().subscribe(s => this.suppliers = s);
+        let token = localStorage.getItem("token");
+        token? this.supplierService.getSuppliers(token).subscribe(s => this.suppliers = s):alert("ban không đủ quyền để truy cập vào mục này");
 
 
         // category
@@ -26,51 +30,62 @@ export class AdminCreateProductComponent implements OnInit {
         });
        // product
         this.itemProduct = new Product(
-            [], "", 0, "cái", "", "", 0
+            [], "", 0, "cái", "", "", 0, new Date()
            
         );
+
+        
 //        console.log(this.itemProduct);
     } 
+
+   
+
     itemProduct: Product;
     categoriesSelect: Category[];
     categories: Category[]=[];
     category: number;
     suppliers:Supplier[];
-    image = new Image("add_image.png");
+    image = new Image("/images/add_image.png");
     minDate = new Date(2017, 5, 10);
     maxDate = new Date(2018, 9, 15);
-
+  imageEvent:any;
     @Output() onclick = new EventEmitter<boolean>();
    
 
-//    fileChange(event: any) {
-//        let fileList: FileList = event.target.files;
-//        if (fileList.length > 0) {
-//            let file: File = fileList[0];
-//            let formData: FormData = new FormData();
-//            formData.append('uploadFile', file, file.name);
-//            let headers = new Headers();
-//            /** No need to include Content-Type in Angular 4 */
-//            headers.append('Content-Type', 'multipart/form-data');
-//            headers.append('Accept', 'application/json');
-//            let options = new RequestOptions(({ headers: headers }) as any);
-//            this.http.post(`${this.apiEndPoint}`, formData, options)
-//                .map(res => res.json())
-//                .catch(error => Observable.throw(error))
-//                .subscribe(
-//                    data => console.log('success'),
-//                    error => console.log(error)
-//                )
-            
-//        }
-//    }
+
   
 
     constructor(private productService: ProductService,
         private categoryService: CategoryService,
-        private supplierService: SupplierService) {
+        private supplierService: SupplierService,
+        private imageService: ImageService) {
      
 
+    }
+
+
+    loadImage(event: any, productId: string) {
+        productId = "d71d3b22-18e9-4afa-a9f2-0e5e9bd610ac";
+        let url: string;
+        if (event) this.imageEvent = event;
+        if (event.target.files && event.target.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = (event: any) => {
+                this.image = new Image(event.target.result);
+                console.log(this.image);
+            }
+
+            reader.readAsDataURL(event.target.files[0]);
+        }
+//        let a = ((<HTMLInputElement>document.getElementById("exampleInput")).value);
+        let token = localStorage.getItem("token");
+        token ? this.imageService.createImages(event, productId, token) : alert("bạn chưa đủ quyền vào mục này");
+    }
+
+    how() {
+        let token = localStorage.getItem("token");
+        token ? this.imageService.createImages(this.imageEvent, "d71d3b22-18e9-4afa-a9f2-0e5e9bd610ac", token) : alert("bạn chưa đủ quyền vào mục này");
     }
 
 
@@ -85,6 +100,7 @@ export class AdminCreateProductComponent implements OnInit {
     createProduct($event:any) {
         console.log($event);
         $event._submitted = true;
+
         if ($event.valid) {
             let token = localStorage.getItem("token");
             token

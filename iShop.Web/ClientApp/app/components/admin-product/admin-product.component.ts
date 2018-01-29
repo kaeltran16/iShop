@@ -16,6 +16,7 @@ import { ProductService } from '../../service/product.service';
 })
 export class AdminProductComponent implements OnInit {
     modalRef: BsModalRef;
+    
     constructor(private http: Http,
         private pagerService: PagerService,
         private productService: ProductService,

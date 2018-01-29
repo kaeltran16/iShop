@@ -1,8 +1,7 @@
 ﻿import { Component, Output, EventEmitter, Input ,OnInit} from '@angular/core';
-import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
 import { UserService } from '../../service/user.service';
 import { Login } from "../../model/User";
-import { Observable } from 'rxjs/Rx';
+
 import { SharedService } from '../../service/shared-service';
 @Component({
     selector: 'login',
@@ -46,6 +45,7 @@ export class LoginComponent implements OnInit {
                         //output
                         this.onclick.emit(true);
                         this.sharedService.emitChangeToken(t);
+                    console.log(t);
                 });
                  
                     

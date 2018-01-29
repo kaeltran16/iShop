@@ -20,12 +20,13 @@ export class Product {
         name: string,
         supplier: string,
       
-        stock:number
+        stock: number,
+        expiredDate:Date
        ) {
       
         this.categories = category;
         this.summary = summary;
-      
+        this.expiredDate = expiredDate;
         this.stock = stock;
         this.price = price;
         this.sku = sku;
