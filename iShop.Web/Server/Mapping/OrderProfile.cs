@@ -2,8 +2,6 @@
 using System.Linq;
 using AutoMapper;
 using iShop.Web.Server.Commons.BaseClasses;
-using iShop.Web.Server.Core.Models;
-using iShop.Web.Server.Core.Resources;
 
 namespace iShop.Web.Server.Mapping
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Persistent.EntityConfigurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

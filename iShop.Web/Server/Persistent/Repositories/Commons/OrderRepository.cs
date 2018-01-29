@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using iShop.Web.Server.Core.Commons;
-using iShop.Web.Server.Core.Models;
 using iShop.Web.Server.Persistent.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 

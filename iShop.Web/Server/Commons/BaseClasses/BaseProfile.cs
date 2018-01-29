@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using iShop.Web.Server.Core.Models;
 
 namespace iShop.Web.Server.Commons.BaseClasses
 {
