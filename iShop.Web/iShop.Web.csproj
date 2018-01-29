@@ -83,6 +83,7 @@
     <None Remove="ClientApp\app\model\shoppingCart.ts" />
     <None Remove="ClientApp\app\model\Supplier.ts" />
     <None Remove="ClientApp\app\model\user.ts" />
+    <None Remove="ClientApp\app\service\admin-auth-guard.service.ts" />
     <None Remove="ClientApp\app\service\product.service.ts" />
     <None Remove="ClientApp\app\service\user.service.ts" />
   </ItemGroup>
@@ -106,6 +107,7 @@
     <TypeScriptCompile Include="ClientApp\app\model\ShoppingCart.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\Image.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\User.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\admin-auth-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\user.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\product.service.ts" />
   </ItemGroup>

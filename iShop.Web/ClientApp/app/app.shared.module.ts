@@ -10,6 +10,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DatePipe } from '@angular/common';
 //service 
 import { ProductService } from "./service/product.service";
 import { UserService } from "./service/user.service";
@@ -19,6 +20,8 @@ import { PagerService } from "./service/page.service";
 import { CategoryService } from "./service/category.service";
 import { ShippingService } from "./service/shipping.service";
 import { SupplierService } from "./service/supplier.service";
+import { ImageService } from "./service/image.service";
+import { AdminAuthGuardService } from "./service/admin-auth-guard.service";
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -111,11 +114,11 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
 
         RouterModule.forRoot([
             {
-                path: 'admin', component: AdminComponent, children: [
-                    { path: '', redirectTo: 'dashbroad', pathMatch: 'full' },
-                    { path: 'dashbroad', component: DashbroadComponent },
-                    { path: 'admin-product', component: AdminProductComponent },
-                    { path: '**', redirectTo: 'dashbroad' }
+                path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuardService], children: [
+                    { path: '', redirectTo: 'dashbroad', pathMatch: 'full', canActivate: [AdminAuthGuardService] },
+                    { path: 'dashbroad', component: DashbroadComponent, canActivate: [AdminAuthGuardService] },
+                    { path: 'admin-product', component: AdminProductComponent, canActivate: [AdminAuthGuardService] },
+                    { path: '**', redirectTo: 'dashbroad', canActivate: [AdminAuthGuardService] }
                 ]
             },
             {
@@ -146,7 +149,10 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         PagerService,
         CategoryService,
         ShippingService,
-        SupplierService
+        SupplierService,
+        ImageService,
+        AdminAuthGuardService,
+        DatePipe
     ]
 })
 export class AppModuleShared {

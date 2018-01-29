@@ -155,6 +155,20 @@ namespace iShop.Web.Server.Persistent
                     await _context.SaveChangesAsync();
                 }
 
+                if (!_context.Suppliers.Any())
+                {
+                    var suppliers = new List<Supplier>()
+                    {
+                     new Supplier(){Name = "Hai long",Description = "La  một nhà cung cấp tốt"},
+                        new Supplier(){Name = "Hai long2",Description = "La  một nhà cung cấp tốt1"},
+                        new Supplier(){Name = "Hai long3",Description = "La  một nhà cung cấp tốt2"},
+                        new Supplier(){Name = "Hai long4",Description = "La  một nhà cung cấp tốt3"},
+                        new Supplier(){Name = "Hai long5",Description = "La  một nhà cung cấp tốt4"},
+                    };
+                    await _context.AddRangeAsync(suppliers);
+                    await _context.SaveChangesAsync();
+                }
+
                 // SAMPLE
                 if (!_context.Products.Any())
                 {
@@ -163,7 +177,8 @@ namespace iShop.Web.Server.Persistent
                     {
                         Price = 16,
                         Name = "Thịt Heo Nam Định",
-                        ExpiredDate = DateTime.Now
+                        ExpiredDate = DateTime.Now,
+                       
                     };
 
                     product1.ProductCategories = new List<ProductCategory>
@@ -173,6 +188,12 @@ namespace iShop.Web.Server.Persistent
                             Product = product1,
                             CategoryId = _context.Categories.FirstOrDefault(x => x.Name == "Thịt Heo").Id
                         }
+                    };
+
+                    product1.Inventory=new Inventory()
+                    {
+                        Stock = 10,
+                        SupplierId = _context.Suppliers.FirstOrDefault(i=>i.Name== "Hai long").Id
                     };
                     var product2 = new Product()
                     {
@@ -189,6 +210,11 @@ namespace iShop.Web.Server.Persistent
                             CategoryId = _context.Categories.FirstOrDefault(x => x.Name == "Thịt Bò").Id
                         }
                     };
+                    product2.Inventory = new Inventory()
+                    {
+                        Stock = 100,
+                        SupplierId = _context.Suppliers.FirstOrDefault(i => i.Name == "Hai long2").Id
+                    };
                     var product3 = new Product()
                     {
                         Price = 16,
@@ -204,6 +230,11 @@ namespace iShop.Web.Server.Persistent
                             CategoryId = _context.Categories.FirstOrDefault(x => x.Name == "Thịt Gà và Trứng").Id
                         }
                     };
+                    product3.Inventory = new Inventory()
+                    {
+                        Stock = 101,
+                        SupplierId = _context.Suppliers.FirstOrDefault(i => i.Name == "Hai long3").Id
+                    };
                     var product4 = new Product()
                     {
                         Price = 16,
@@ -211,34 +242,45 @@ namespace iShop.Web.Server.Persistent
                         ExpiredDate = DateTime.Now
                     };
 
-                    //product4.ProductCategories = new List<ProductCategory>
-                    //{
-                    //    new ProductCategory()
-                    //    {
-                    //        Product = product4,
-                    //        CategoryId = _context.Categories.FirstOrDefault(x => x.Name == "Thủy Sản").Id
-                    //    },
-                    //    var product5 = new Product()
-                    //    {
-                    //    Price = 16,
-                    //    Name = "Cá Đuối Đại Dương",
-                    //    ExpiredDate = DateTime.Now
-                    //};
-                    //product5.ProductCategories = new List<ProductCategory>
-                    //{
-                    //    new ProductCategory()
-                    //    {
-                    //        Product = product5,
-                    //        CategoryId = _context.Categories.FirstOrDefault(x => x.Name == "Hải Sản").Id
-                    //    }
-                    //};
-
+                    product4.ProductCategories = new List<ProductCategory>
+                    {
+                        new ProductCategory()
+                        {
+                            Product = product4,
+                            CategoryId = _context.Categories.FirstOrDefault(x => x.Name == "Thủy Sản").Id
+                        },
+                      
+                    };
+                    product4.Inventory = new Inventory()
+                    {
+                        Stock = 104,
+                        SupplierId = _context.Suppliers.FirstOrDefault(i => i.Name == "Hai long4").Id
+                    };
+                    var product5 = new Product()
+                    {
+                        Price = 16,
+                        Name = "Cá Đuối Đại Dương",
+                        ExpiredDate = DateTime.Now
+                    };
+                    product5.ProductCategories = new List<ProductCategory>
+                    {
+                        new ProductCategory()
+                        {
+                            Product = product5,
+                            CategoryId = _context.Categories.FirstOrDefault(x => x.Name == "Hải Sản").Id
+                        }
+                    };
+                    product5.Inventory = new Inventory()
+                    {
+                        Stock = 1067,
+                        SupplierId = _context.Suppliers.FirstOrDefault(i => i.Name == "Hai long5").Id
+                    };
                     var products = new List<Product>()
                     {
                         product1,
                         product2,
                         product3,
-                        //product5,
+                        product5,
                         product4
 
                     };

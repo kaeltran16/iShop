@@ -14,8 +14,16 @@ export class SupplierService {
   
  
      // get Categories
-    getSuppliers() {
-        return this.http.get(this.Url + 'api/Suppliers')
+    getSuppliers(token:string) {
+        return this.http.get(this.Url + 'api/Suppliers',
+                ({
+                    headers: {
+                        //USE credentials mode
+                        withCredentials: true,
+                        'Authorization': 'Bearer ' + token
+                    }
+                }) as any
+        )
             .map(res => res.json());
 
     }
