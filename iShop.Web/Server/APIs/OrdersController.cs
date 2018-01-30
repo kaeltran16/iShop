@@ -103,7 +103,7 @@ namespace iShop.Web.Server.APIs
                 return FailedToSave(order.Id);
             }
 
-            order = await _unitOfWork.OrderRepository.GetOrder(order.Id, false);
+            order = await _unitOfWork.OrderRepository.GetOrder(order.Id, true);
             var result = (_mapper.Map<Order, OrderResource>(order));
 
             _logger.LogMessage(LoggingEvents.Created, ApplicationConstants.ControllerName.Order, order.Id);

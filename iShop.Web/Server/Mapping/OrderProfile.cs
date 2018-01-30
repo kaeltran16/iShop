@@ -17,9 +17,10 @@ namespace iShop.Web.Server.Mapping
 
             CreateMap<Order, OrderResource>()
                 .ForMember(or => or.OrderedItems, opt => opt.MapFrom(p =>
-                    p.OrderedItems.Select(pc => new OrderedItem() { ProductId = pc.ProductId, Quantity = pc.Quantity })))
+                    p.OrderedItems.Select(pc => new OrderedItem() {ProductId = pc.ProductId, Quantity = pc.Quantity})))
                 .ForMember(or => or.Shipping, opt => opt.MapFrom(o => o.Shipping))
-                .ForMember(or => or.Invoice, opt => opt.MapFrom(o => o.Invoice));
+                .ForMember(or => or.Invoice, opt => opt.MapFrom(o => o.Invoice))
+                .ForMember(or => or.User, opt => opt.MapFrom(o => o.User));
 
             CreateMap<Order, SavedOrderResource>()
                 .ForMember(o => o.Id, opt => opt.Ignore())
