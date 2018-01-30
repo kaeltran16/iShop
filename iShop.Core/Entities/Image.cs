@@ -1,5 +1,4 @@
 ﻿using System;
-using iShop.Web.Server.Commons.BaseClasses;
 
 namespace iShop.Core.Entities
 {

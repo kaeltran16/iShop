@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Primitives;
 using AutoMapper;
-using iShop.Web.Server.Commons.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -2,9 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
-using iShop.Web.Server.Commons.Extensions;
-using iShop.Web.Server.Commons.Helpers;
-using iShop.Web.Server.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

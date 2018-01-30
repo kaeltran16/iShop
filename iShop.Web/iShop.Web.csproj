@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Server\Services\**" />
+    <Content Remove="Server\Services\**" />
+    <EmbeddedResource Remove="Server\Services\**" />
+    <None Remove="Server\Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Validation" Version="2.0.0-rc1-final" />
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
@@ -89,10 +96,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\app\components\animation\" />
-    <Folder Include="Server\Core\Models\" />
-    <Folder Include="Server\Core\Resources\" />
-    <Folder Include="Server\Services\Commons\" />
-    <Folder Include="Server\Services\Contracts\" />
   </ItemGroup>
 
   <ItemGroup>

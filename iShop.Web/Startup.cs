@@ -4,8 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using iShop.Web.Server.Commons.Extensions;
-using iShop.Web.Server.Commons.Helpers;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace iShop.Web

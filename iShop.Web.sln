@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iShop.Tests", "iShop.Tests\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4CB7F52E-C723-4B2C-AE46-603D14D9BD55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iShop.Core", "iShop.Core\iShop.Core.csproj", "{F31E3AB3-E7D5-4726-85E4-E3B917CCB435}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iShop.Core", "iShop.Core\iShop.Core.csproj", "{F31E3AB3-E7D5-4726-85E4-E3B917CCB435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iShop.Infrastructure", "iShop.Infrastructure\iShop.Infrastructure.csproj", "{09068766-FDFF-4589-8E9E-38767DD4D7E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iShop.Infrastructure", "iShop.Infrastructure\iShop.Infrastructure.csproj", "{09068766-FDFF-4589-8E9E-38767DD4D7E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iShop.Common", "iShop.Common\iShop.Common.csproj", "{D96E958A-FB14-4229-B490-C7294AB96923}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{09068766-FDFF-4589-8E9E-38767DD4D7E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09068766-FDFF-4589-8E9E-38767DD4D7E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09068766-FDFF-4589-8E9E-38767DD4D7E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D96E958A-FB14-4229-B490-C7294AB96923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D96E958A-FB14-4229-B490-C7294AB96923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D96E958A-FB14-4229-B490-C7294AB96923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D96E958A-FB14-4229-B490-C7294AB96923}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
