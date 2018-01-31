@@ -19,12 +19,9 @@
                 <form #f="ngForm">
 
                     <div style="text-align: center;" class=" card">
-
+                        
                         <div class=" form-group">
-
-
                             <input type="text" class="form-control  text-center font-weight-bold text-capitalize"
-                                   value={{itemProduct?.name}
                                    style="font-size: 30px;"
                                    id="Title"
                                    name="Title"
@@ -35,6 +32,18 @@
                                    [ngClass]="{'card-outline-danger': Title.errors?.required && (Title.touched ||f.submitted)}">
                         </div>
                         <div class="alert alert-danger" *ngIf="(Title.touched ||f.submitted) && Title.errors?.required"> *Bắt buộc* </div>
+                        
+
+                                 
+                                 
+                                 
+                                 
+                             
+                                 
+                                
+                                   >
+                  
+                  
 
                         <div class="mt-1 h5 text-center form-group  ">
 

@@ -49,7 +49,11 @@ import { AdminProductComponent } from './components/admin-product/admin-product.
 import { AdminCardComponent } from './components/admin-card/admin-card.component';
 import { AdminEditProductComponent } from './components/admin-edit-product/admin-edit-product.component';
 import { AdminCreateProductComponent } from './components/admin-create-product/admin-create-product.component';
-
+import { AdminCreatecCategoryComponent } from './components/admin-create-category/admin-create-category.component';
+import { AdminCategoryComponent } from './components/admin-category/admin-category.component';
+import { AdminEditcCategoryComponent } from './components/admin-edit-category/admin-edit-category.component';
+import { AdminOrderComponent } from './components/admin-order/admin-order.component';
+import { AdminSupplierComponent } from './components/admin-supplier/admin-supplier.component';
 
 // custom validation 
 import { EqualValidator } from './components/register/custom-validation';
@@ -63,6 +67,7 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
 
 @NgModule({
     declarations: [
+        //component
         EqualValidator,
         AppComponent,
         NavMenuComponent,
@@ -73,9 +78,6 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         LoginComponent,
         RegisterComponent,
         HomeComponent,
-        FilterPipe,
-        FillPipe,
-        FilterCategoryPipe,
         FooterComponent,
         CartComponent,
         ShoppingCartComponent,
@@ -85,7 +87,10 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         ListProductRandomComponent,
         CustomerComponent,
         DashbroadComponent,
-
+        //pipe
+        FilterPipe,
+        FillPipe,
+        FilterCategoryPipe,
        
 
         // admin
@@ -94,10 +99,16 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         AdminCardComponent,
         AdminEditProductComponent,
         AdminProductComponent,
-        AdminCreateProductComponent
+        AdminCreateProductComponent,
+        AdminCreatecCategoryComponent,
+        AdminCategoryComponent,
+        AdminEditcCategoryComponent,
+        AdminOrderComponent,
+        AdminSupplierComponent
        
     ],
     imports: [
+        //ngx bootstrap 
         RatingModule.forRoot(),
         AccordionModule.forRoot(),
         CarouselModule.forRoot(),
@@ -106,22 +117,28 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         TabsModule.forRoot(),
         BsDatepickerModule.forRoot(),
 
+        //angular 
         BrowserAnimationsModule,
         CommonModule,
         HttpModule,
         FormsModule,
       
-
+        //path
         RouterModule.forRoot([
             {
+                //admin
                 path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuardService], children: [
                     { path: '', redirectTo: 'dashbroad', pathMatch: 'full', canActivate: [AdminAuthGuardService] },
                     { path: 'dashbroad', component: DashbroadComponent, canActivate: [AdminAuthGuardService] },
                     { path: 'admin-product', component: AdminProductComponent, canActivate: [AdminAuthGuardService] },
+                    { path: 'admin-category', component: AdminCategoryComponent, canActivate: [AdminAuthGuardService] },
+                    { path: 'admin-order', component: AdminOrderComponent, canActivate: [AdminAuthGuardService] },
+                    { path: 'admin-supplier', component: AdminOrderComponent, canActivate: [AdminAuthGuardService] },
                     { path: '**', redirectTo: 'dashbroad', canActivate: [AdminAuthGuardService] }
                 ]
             },
             {
+                //customer
                 path: '',
                 component: CustomerComponent,   
                 children: [
@@ -142,6 +159,7 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         ])
     ],
     providers: [
+        //service
         ProductService,
         UserService,
         SharedService,

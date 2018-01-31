@@ -2,7 +2,7 @@
 
 
 
-<div class=" d-inline-block w-100">
+<div routerLink="/admin/dashboard" class=" d-inline-block w-100">
     <img src="/image/user.png" style="height: 70px; width: 70px; float:left"/>
     <div class="float-left ml-1 pt-2">
         <div>Xin  chào</div>
@@ -15,12 +15,15 @@
 
 <ul style="clear: both">
     <li>
-        <a class="active">Sản phẩm</a>
+        <a class="active" routerLink="/admin/admin-product">Sản phẩm</a>
     </li>
     <li>
-        <a>Loại sản phẩm</a>
+        <a routerLink="/admin/admin-category">Loại sản phẩm</a>
     </li>
     <li>
-        <a>Đơn đặt hàng</a>
+        <a routerLink="/admin/admin-order">Đơn đặt hàng</a>
+    </li>
+    <li>
+        <a routerLink="/admin/admin-supplier">Nhà cung cấp</a>
     </li>
 </ul>

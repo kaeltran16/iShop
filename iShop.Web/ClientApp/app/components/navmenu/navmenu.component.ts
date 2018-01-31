@@ -62,18 +62,21 @@ export class NavMenuComponent implements OnInit{
 
         });
     }
-    repeat:number=0;
+
+//    repeat:number=0;
     totalPrice: number=0;
     totalQuantity:number=0;
     carts: any[] = [];
- 
-
-    userName:string="Đăng nhập";
+ // check admin
+    isAdmin:boolean =false;
+    userName: string = "Đăng nhập";
+    // check show shopping cart 
     isShow: boolean = false;
+    // check logged
     logged: boolean = false;
    
     
-
+    // show modal 
     modalRef: BsModalRef;
     constructor(private modalService: BsModalService,
         private route: ActivatedRoute,
@@ -81,10 +84,8 @@ export class NavMenuComponent implements OnInit{
         private productService: ProductService,
         private sharedService: SharedService,
         private userService: UserService,
-  
-
-      
     ) {
+
         // get current user when token valid
         let currentToken = localStorage.getItem("token");
         if (currentToken)
@@ -93,7 +94,7 @@ export class NavMenuComponent implements OnInit{
                     console.log(user);
                     this.userName = user.userInfo.lastName.toUpperCase();
                     this.logged = true;
-
+                    this.isAdmin=user.roles[0]?true:false;
                 },
                     err => {
                         this.logged = false;
@@ -101,7 +102,10 @@ export class NavMenuComponent implements OnInit{
                     });
           
         // when token change ,  update user 
-        this.sharedService.changeTokenEmitted$.subscribe(user => this.userName = user.userInfo.lastName.toUpperCase());
+        this.sharedService.changeTokenEmitted$.subscribe(user => {
+            this.userName = user.userInfo.lastName.toUpperCase();
+            this.isAdmin = user.roles[0] ? true : false;
+        });
       
       
     }
@@ -145,8 +149,13 @@ export class NavMenuComponent implements OnInit{
         let token = localStorage.getItem("token");
         this.userService.logout(token);
         this.logged = false;
+        this.isAdmin = false;
         this.userName = "Đăng nhập";
         localStorage.removeItem("token");
     }
+
+
+    // management Of Admin
+  
    
 }

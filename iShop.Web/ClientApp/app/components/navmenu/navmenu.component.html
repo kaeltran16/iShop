@@ -10,7 +10,7 @@
             <span class="green"><a>01665240627</a> </span>
         </span>
         <div class="language">
-            <span><button class="btn btn-success">Quản Lý</button></span>
+            <span><button  *ngIf="isAdmin" routerLink="/admin" class="btn btn-success">Quản Lý</button></span>
             <span>Tiếng việt</span>
             <span>Trợ giúp?</span>
         </div>

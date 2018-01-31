@@ -1,0 +1,70 @@
+﻿
+<div id="parent">
+   
+    <div class="card " id="container">
+
+
+
+        <form #f="ngForm">
+
+            <div style="text-align: center;" class=" card">
+                <div class=" form-group">
+                    <input type="text" class="form-control  text-center font-weight-bold text-capitalize"
+                           style="font-size: 30px;"
+                           id="Title"
+                           name="Title"
+                           #Title="ngModel"
+                           [(ngModel)]="category.name"
+                           required
+                           placeholder="Tên loại sản phẩm"
+                           [ngClass]="{'card-outline-danger': Title.errors?.required && (Title.touched ||f.submitted)}">
+                </div>
+                <div class="alert alert-danger" *ngIf="(Title.touched ||f.submitted) && Title.errors?.required"> *Bắt buộc* </div>
+
+        
+                </div>
+            
+            <select style="height: 40px" class="ml-2 p-2"
+                    [(ngModel)]="category.short"
+                    name="Short"
+                    id="Short"
+                    #Short="ngModel"
+                    required
+
+                    [ngClass]="{'card-outline-danger': Short.errors?.required && (Short.touched ||f.submitted)}">
+                <option value="-1" [disabled]="true" selected>Chọn tab của sản phẩm</option>
+                <option class="p-2" name="cate" *ngFor="let x of shorts; " value="{{x.value}}">{{x.name}}</option>
+            </select>
+
+
+
+            <div class="card p-2 mt-2">
+                <h3>Chi tiết</h3>
+                <input type="text" class="form-control  "
+                       id="Summary"
+                       #Summary="ngModel"
+                       name="Summary"
+                       required
+                       [(ngModel)]="category.detail"
+                       placeholder="Chi tiết"
+                       [ngClass]="{'card-outline-danger': Summary.errors?.required && (Summary.touched ||f.submitted)}">
+                <div class="alert alert-danger" *ngIf="(Summary.touched ||f.submitted) && Summary.errors?.required"> *Bắt buộc* </div>
+
+            </div>
+            
+        </form>
+
+
+
+
+
+
+    </div>
+
+    <div class="  ignorePaddingParent text-right d-inline-block badge-danger">
+       
+        
+            <button class="btn btn-outline-success float-right" style="color: white" (click)="editCategories(f)">CẬP NHẬT</button>
+            <button class="btn btn-outline-success float-right" style="color: white" (click)="deleteCategories()">XÓA</button>
+    </div>
+</div>
