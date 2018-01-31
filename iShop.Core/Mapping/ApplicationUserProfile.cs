@@ -1,14 +1,17 @@
-﻿namespace iShop.Core.Mapping
+﻿using iShop.Core.DTOs;
+using iShop.Core.Entities;
+
+namespace iShop.Core.Mapping
 {
     public class ApplicationUserProfile:BaseProfile
     {
 
         protected override void CreateMap()
         {
-            CreateMap<ApplicationUser, ApplicationUserResource>();
-            CreateMap<ApplicationUserResource, ApplicationUser>();
-            CreateMap<RegisterResource, ApplicationUser>();
-            CreateMap<ApplicationUser, RegisterResource>();
+            CreateMap<ApplicationUser, ApplicationUserDto>();
+            CreateMap<ApplicationUserDto, ApplicationUser>();
+            CreateMap<RegisterDto, ApplicationUser>();
+            CreateMap<ApplicationUser, RegisterDto>();
         }
     }
 }

@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using iShop.Common.Extensions;
+using iShop.Common.Helpers;
+using iShop.Core.DTOs;
+using iShop.Core.Entities;
+using iShop.Infrastructure.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,7 +35,7 @@ namespace iShop.Web.Server.APIs
         {
             var shipping = await _unitOfWork.ShippingRepository.GetShippings();
 
-            var shippingResource = _mapper.Map<IEnumerable<Shipping>, IEnumerable<ShippingResource>>(shipping);
+            var shippingResource = _mapper.Map<IEnumerable<Shipping>, IEnumerable<ShippingDto>>(shipping);
 
             return Ok(shippingResource);
         }
@@ -50,7 +55,7 @@ namespace iShop.Web.Server.APIs
             if (shipping == null)
                 return NullOrEmpty();
 
-            var shippingResource = _mapper.Map<Shipping, ShippingResource>(shipping);
+            var shippingResource = _mapper.Map<Shipping, ShippingDto>(shipping);
 
             return Ok(shippingResource);
         }
@@ -60,27 +65,29 @@ namespace iShop.Web.Server.APIs
         // POST
        
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ShippingResource shippingResource)
+        public async Task<IActionResult> Create([FromBody] ShippingDto shippingResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var shipping = _mapper.Map<ShippingResource, Shipping>(shippingResource);
+            var shipping = _mapper.Map<ShippingDto, Shipping>(shippingResource);
 
             await _unitOfWork.ShippingRepository.AddAsync(shipping);
 
             // if something happens and the new item can not be saved, return the error
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+                //_logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+                _logger.LogInformation("");
                 return FailedToSave(shipping.Id);
             }
 
             shipping = await _unitOfWork.ShippingRepository.GetShipping(shipping.Id);
 
-            var result = _mapper.Map<Shipping, ShippingResource>(shipping);
+            var result = _mapper.Map<Shipping, ShippingDto>(shipping);
 
-            _logger.LogMessage(LoggingEvents.Created, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+            //_logger.LogMessage(LoggingEvents.Created, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+            _logger.LogInformation("");
             return CreatedAtRoute(ApplicationConstants.ControllerName.Shipping, new { id = shipping.Id }, result);
         }
 
@@ -102,11 +109,13 @@ namespace iShop.Web.Server.APIs
             _unitOfWork.ShippingRepository.Remove(shipping);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.Fail, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+                //_logger.LogMessage(LoggingEvents.Fail, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+                _logger.LogInformation("");
                 return FailedToSave(shipping.Id);
             }
 
-            _logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+            //_logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+            _logger.LogInformation("");
             return NoContent();
         }
 
@@ -115,7 +124,7 @@ namespace iShop.Web.Server.APIs
         // PUT
         [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] ShippingResource shippingResource)
+        public async Task<IActionResult> Update(string id, [FromBody] ShippingDto shippingResource)
         {
             bool isValid = Guid.TryParse(id, out var shippingId);
 
@@ -134,14 +143,16 @@ namespace iShop.Web.Server.APIs
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+                //_logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+                _logger.LogInformation("");
                 return FailedToSave(shipping.Id);
             }
 
             shipping = await _unitOfWork.ShippingRepository.GetShipping(shipping.Id);
 
-            var result = _mapper.Map<Shipping, ShippingResource>(shipping);
-            _logger.LogMessage(LoggingEvents.Updated, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+            var result = _mapper.Map<Shipping, ShippingDto>(shipping);
+            //_logger.LogMessage(LoggingEvents.Updated, ApplicationConstants.ControllerName.Shipping, shipping.Id);
+            _logger.LogInformation("");
             return Ok(result);
         }
     }

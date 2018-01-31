@@ -1,5 +1,6 @@
 ﻿using System;
 using iShop.Core.Entities;
+using iShop.Infrastructure.Persistent.Extensions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ namespace iShop.Infrastructure.Persistent
         public DbSet<Supplier> Suppliers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            :base((DbContextOptions) options)
+            :base(options)
         {   
         }
 

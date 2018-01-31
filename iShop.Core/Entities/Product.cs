@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace iShop.Core.Entities
 {
@@ -26,5 +28,17 @@ namespace iShop.Core.Entities
             Carts = new Collection<Cart>();
             OrderedItems = new Collection<OrderedItem>();
         }
+
+        public bool AddToInventory(Guid supplierId, int stock)
+        {
+            if (supplierId == Guid.Empty || stock <= 0)
+                return false;
+            if (Inventory == null)
+                Inventory = new Inventory() {ProductId = Id, SupplierId = supplierId, Stock = stock};
+            else
+                Inventory.Stock += stock;
+            return true;
+        }
+        
     }
 }

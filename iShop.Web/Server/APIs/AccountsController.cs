@@ -1,6 +1,9 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using iShop.Common.Helpers;
+using iShop.Core.DTOs;
+using iShop.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -34,14 +37,14 @@ namespace iShop.Web.Server.APIs
         /// <param name="model">Contain info to create a new User</param>
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody]RegisterResource model)
+        public async Task<IActionResult> Register([FromBody]RegisterDto model)
         {
             // Validate input fields
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             // Mapping the input to model class
-            var currentUser = _mapper.Map<RegisterResource, ApplicationUser>(model);
+            var currentUser = _mapper.Map<RegisterDto, ApplicationUser>(model);
             
             // In this application, UserName itseft is Email
             currentUser.UserName = model.Email;

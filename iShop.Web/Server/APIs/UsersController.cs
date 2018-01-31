@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Primitives;
 using AutoMapper;
+using iShop.Common.Extensions;
+using iShop.Core.DTOs;
+using iShop.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +38,7 @@ namespace iShop.Web.Server.APIs
                 });
             }
 
-            var userResource = Mapper.Map<ApplicationUser, ApplicationUserResource>(user);
+            var userResource = Mapper.Map<ApplicationUser, ApplicationUserDto>(user);
 
             var roles = await _userManager.GetRolesAsync(user);
 

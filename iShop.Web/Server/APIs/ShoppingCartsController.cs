@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using iShop.Common.Extensions;
+using iShop.Common.Helpers;
+using iShop.Core.DTOs;
+using iShop.Core.Entities;
+using iShop.Infrastructure.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -35,9 +40,9 @@ namespace iShop.Web.Server.APIs
             if (shoppingCart == null)
                 return NotFound(shoppingCartId);
 
-            var shoppingCartResource = _mapper.Map<ShoppingCart, ShoppingCartResource>(shoppingCart);
+            var shoppingCartDto = _mapper.Map<ShoppingCart, ShoppingCartDto>(shoppingCart);
 
-            return Ok(shoppingCartResource);
+            return Ok(shoppingCartDto);
         }
 
         // GET
@@ -47,10 +52,10 @@ namespace iShop.Web.Server.APIs
         {
             var shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetShoppingCarts();
 
-            var shoppingCartResources =
-                _mapper.Map<IEnumerable<ShoppingCart>, IEnumerable<ShoppingCartResource>>(shoppingCarts);
+            var shoppingCartDto =
+                _mapper.Map<IEnumerable<ShoppingCart>, IEnumerable<ShoppingCartDto>>(shoppingCarts);
 
-            return Ok(shoppingCartResources);
+            return Ok(shoppingCartDto);
         }
 
 
@@ -67,35 +72,39 @@ namespace iShop.Web.Server.APIs
 
             var shoppingCarts = await _unitOfWork.ShoppingCartRepository.GetUserShoppingCarts(userId);
 
-            var shoppingCartResource =
-                _mapper.Map<IEnumerable<ShoppingCart>, IEnumerable<ShoppingCartResource>>(shoppingCarts);
+            var shoppingCartDto =
+                _mapper.Map<IEnumerable<ShoppingCart>, IEnumerable<ShoppingCartDto>>(shoppingCarts);
 
-            return Ok(shoppingCartResource);
+            return Ok(shoppingCartDto);
         }
 
         // POST
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SavedShoppingCartResource shoppingCartResources)
+        public async Task<IActionResult> Create([FromBody] SavedShoppingCartDto shoppingCartDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             // do not need to check for duplication in here
-            var shoppingCart = _mapper.Map<SavedShoppingCartResource, ShoppingCart>(shoppingCartResources);
+            var shoppingCart = _mapper.Map<SavedShoppingCartDto, ShoppingCart>(shoppingCartDto);
 
             await _unitOfWork.ShoppingCartRepository.AddAsync(shoppingCart);
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                //_logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                _logger.LogInformation("");
+
                 return FailedToSave(shoppingCart.Id);
             }
 
             shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCart.Id);
 
-            var result = (_mapper.Map<ShoppingCart, ShoppingCartResource>(shoppingCart));
+            var result = (_mapper.Map<ShoppingCart, ShoppingCartDto>(shoppingCart));
 
-            _logger.LogMessage(LoggingEvents.Created,  ApplicationConstants.ControllerName.Product, shoppingCart.Id);
+            //_logger.LogMessage(LoggingEvents.Created,  ApplicationConstants.ControllerName.Product, shoppingCart.Id);
+            _logger.LogInformation("");
+
 
             return CreatedAtRoute( ApplicationConstants.ControllerName.ShoppingCart, new { id = shoppingCart.Id }, result);
         }
@@ -103,7 +112,7 @@ namespace iShop.Web.Server.APIs
         //PUT
        [HttpPut("{id}")]
        [Authorize]
-         public async Task<IActionResult> Update(string id, [FromBody]SavedShoppingCartResource shoppingCartResource)
+         public async Task<IActionResult> Update(string id, [FromBody]SavedShoppingCartDto ShoppingCartDto)
         {
             bool isValid = Guid.TryParse(id, out var shoppingCartId);
             if (!isValid)
@@ -117,19 +126,23 @@ namespace iShop.Web.Server.APIs
             if (shoppingCart == null)
                 return NotFound(shoppingCartId);
 
-            _mapper.Map(shoppingCartResource, shoppingCart);
+            _mapper.Map(ShoppingCartDto, shoppingCart);
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                //_logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                _logger.LogInformation("");
+
                 return FailedToSave(shoppingCart.Id);
             }
 
             shoppingCart = await _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCart.Id);
 
-            var result = _mapper.Map<ShoppingCart, SavedShoppingCartResource>(shoppingCart);
+            var result = _mapper.Map<ShoppingCart, SavedShoppingCartDto>(shoppingCart);
 
-            _logger.LogMessage(LoggingEvents.Updated, ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+            //_logger.LogMessage(LoggingEvents.Updated, ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+            _logger.LogInformation("");
+
 
             return Ok(result);
         }
@@ -154,11 +167,14 @@ namespace iShop.Web.Server.APIs
             _unitOfWork.ShoppingCartRepository.Remove(shoppingCart);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                //_logger.LogMessage(LoggingEvents.SavedFail,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+                _logger.LogInformation("");
+
                 return FailedToSave(shoppingCart.Id);
             }
 
-            _logger.LogMessage(LoggingEvents.Deleted,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+            //_logger.LogMessage(LoggingEvents.Deleted,  ApplicationConstants.ControllerName.ShoppingCart, shoppingCart.Id);
+            _logger.LogInformation("");
 
             return NoContent();
         }

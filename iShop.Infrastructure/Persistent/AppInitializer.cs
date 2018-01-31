@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using iShop.Common.Helpers;
 using iShop.Core.Entities;
-using iShop.Web;
+using iShop.Infrastructure.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using NLog;
 
 namespace iShop.Infrastructure.Persistent
 {
@@ -31,8 +30,8 @@ namespace iShop.Infrastructure.Persistent
         {
             var roles = new List<ApplicationRole>()
             {
-                new ApplicationRole {Name = ApplicationConstants.RoleName.SuperUser, Description = "Full permission"},
-                new ApplicationRole {Name = ApplicationConstants.RoleName.User, Description = "Limited permission"}
+                //new ApplicationRole {Name = ApplicationConstants.RoleName.SuperUser, Description = "Full permission"},
+                //new ApplicationRole {Name = ApplicationConstants.RoleName.User, Description = "Limited permission"}
             };
 
             foreach (var role in roles)
@@ -44,46 +43,46 @@ namespace iShop.Infrastructure.Persistent
             }
         }
 
-        private void SeedSuperUser()
-        {
-            if (!Queryable.Any(_context.Users))
-            {
-                var adminInfo = Startup.Configuration.GetSection("SuperUserInfo");
-                var admin = new ApplicationUser
-                {
-                    UserName = adminInfo.GetSection("UserName").Value,
-                    FirstName = "Khang",
-                    LastName = "Tran",
-                    Email = adminInfo.GetSection("Email").Value,
-                };
+        //private void SeedSuperUser()
+        //{
+        ////    if (!Queryable.Any(_context.Users))
+        //    {
+        //        var adminInfo = Startup.Configuration.GetSection("SuperUserInfo");
+        //        var admin = new ApplicationUser
+        //        {
+        //            UserName = adminInfo.GetSection("UserName").Value,
+        //            FirstName = "Khang",
+        //            LastName = "Tran",
+        //            Email = adminInfo.GetSection("Email").Value,
+        //        };
 
 
-                var createResult = _userManager
-                    .CreateAsync(admin, adminInfo.GetSection("Password").Value).Result;
+        //        var createResult = _userManager
+        //            .CreateAsync(admin, adminInfo.GetSection("Password").Value).Result;
 
-                var user = _userManager.FindByNameAsync(adminInfo.GetSection("UserName").Value).GetAwaiter()
-                    .GetResult();
+        //        var user = _userManager.FindByNameAsync(adminInfo.GetSection("UserName").Value).GetAwaiter()
+        //            .GetResult();
 
-                var addRoleResult = _userManager
-                    .AddToRoleAsync(user, ApplicationConstants.RoleName.SuperUser)
-                    .Result;
-                var addClaimResult =
-                    _userManager.AddClaimAsync(user, new Claim(ApplicationConstants.ClaimName.SuperUser, "true")).Result;
+        //        var addRoleResult = _userManager
+        //            .AddToRoleAsync(user, ApplicationConstants.RoleName.SuperUser)
+        //            .Result;
+        //        var addClaimResult =
+        //            _userManager.AddClaimAsync(user, new Claim(ApplicationConstants.ClaimName.SuperUser, "true")).Result;
 
 
-                if (createResult.Succeeded && addRoleResult.Succeeded && addClaimResult.Succeeded)
-                    _logger.Info("Super User is created successfully");
-                else
-                    _logger.Error("createResult: " + createResult.ToString() + " | roleResult: " + addRoleResult +
-                                  " | claimResult: " + addClaimResult);
+        //        if (createResult.Succeeded && addRoleResult.Succeeded && addClaimResult.Succeeded)
+        //            _logger.Info("Super User is created successfully");
+        //        else
+        //            _logger.Error("createResult: " + createResult.ToString() + " | roleResult: " + addRoleResult +
+        //                          " | claimResult: " + addClaimResult);
 
-            }
-        }
+        //    }
+        //}
 
         public async Task Seed()
         {
             await SeedRoles();
-            SeedSuperUser();
+            //SeedSuperUser();
             //SAMPLE
             if (!Queryable.Any(_context.Products))
             {

@@ -1,4 +1,8 @@
-﻿namespace iShop.Core.Mapping
+﻿using System.Linq;
+using iShop.Core.DTOs;
+using iShop.Core.Entities;
+
+namespace iShop.Core.Mapping
 {
     public class ShoppingCartProfile : BaseProfile
     {
@@ -6,16 +10,16 @@
 
         protected override void CreateMap()
         {
-            CreateMap<ShoppingCart, SavedShoppingCartResource>();
-            CreateMap<ShoppingCart, ShoppingCartResource>()
+            CreateMap<ShoppingCart, SavedShoppingCartDto>();
+            CreateMap<ShoppingCart, ShoppingCartDto>()
                 .ForMember(or => or.Carts, opt => opt.MapFrom(p =>
                     p.Carts.Select(pc => new Cart() {ProductId = pc.ProductId, Quantity = pc.Quantity})));
 
-            CreateMap<ShoppingCartResource, ShoppingCart>()
+            CreateMap<ShoppingCartDto, ShoppingCart>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(d => d.Carts, opt => opt.Ignore());
 
-            CreateMap<SavedShoppingCartResource, ShoppingCart>()
+            CreateMap<SavedShoppingCartDto, ShoppingCart>()
                 .ForMember(o => o.Id, opt => opt.Ignore())
                 .ForMember(o => o.Carts, opt => opt.MapFrom(c => c.Carts))
                 .AfterMap((sr, s) =>

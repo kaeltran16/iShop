@@ -1,11 +1,14 @@
-﻿namespace iShop.Core.Mapping
+﻿using iShop.Core.DTOs;
+using iShop.Core.Entities;
+
+namespace iShop.Core.Mapping
 {
     public class CartProfile : BaseProfile
     {
         protected override void CreateMap()
         {
-            CreateMap<Cart, CartResource>();
-            CreateMap<CartResource, Cart>();
+            CreateMap<Cart, CartDto>();
+            CreateMap<CartDto, Cart>();
         }
     }
 }

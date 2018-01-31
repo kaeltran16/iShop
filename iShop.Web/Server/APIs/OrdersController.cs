@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using iShop.Common.Extensions;
+using iShop.Common.Helpers;
+using iShop.Core.DTOs;
+using iShop.Core.Entities;
+using iShop.Infrastructure.Persistent.Repositories.Contracts;
+using iShop.Infrastructure.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -32,7 +38,7 @@ namespace iShop.Web.Server.APIs
             var orders = await _unitOfWork.OrderRepository.GetOrders();
 
             var orderResources =
-                _mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(orders);
+                _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
 
             return Ok(orderResources);
         }
@@ -52,7 +58,7 @@ namespace iShop.Web.Server.APIs
             var order = await _unitOfWork.OrderRepository.GetUserOrders(userId);
 
             var orderResources =
-                _mapper.Map<IEnumerable<Order>, IEnumerable<OrderResource>>(order);
+                _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(order);
 
             return Ok(orderResources);
         }
@@ -73,7 +79,7 @@ namespace iShop.Web.Server.APIs
             if (order.UserId != User.GetUserId())
                 return UnAuthorized();
 
-            var orderResource = _mapper.Map<Order, OrderResource>(order);
+            var orderResource = _mapper.Map<Order, OrderDto>(order);
 
             return Ok(orderResource);
         }
@@ -81,34 +87,34 @@ namespace iShop.Web.Server.APIs
 
         // POST
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SavedOrderResource resource)
+        public async Task<IActionResult> Create([FromBody] SavedOrderDto resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var order = _mapper.Map<SavedOrderResource, Order>(resource);
+            var order = _mapper.Map<SavedOrderDto, Order>(resource);
 
             await _unitOfWork.OrderRepository.AddAsync(order);
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
-
+                //_logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
+                _logger.LogInformation("");
                 return FailedToSave(order.Id);
             }
 
             order = await _unitOfWork.OrderRepository.GetOrder(order.Id, false);
-            var result = (_mapper.Map<Order, OrderResource>(order));
+            var result = (_mapper.Map<Order, OrderDto>(order));
 
-            _logger.LogMessage(LoggingEvents.Created, ApplicationConstants.ControllerName.Order, order.Id);
-
+            //_logger.LogMessage(LoggingEvents.Created, ApplicationConstants.ControllerName.Order, order.Id);
+            _logger.LogInformation("");
             return CreatedAtRoute(ApplicationConstants.ControllerName.Order,
                 new { id = order.Id }, result);
         }
 
         //PUT
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody]SavedOrderResource savedOrderResource)
+        public async Task<IActionResult> Update(string id, [FromBody]SavedOrderDto savedOrderResource)
         {
             bool isValid = Guid.TryParse(id, out var orderId);
             if (!isValid)
@@ -129,17 +135,17 @@ namespace iShop.Web.Server.APIs
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
-
+                //_logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
+                _logger.LogInformation("");
                 return FailedToSave(order.Id);
             }
 
             order = await _unitOfWork.OrderRepository.GetOrder(order.Id);
 
-            var result = _mapper.Map<Order, SavedOrderResource>(order);
+            var result = _mapper.Map<Order, SavedOrderDto>(order);
 
-            _logger.LogMessage(LoggingEvents.Updated, ApplicationConstants.ControllerName.Order, order.Id);
-
+            //_logger.LogMessage(LoggingEvents.Updated, ApplicationConstants.ControllerName.Order, order.Id);
+            _logger.LogInformation("");
             return Ok(result);
         }
 
@@ -163,13 +169,13 @@ namespace iShop.Web.Server.APIs
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
-
+                //_logger.LogMessage(LoggingEvents.SavedFail, ApplicationConstants.ControllerName.Order, order.Id);
+                _logger.LogInformation("");
                 return FailedToSave(order.Id);
             }
 
-            _logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Order, order.Id);
-
+            //_logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Order, order.Id);
+            _logger.LogInformation("");
             return NoContent();
         }
     }

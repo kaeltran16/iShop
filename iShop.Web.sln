@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iShop.Core", "iShop.Core\iS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iShop.Infrastructure", "iShop.Infrastructure\iShop.Infrastructure.csproj", "{09068766-FDFF-4589-8E9E-38767DD4D7E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iShop.Common", "iShop.Common\iShop.Common.csproj", "{D96E958A-FB14-4229-B490-C7294AB96923}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iShop.Common", "iShop.Common\iShop.Common.csproj", "{D96E958A-FB14-4229-B490-C7294AB96923}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +50,7 @@ Global
 		{D771FC53-5C99-4B85-A430-341BD84D7738} = {4CB7F52E-C723-4B2C-AE46-603D14D9BD55}
 		{F31E3AB3-E7D5-4726-85E4-E3B917CCB435} = {4CB7F52E-C723-4B2C-AE46-603D14D9BD55}
 		{09068766-FDFF-4589-8E9E-38767DD4D7E7} = {4CB7F52E-C723-4B2C-AE46-603D14D9BD55}
+		{D96E958A-FB14-4229-B490-C7294AB96923} = {4CB7F52E-C723-4B2C-AE46-603D14D9BD55}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0FACFDB3-14FA-4387-A690-21E0898E384B}

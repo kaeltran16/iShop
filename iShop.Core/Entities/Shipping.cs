@@ -1,4 +1,5 @@
 ﻿using System;
+using iShop.Core.Helpers;
 
 namespace iShop.Core.Entities
 {

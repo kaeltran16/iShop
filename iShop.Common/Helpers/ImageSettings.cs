@@ -11,7 +11,7 @@ namespace iShop.Common.Helpers
         public bool IsSupported(string fileName)
         {
             var extension = Path.GetExtension(fileName);
-            return Enumerable.Any<string>(AcceptedTypes, s => s == extension.ToLower());
+            return AcceptedTypes.Any<string>(s => s == extension.ToLower());
         }
     }
 }

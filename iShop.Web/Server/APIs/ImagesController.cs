@@ -2,6 +2,11 @@
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
+using iShop.Common.Extensions;
+using iShop.Common.Helpers;
+using iShop.Core.DTOs;
+using iShop.Core.Entities;
+using iShop.Infrastructure.Persistent.UnitOfWork.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -78,12 +83,13 @@ namespace iShop.Web.Server.APIs
 
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.Fail,  ApplicationConstants.ControllerName.Image, image.Id);
+                //_logger.LogMessage(LoggingEvents.Fail,  ApplicationConstants.ControllerName.Image, image.Id);
+                _logger.LogInformation("");
                 return FailedToSave(image.Id);
             }
-            _logger.LogMessage(LoggingEvents.Created,  ApplicationConstants.ControllerName.Image, image.Id);
-
-            return Ok(_mapper.Map<Image, ImageResource>(image));
+            //_logger.LogMessage(LoggingEvents.Created,  ApplicationConstants.ControllerName.Image, image.Id);
+            _logger.LogInformation("");
+            return Ok(_mapper.Map<Image, ImageDto>(image));
         }
 
 
@@ -113,11 +119,13 @@ namespace iShop.Web.Server.APIs
             _unitOfWork.ImageRepository.Remove(image);
             if (!await _unitOfWork.CompleteAsync())
             {
-                _logger.LogMessage(LoggingEvents.Fail, ApplicationConstants.ControllerName.Category, image.Id);
+                //_logger.LogMessage(LoggingEvents.Fail, ApplicationConstants.ControllerName.Category, image.Id);
+                _logger.LogInformation("");
                 return FailedToSave(image.Id);
             }
 
-            _logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Category, image.Id);
+            //_logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Category, image.Id);
+            _logger.LogInformation("");
             return NoContent();
         }
     }

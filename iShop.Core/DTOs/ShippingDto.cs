@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using iShop.Core.Helpers;
 
 namespace iShop.Core.DTOs
 {

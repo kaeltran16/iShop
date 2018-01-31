@@ -1,4 +1,8 @@
-﻿namespace iShop.Core.Mapping
+﻿using System.Linq;
+using iShop.Core.DTOs;
+using iShop.Core.Entities;
+
+namespace iShop.Core.Mapping
 {
     public class ProductProfile: BaseProfile
     {
@@ -7,9 +11,9 @@
         protected override void CreateMap()
         {
 
-            CreateMap<Product, SavedProductResource>();
+            CreateMap<Product, SavedProductDto>();
 
-            CreateMap<Product, ProductResource>()
+            CreateMap<Product, ProductDto>()
                 .ForMember(pr => pr.Categories,
                     opt => opt.MapFrom(p =>
                         p.ProductCategories.Select(pc => pc.Category)))
@@ -17,12 +21,12 @@
                 .ForMember(pr => pr.SupplierId, opt => opt.MapFrom(p => p.Inventory.SupplierId));
 
 
-            CreateMap<ProductResource, Product>()
+            CreateMap<ProductDto, Product>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(d => d.ProductCategories, opt => opt.Ignore());
 
 
-            CreateMap<SavedProductResource, Product>()
+            CreateMap<SavedProductDto, Product>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(p => p.ProductCategories, opt => opt.Ignore())
                 .AfterMap((pr, p) =>

@@ -1,4 +1,6 @@
-﻿namespace iShop.Common.Helpers
+﻿using Newtonsoft.Json;
+
+namespace iShop.Common.Helpers
 {
     public class ApplicationError
     {

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
+using iShop.Web.Extensions;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace iShop.Web
 {
@@ -23,9 +23,8 @@ namespace iShop.Web
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<ImageSettings>(Configuration.GetSection("ImageSettings"));
-            services.AddSwaggerGen(c =>
-                c.SwaggerDoc("v1", new Info {Title = "iShop APIs", Description = "API endpoints for iShop"}));
+            services.AddConfigureSettings();
+            services.AddCustomSwagger();
             services.AddDependencies();
             services.AddCustomDbContext();
             services.AddCustomIdentity();
