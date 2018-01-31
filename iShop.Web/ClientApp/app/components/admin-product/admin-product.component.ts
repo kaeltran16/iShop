@@ -64,4 +64,8 @@ export class AdminProductComponent implements OnInit {
 
     }
 
+    exitDetail(isExit: boolean) {
+        if (isExit) this.modalRef.hide();
+    }
+
 }

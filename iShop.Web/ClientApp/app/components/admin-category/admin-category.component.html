@@ -1,0 +1,56 @@
+﻿
+
+
+<!--<slide-image></slide-image>-->
+
+<!-- items being paged -->
+
+
+
+
+
+
+<div name="begin" class="card text-center" style="height: 45px;">
+    <button class="btn btn-success" (click)="openModal(createCategory)">Thêm sản phẩm</button>
+    <ng-template #createCategory>
+        <div class="rounded" id="alert-create">
+            <button type="button" class="close float-right pt-2 mr-2 " aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+
+            <admin-create-category  (onclick)="exitDetail($event)" ></admin-create-category>
+
+        </div>
+    </ng-template>
+</div>
+
+<div class="col card">
+    <div class="row">
+        <ng-container *ngFor="let c of categories ; let i=index">
+            <div class="col-4 mt-5 card" (click)="openModal(editProduct)" >
+                <h3>{{c.name}}</h3>
+                <p>{{c.detail}}</p>
+            </div>
+            <div *ngIf="(i+1)%3===0" class="w-100"></div>
+            <ng-template #editProduct>
+                <div class="rounded" id="alert-create">
+                    <button type="button" class="close float-right pt-2 mr-2 " aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+
+                    <admin-edit-category  (onclick)="exitDetail($event)" [category]="c" ></admin-edit-category>
+
+                </div>
+            </ng-template>
+        </ng-container>
+
+
+    </div>
+    <!-- pager -->
+
+</div>
+
+
+

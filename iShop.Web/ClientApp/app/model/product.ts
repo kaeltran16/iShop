@@ -4,7 +4,7 @@ import { Image } from "./Image";
 import { Supplier } from "./Supplier";
 import { Inventory } from "./Inventory";
 export class Product {
-    id: number;
+    id: string;
     categories: string[];
     summary: string;
     expiredDate: Date;
@@ -15,7 +15,10 @@ export class Product {
     supplierId:string;
     images: Image[];
     inventory: Inventory;
-    stock:number;
+    stock: number;
+
+
+    
     constructor(category: string[]=[], summary: string="",  price: number, sku: string,
         name: string,
         supplier: string,
@@ -23,7 +26,7 @@ export class Product {
         stock: number,
         expiredDate:Date
        ) {
-      
+//        this.id = id;
         this.categories = category;
         this.summary = summary;
         this.expiredDate = expiredDate;
@@ -38,6 +41,7 @@ export class Product {
 
 
 }
+
 
 
 

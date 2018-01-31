@@ -14,26 +14,30 @@ import { Image } from '../../model/Image';
 export class AdminEditProductComponent implements OnInit {
     ngOnInit(): void {
 
-//        this.itemProduct = this.product;
-//        this.imageEdit = this.product.images[0];
-//        this.itemProduct.sku = this.product.sku;
-//        this.itemProduct.name = "vu khac hoi";
-//        this.itemProduct.price = this.product.price;
-//        this.itemProduct.summary = this.product.summary;
-//        this.itemProduct.stock = this.product.stock;
-//        this.itemProduct.supplierId = this.product.supplierId;
-//        this.itemProduct.categories = this.product.categories;
-//        this.itemProduct.stock = this.product.inventory.stock;
+        let categories: string[] = [];
+        this.product.categories.forEach((t: any) => categories.push(t.id));
+        console.log(this.product.supplierId);
 
 
-        this.itemProduct=new Product(this.product.categories,this.product.summary,this.product.price,this.product.sku,this.product.name,this.product.supplier,this.product.stock,this.product.expiredDate)
+        this.itemProduct = new Product(
+//            this.itemProduct.id=this.product
+            categories,
+            this.product.summary,
+            this.product.price,
+            this.product.sku,
+            this.product.name,
+            this.product.supplierId,
+            this.product.inventory.stock,
+            this.product.expiredDate);
+
+        this.itemProduct.id = this.product.id;
     }
    itemProduct:Product;
     @Output() onclick = new EventEmitter<boolean>();
     @Input('product') product: any;
     minDate = new Date(2017, 5, 10);
     maxDate = new Date(2018, 9, 15);
-  imageEdit:Image;
+    imageEdit:Image;
   
 
     constructor(private productService: ProductService) {

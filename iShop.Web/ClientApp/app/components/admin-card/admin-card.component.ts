@@ -77,6 +77,7 @@ export class AdminCardComponent implements  OnInit {
         
     }
 
+    // when hover in product
     hovering() {
         this.isHover = true;
     }
@@ -84,8 +85,9 @@ export class AdminCardComponent implements  OnInit {
         this.isHover = false;
        
     }
+
     exitDetail(isExit: boolean) {
-        this.modalRef.hide();
+        if (isExit)   this.modalRef.hide();
     }
 
 }

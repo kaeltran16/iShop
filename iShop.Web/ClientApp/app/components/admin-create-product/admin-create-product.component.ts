@@ -83,10 +83,7 @@ export class AdminCreateProductComponent implements OnInit {
         token ? this.imageService.createImages(event, productId, token) : alert("bạn chưa đủ quyền vào mục này");
     }
 
-    how() {
-        let token = localStorage.getItem("token");
-        token ? this.imageService.createImages(this.imageEvent, "d71d3b22-18e9-4afa-a9f2-0e5e9bd610ac", token) : alert("bạn chưa đủ quyền vào mục này");
-    }
+ 
 
 
     show() {
@@ -95,7 +92,6 @@ export class AdminCreateProductComponent implements OnInit {
             this.itemProduct.categories.push(this.categoriesSelect[this.category].id);
             console.log(this.itemProduct);
         }
-//        this.categoriesSelect.splice(this.category, 1);
     }
     createProduct($event:any) {
         console.log($event);
@@ -105,7 +101,8 @@ export class AdminCreateProductComponent implements OnInit {
             let token = localStorage.getItem("token");
             token
                 ? this.productService.createProduct(this.itemProduct, token)
-                .subscribe(c => { this.onclick.emit(true); }, err => console.log(err))
+                    .subscribe(c => { this.onclick.emit(true); },
+                    err => console.log(err))
                 : alert("Bạn không đủ quyền để thao tác với việc này");
         }
 

@@ -17,8 +17,15 @@ export class OrderService {
   
  
      // get all order
-    geOrders() {
-        return this.http.get(this.Url + '/api/Orders/')
+    getOrders(token:string) {
+        return this.http.get(this.Url + '/api/Orders/',
+            ({
+                headers: {
+                    //USE credentials mode
+                    withCredentials: true,
+                    'Authorization': 'Bearer ' + token
+                }
+            }) as any)
             .map(res => res.json());
     }
 
@@ -35,7 +42,7 @@ export class OrderService {
 
 
         }
-        console.log(orderItems);
+    
         let order: Order = new Order(userId, orderItems);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
@@ -54,7 +61,7 @@ export class OrderService {
                 
                 
 
-                   console.log(order);
+                 
                 return res.json();
             },
                 (err: any)=>console.log(err)

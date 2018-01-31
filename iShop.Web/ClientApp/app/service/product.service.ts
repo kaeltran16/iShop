@@ -31,13 +31,13 @@ export class ProductService {
     // update product 
     editProduct(product: Product, token: string) {
 
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.put(this.Url + '/api/Products/'+product.id, JSON.stringify(product)
+      
+        return this.http.put(this.Url + 'api/Products/'+product.id, product
             ,
             ({
                 headers: {
                     //USE credentials mode
+
                     withCredentials: true,
                     'Authorization': 'Bearer ' + token
                 }
@@ -48,10 +48,9 @@ export class ProductService {
 
     //createProduct
     createProduct(product: Product, token: string) {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+       
     
-        return this.http.post(this.Url + '/api/Products/', product
+        return this.http.post(this.Url + 'api/Products/', product
                 ,
                 ({
                     headers: {

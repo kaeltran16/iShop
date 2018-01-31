@@ -3,9 +3,10 @@
 .backgroundLeft {
     background-color: rgb(42,63,84);
     color: white;
+    min-height: 1000px;
 
 }
 .backgroundRight {
     background-color: whitesmoke;
-    height: 2000px;
+    min-height: 1000px;
 }
