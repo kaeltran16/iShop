@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map'
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import * as _ from 'underscore';
+
 import { PagerService } from '../../service/page.service';
 import { ProductService } from '../../service/product.service';
 @Component({
@@ -37,12 +37,10 @@ export class AdminProductComponent implements OnInit {
         this.productService.getProducts().subscribe(p => {
             // set items to json response
             this.allItems = p;
-//console.log(p);
+
             // initialize to page 1
             this.setPage(1);
         });
-      
-       
     }
 
     setPage(page: number) {
@@ -65,7 +63,15 @@ export class AdminProductComponent implements OnInit {
     }
 
     exitDetail(isExit: boolean) {
-        if (isExit) this.modalRef.hide();
+        if (isExit) {
+            this.modalRef.hide();
+            setTimeout(()=> {
+                this.productService.getProducts().subscribe(p => {
+                this.allItems = p;
+            this.setPage(1);
+        })},1000)
+           ;
+        }
     }
 
 }

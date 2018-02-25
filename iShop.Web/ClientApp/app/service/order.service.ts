@@ -28,7 +28,11 @@ export class OrderService {
             }) as any)
             .map(res => res.json());
     }
-
+    // delete 
+    deleteOrders(orderId:string) {
+        return this.http.delete(this.Url + '/api/Orders/' + orderId)
+            .map(res => res.json());
+    }
 
 
     //create
@@ -39,8 +43,6 @@ export class OrderService {
             if (localStorage.key(i) !== "token") {
                 orderItems.push(JSON.parse(String(localStorage.getItem(String(localStorage.key(i))))));
             }
-
-
         }
     
         let order: Order = new Order(userId, orderItems);

@@ -1,10 +1,10 @@
- 
-import { Component, OnInit,Input } from '@angular/core';
+﻿ 
+import { Component, OnInit, Inject  } from '@angular/core';
 import { Http } from '@angular/http';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import 'rxjs/add/operator/map'
 import { SharedService } from '../../service/shared-service';
-import * as _ from 'underscore';
+import { DOCUMENT } from '@angular/platform-browser';
 import { PagerService } from '../../service/page.service';
 import { ProductService } from '../../service/product.service';
 @Component({
@@ -18,12 +18,14 @@ export class MoreProductComponent implements OnInit {
         private pagerService: PagerService,
         private productService: ProductService,
         private route: ActivatedRoute,
-        private sharedService: SharedService
+        private sharedService: SharedService,
+        @Inject(DOCUMENT) private document: Document
     ) { }
    
     // array of all items to be paged
     private allItems: any[];
     category: string | null;
+    title:string|null;
     // pager object
     pager: any = {};
 
@@ -31,11 +33,16 @@ export class MoreProductComponent implements OnInit {
     pagedItems: any[];
 
     ngOnInit() {
+        //set position on top
+        this.document.body.scrollTop = 0;
+
         this.productService.getProducts().subscribe(p => {
             // set items to json response
             this.allItems = p;
             this.category = this.route.snapshot.paramMap.get('title');
-
+            if (this.category === 'o') this.title = "Thủy Hải Sản";
+            else if (this.category === 't') this.title = "Thịt Và Trứng";
+            else this.title = this.category;
             // initialize to page 1
             this.setPage(1);
         });
@@ -45,7 +52,9 @@ export class MoreProductComponent implements OnInit {
                 // set items to json response
                 this.allItems = p;
                 this.category = this.route.snapshot.paramMap.get('title');
-
+                if (this.category === 'o') this.title = "Thủy Hải Sản";
+                else if (this.category === 't') this.title = "Thịt Và Trứng";
+                else this.title = this.category;
                 // initialize to page 1
                 this.setPage(1);
             });
@@ -59,7 +68,7 @@ export class MoreProductComponent implements OnInit {
         }
 
         // get pager object from service
-        this.pager = this.pagerService.getPager(this.allItems.length, page);
+        this.pager = this.pagerService.getPager(this.allItems.length, page,15);
 
         // get current page of items
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);

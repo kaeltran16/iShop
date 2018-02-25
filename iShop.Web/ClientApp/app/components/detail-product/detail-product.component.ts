@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter,Input,OnInit } from '@angular/core';
 //import { CookieService } from 'ngx-cookie-service';
 import { Cart } from "../../model/Cart";
+import { SharedService } from '../../service/shared-service';
 @Component({
     selector: 'detail-product',
     templateUrl: './detail-product.component.html',
@@ -20,7 +21,7 @@ export class DetailProductComponent implements OnInit {
     isReadonly: boolean = true;
     quantity: number = 1;
 
-    constructor() {
+    constructor(private sharedService:SharedService) {
      
         
     }
@@ -32,7 +33,7 @@ export class DetailProductComponent implements OnInit {
        
         let cart :Cart = new Cart(this.product.id, this.quantity);
         localStorage.setItem(this.product.id, JSON.stringify(cart));
-
+        this.sharedService.emitChange(true);
         
 
 

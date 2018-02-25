@@ -58,8 +58,9 @@ export class AdminCardComponent implements  OnInit {
     }
 
     @Input('product') product: any;
-    quantity: number = 1;
-   
+
+   //delete card
+    isDelete:boolean=false;
     isHover:boolean=false;
     modalRef: BsModalRef;
     constructor(private modalService: BsModalService, private sharedService: SharedService) {
@@ -71,10 +72,7 @@ export class AdminCardComponent implements  OnInit {
   
    
     openModal(template: TemplateRef<any>) {
-   
             this.modalRef = this.modalService.show(template);
-            
-        
     }
 
     // when hover in product
@@ -86,8 +84,16 @@ export class AdminCardComponent implements  OnInit {
        
     }
 
-    exitDetail(isExit: boolean) {
-        if (isExit)   this.modalRef.hide();
+    exitDetail(p: any) {
+        if (p) {
+            if (typeof p === 'boolean') {
+                this.modalRef.hide();
+                this.isDelete=true;
+                return;
+            }
+            this.modalRef.hide();
+            this.product = p;
+        }
     }
 
 }

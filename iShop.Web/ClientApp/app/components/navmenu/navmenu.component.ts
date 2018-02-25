@@ -32,7 +32,27 @@ import * as _ from 'underscore';
 })
 export class NavMenuComponent implements OnInit{
     ngOnInit() {
-      
+        setTimeout(() => {
+                this.totalPrice = 0;
+                this.totalQuantity = 0;
+
+                for (var i = 0; i < localStorage.length; ++i) {
+                    //get local storage 
+                    if (localStorage.key(i) !== "token") {
+                        let carts = JSON.parse(String(localStorage.getItem(String(localStorage.key(i)))));
+                        this.productService.getProduct(carts.productId).subscribe(p => {
+                            //count total price and total quantity
+                            this.totalPrice = this.totalPrice + carts.quantity * p.price;
+                            this.totalQuantity += carts.quantity;
+
+
+                        });
+                    }
+
+
+                }
+            },
+            1000);
    
         //  update total sent to navbar component
         this.sharedService.changeEmitted$.subscribe(info => {

@@ -24,37 +24,42 @@ export class ImageService {
 
 
     // Create image
-    createImages(event: any,productId:string,token:string) {
+    createImages(event: any, productId: string, token: string) {
 
         let fileList: FileList = event.target.files;
         if (fileList.length > 0) {
             let file: File = fileList[0];
             let formData: FormData = new FormData();
             formData.append('file', file, file.name);
-            let headers = new Headers();
-            /** No need to include Content-Type in Angular 4 */
-            headers.append('Content-Type', 'multipart/form-data');
-            headers.append('Accept', 'application/json');
-            headers.append('withCredentials', 'true');
-            headers.append('Authorization', 'Bearer ' + token);
-            let options = new RequestOptions(({ headers: headers }));
+            console.log(file);
             return this.http.post(this.Url + 'api/product/' + productId + '/Images', formData,
-                    ({
-                        headers: {
-                            //USE credentials mode
-                            Accept: 'application/json',
-                            'Content-Type':'multipart/form-data',
-                            withCredentials: true,
-                            'Authorization': 'Bearer ' + token
-                        }
-                    }) as any)
-                .map(res => res.json()).catch(error => Observable.throw(error))
+            ({
+                headers: {
+                    withCredentials: true,
+                    'Authorization': 'Bearer ' + token
+                }
+            }) as any)
+            .
+            map(res => res.json()).catch(error => Observable.throw(error))
                 .subscribe(
                     data => console.log('success'),
                     error => console.log(error)
                 );
 
         }
+    
+        
+    }
+
+    deleteImage(fileName: string, productId:string,token:string) {
+        return this.http.delete(this.Url + 'api/product/' + productId + '/Images/' + fileName,
+                ({
+                    headers: {
+                        withCredentials: true,
+                        'Authorization': 'Bearer ' + token
+                    }
+                }) as any)
+            .map(res => res.json());
 
     }
 }

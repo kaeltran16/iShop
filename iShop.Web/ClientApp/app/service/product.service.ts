@@ -2,6 +2,8 @@
 import { Http, RequestOptions, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Product}  from "../model/Product";
+import { Observable } from 'rxjs/Observable';
+import { Order } from '../model/order';
 
 
 @Injectable()
@@ -20,7 +22,7 @@ export class ProductService {
      // get product with Id 
     getProduct(id: string) {
         return this.http.get(this.Url + '/api/Products/' + id)
-            .map(res => res.json());
+            .map(res => res.json() );
 
     }
 
@@ -62,5 +64,16 @@ export class ProductService {
             .map(res => res.json());
     }
 
-
+    deleteProduct(idProduct: string,token:string) {
+        return this.http.delete(this.Url + 'api/Products/' + idProduct
+                ,
+                ({
+                    headers: {
+                        //USE credentials mode
+                        withCredentials: true,
+                        'Authorization': 'Bearer ' + token
+                    }
+                }) as any)
+            .map(res => res.json());
+    }
 }

@@ -16,10 +16,26 @@ export class CartComponent implements OnInit {
     }
     constructor(private productService: ProductService, private _sharedService: SharedService) {
         //        get local storage
-        
+        if (this.carts.length < localStorage.length) {
+            for (var i = 0; i < localStorage.length; ++i) {
+                if (localStorage.key(i) !== "token") {
+                    let cart = JSON.parse(String(localStorage.getItem(String(localStorage.key(i)))));
+
+                    this.productService.getProduct(cart.productId).subscribe(p => {
+                        this.carts.push({
+                            product: p,
+                            quantity: cart.quantity
+                        });
+
+                    });
+
+                } else this.a = localStorage.length;
+            }
+        }
+        // when update cart
         this._sharedService.changeEmitted$.subscribe(info => {
             this.carts = [];
-            this.a = localStorage.length+1;
+           
             if (this.carts.length < localStorage.length) {
                 for (var i = 0; i < localStorage.length; ++i) {
                     if (localStorage.key(i) !== "token") {
@@ -30,13 +46,13 @@ export class CartComponent implements OnInit {
                                 product: p,
                                 quantity: cart.quantity
                             });
-
+                          
                         });
 
                     } else this.a = localStorage.length;
                 }
             }
-           
+          
         });
        
     }

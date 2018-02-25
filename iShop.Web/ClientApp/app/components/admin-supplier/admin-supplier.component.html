@@ -1,52 +1,37 @@
 ﻿
+<div name="begin" class="card text-center" style="height: 45px;">
+    <button class="btn btn-success" (click)="openModal(createSupplier)">Thêm Nhà Cung Cấp</button>
+    <ng-template #createSupplier>
+        <div class="rounded" id="alert-create">
+            <button type="button" class="close float-right pt-2 mr-2 " aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <admin-create-supplier (onclick)="exitDetail($event)"></admin-create-supplier>
+        </div>
+    </ng-template>
+</div>
 
-<div class="card w-100">
-    <table class="table table-hover ">
-        <thead>
-            <tr>
-                <th class=" text-center"></th>
-                <th class=" text-center">Người đặt</th>
-                <th class="text-center">Chi tiết đơn hàng</th>
-                <th class="text-center">Tổng giá</th>
-                <th class="text-center">Địa chỉ giao hàng</th>
-                <th class="text-center">Trạng thái</th>
-                <th class="text-center">Xóa</th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="col card">
+    <div class="row">
+        <ng-container *ngFor="let s of suppliers ; let i=index">
+            <div class="col-4 mt-5 card" (click)="openModal(editSupplier)">
+                <h3>{{s.name}}</h3>
+                <p>{{s.description}}</p>
+            </div>
+            <div *ngIf="(i+1)%3===0" class="w-100"></div>
+            <ng-template #editSupplier>
+                <div class="rounded" id="alert-create">
+                    <button type="button" class="close float-right pt-2 mr-2 " aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <admin-edit-supplier (onclick)="exitDetail($event)" [supplier]="s"></admin-edit-supplier>
 
-            <tr >
-                <th class=" text-center" scope="row">1</th>
-                <td class=" text-center">
-                   Vũ Khắc Hợi
-                </td>
-                <td  class="text-center">
-                    <p>Cải xanh : 10 cái </p>
-                   
-                </td>
-                <td class="text-center">1000<sup>đ</sup></td>
-
-                <td class="text-center">hkhajskhd</td>
-                <td class=" text-center">Đã giao hàng</td>
-                <td class=" text-center"><button class="btn btn-outline-success" >Xóa</button></td>
-            </tr>
-
-        </tbody>
-        <tfoot>
-            <tr>
-                <th></th>
-                <td colspan="3"></td>
-                <td>Tổng cộng</td>
-                <td>
-                  hjhakshjkkhkhfa
-                </td>
-            </tr>
+                </div>
+            </ng-template>
+        </ng-container>
 
 
-
-          
-        </tfoot>
-    </table>
-
+    </div>
+    <!-- pager -->
 
 </div>

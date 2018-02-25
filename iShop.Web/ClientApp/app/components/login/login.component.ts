@@ -39,13 +39,13 @@ export class LoginComponent implements OnInit {
                 this.sharedService.emitChangeToken({"lastName":"Đăng Nhập"});
             }, this.countTime);
             token.subscribe(t => {
-               
+                    console.log(t);
                 localStorage.setItem("token",t.access_token );
                 this.userService.info(t.access_token).subscribe(t => {
                         //output
                         this.onclick.emit(true);
                         this.sharedService.emitChangeToken(t);
-                    console.log(t);
+                   
                 });
                  
                     

@@ -19,7 +19,8 @@ namespace iShop.Web.Server.Mapping
                     opt => opt.MapFrom(p =>
                         p.ProductCategories.Select(pc => pc.Category)))
                 .ForMember(pr => pr.Inventory, opt => opt.MapFrom(p => p.Inventory))
-                .ForMember(pr => pr.SupplierId, opt => opt.MapFrom(p => p.Inventory.SupplierId));
+                .ForMember(pr => pr.Supplier, opt => opt.MapFrom(p => p.Inventory.Supplier));
+
 
 
             CreateMap<ProductResource, Product>()
@@ -41,13 +42,30 @@ namespace iShop.Web.Server.Mapping
                         p.ProductCategories.Where(c => !pr.Categories.Contains(c.CategoryId)).ToList();
                     foreach (var pc in removedCategories)
                         p.ProductCategories.Remove(pc);
+
+                    if (p.Inventory == null)
+                    {
+                        var inventory = new Inventory()
+                        {
+                            ProductId = pr.Id,
+                            SupplierId = pr.SupplierId,
+                            Stock = pr.Stock
+                        };
+                        p.Inventory = inventory;
+                    }
+                    else
+                    {
+                        p.Inventory.SupplierId = pr.SupplierId;
+                        p.Inventory.Stock = pr.Stock;
+                    }
+
+                   
                 })
 
                 .ForMember(p => p.Inventory, opt => opt.Ignore())
                 .AfterMap((pr, p) =>
                 {
-                    var inventory = new Inventory() { ProductId = pr.Id, SupplierId = pr.SupplierId, Stock = pr.Stock };
-                    p.Inventory = inventory;
+                   
                   
                 });
 

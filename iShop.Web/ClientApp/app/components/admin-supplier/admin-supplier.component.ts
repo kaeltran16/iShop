@@ -1,15 +1,12 @@
 ﻿ 
 import { Component, OnInit,Input, TemplateRef } from '@angular/core';
-import * as _ from 'underscore';
-import { ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/map'
+
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
-import { PagerService } from '../../service/page.service';
-import { ProductService } from '../../service/product.service';
-import { OrderService } from '../../service/order.service';
 import { UserService } from '../../service/user.service';
+import { SupplierService } from '../../service/supplier.service';
+
 @Component({
     
     selector: 'admin-supplier',
@@ -18,12 +15,11 @@ import { UserService } from '../../service/user.service';
 })
 export class AdminSupplierComponent implements OnInit {
     modalRef: BsModalRef;
-    orders:any[]=[];
+    suppliers:any[]=[];
     constructor(
-        private orderService: OrderService,
-        private route: ActivatedRoute,
+ 
         private modalService: BsModalService,
-        private productService: ProductService,
+        private  supplierService:SupplierService,
         private userService: UserService,
      
     ) { }
@@ -32,25 +28,35 @@ export class AdminSupplierComponent implements OnInit {
 
     ngOnInit() {
         let token = localStorage.getItem("token");
-        token ? this.orderService.getOrders(token).subscribe(o => {
-                _.each(o,
-                    (os:any) => {
-                        if (os.userId) {
-//                            this.userService.
-                        }
-                    });
+        token ? this.supplierService.getSuppliers(token).subscribe(s => {
+                this.suppliers = s;
             }
             ): alert("Bạn không đủ quyền truy cập vào mục này");
     }
 
 
-    exitDetail(isExit: boolean) {
-        if (isExit) {
+    exitDetail(supplier: any) {
+        if (supplier) {
             this.modalRef.hide();
-         
+            if (typeof supplier === 'boolean') {
+                return;
+            }
+            console.log(supplier);
+            let index: number = this.suppliers.findIndex(s => s.id === supplier);
+            console.log(index);
+            if (index !==-1) {
+              
+                this.suppliers.splice(index,1);
+                return;
+            }
+            this.suppliers.push(supplier);
         }
     }
 
-  
 
+    
+  
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template);
+    }
 }

@@ -1,52 +1,85 @@
 ﻿
 
+
+
 <div class="card w-100">
-    <table class="table table-hover ">
+   
+    <table class="table ">
         <thead>
-            <tr>
-                <th class=" text-center"></th>
-                <th class=" text-center">Người đặt</th>
-                <th class="text-center">Chi tiết đơn hàng</th>
-                <th class="text-center">Tổng giá</th>
-                <th class="text-center">Địa chỉ giao hàng</th>
-                <th class="text-center">Trạng thái</th>
-                <th class="text-center">Xóa</th>
-            </tr>
+        <tr>
+            <th class=" text-center"></th>
+            <th class=" text-center">Người đặt</th>
+            <th class="text-center">Chi tiết đơn hàng</th>
+            <th class="text-center">Tổng giá</th>
+            <th class="text-center">Địa chỉ giao hàng</th>
+            <th class="text-center">Ngày đặt hàng</th>
+            <th class="text-center">Trạng thái</th>
+            <th class="text-center">Xóa</th>
+        </tr>
         </thead>
         <tbody>
 
-            <tr >
-                <th class=" text-center" scope="row">1</th>
-                <td class=" text-center">
-                   Vũ Khắc Hợi
-                </td>
-                <td  class="text-center">
-                    <p>Cải xanh : 10 cái </p>
-                   
-                </td>
-                <td class="text-center">1000<sup>đ</sup></td>
+        <tr *ngFor="let order of pagedItems; let i=index"
+            [class.badge-success]="order.shipping.shippingState===2"
+            [class.badge-danger]="order.shipping.shippingState===0"
+            [class.badge-warning]="order.shipping.shippingState===1"
+            (click)="openModal(detailOrder)"
+        >
+            <th class=" text-center" scope="row">{{i}}</th>
+            <td class=" text-center" >
+                {{order.shipping?.userName}}
+            </td>
+            <td class="text-center">
+                <p *ngFor="let p of order.orderedItems">{{p.product.name}} : {{p.quantity}} /{{p.product.sku}} </p>
+            </td>
+            <td class="text-center">{{order.shipping.charge}}<sup>đ</sup></td>
 
-                <td class="text-center">hkhajskhd</td>
-                <td class=" text-center">Đã giao hàng</td>
-                <td class=" text-center"><button class="btn btn-outline-success" >Xóa</button></td>
-            </tr>
+            <td class="text-center"> {{order.shipping.ward}} {{order.shipping.district}} {{order.shipping.city}}</td>
+            <td class="text-center">{{order.orderedDate|date:'yyyy-MM-dd'}}</td>
+            <td class=" text-center" [ngSwitch]="order.shipping.shippingState">
+                <p *ngSwitchCase="0">Chưa giao hàng</p>
+                <div *ngSwitchCase="2">Đã giao hàng
+                    <br/>
+                    ngày :
+                    <p>
+                        {{order.shipping.shippingDate|date:'yyyy-MM-dd'}}
+                    </p></div>
+                <p *ngSwitchCase="1">Đang giao hàng</p>
+            </td>
+            <td class=" text-center"><button class="btn btn-outline-primary" (click)="deleteOrder(order.id)">Xóa</button></td>
+            <ng-template #detailOrder>
+                <div class="rounded" id="alert-create">
+                    <button type="button" class="close float-right pt-2 mr-2 " aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
 
+
+                    <admin-detail-order [order]="order"  (onclick)="exitDetail($event)" ></admin-detail-order>
+
+                </div>
+            </ng-template>
+        </tr>
+      
         </tbody>
-        <tfoot>
-            <tr>
-                <th></th>
-                <td colspan="3"></td>
-                <td>Tổng cộng</td>
-                <td>
-                  hjhakshjkkhkhfa
-                </td>
-            </tr>
-
-
-
-          
-        </tfoot>
+      
     </table>
-
-
+    <div class="d-inline-block">
+    <ul *ngIf="pager.pages && pager.pages.length" class="pagination mt-5 mr-4 float-right  h-100 ">
+        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+            <a class="page-link" (click)="setPage(1)">First</a>
+        </li>
+        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+            <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+            <a class="page-link" (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+        </li>
+        <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a class="page-link" (click)="setPage(pager.totalPages)">Last</a>
+        </li>
+    </ul>
+    </div>
 </div>

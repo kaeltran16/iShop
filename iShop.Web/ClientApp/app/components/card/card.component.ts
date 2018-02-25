@@ -50,10 +50,7 @@ import { Cart} from "../../model/Cart";
 export class CardComponent implements  OnInit {
     ngOnInit(): void {
         this.rate = Math.floor((Math.random() * 2) + 3);
-        setTimeout(() => {
-                this.sharedService.emitChange(false);
-            },
-            1000);
+       
       
       
     }

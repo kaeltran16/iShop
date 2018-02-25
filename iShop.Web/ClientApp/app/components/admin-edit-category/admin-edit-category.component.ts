@@ -13,7 +13,7 @@ import { Category } from "../../model/Category";
 export class AdminEditcCategoryComponent implements OnInit {
     ngOnInit(): void {
 
-        this.category.short = "-1";
+       
 
     } 
 

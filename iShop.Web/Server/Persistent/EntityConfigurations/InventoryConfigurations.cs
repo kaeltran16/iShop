@@ -8,8 +8,6 @@ namespace iShop.Web.Server.Persistent.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Inventory> builder)
         {
-            builder.HasKey(i => new {i.ProductId, i.SupplierId});
-
             builder.Property(i => i.ProductId)
                 .IsRequired();
 

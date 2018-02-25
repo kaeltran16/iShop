@@ -1,0 +1,59 @@
+﻿
+<div id="parent">
+   
+    <div class="card " id="container">
+
+
+
+        <form #f="ngForm">
+
+            <div style="text-align: center;" class=" card">
+                <div class=" form-group">
+                    <input type="text" class="form-control  text-center font-weight-bold text-capitalize"
+                           style="font-size: 30px;"
+                           id="Title"
+                           name="Title"
+                           #Title="ngModel"
+                           [(ngModel)]="supplier.name"
+                           required
+                           placeholder="Tên nhà cung cấp"
+                           [ngClass]="{'card-outline-danger': Title.errors?.required && (Title.touched ||f.submitted)}">
+                </div>
+                <div class="alert alert-danger" *ngIf="(Title.touched ||f.submitted) && Title.errors?.required"> *Bắt buộc* </div>
+
+        
+                </div>
+           
+
+
+
+            <div class="card p-2 mt-2">
+                <h3>Mô tả</h3>
+                <textarea type="text" class="form-control  "
+                          id="Summary"
+                          #Summary="ngModel"
+                          name="Summary"
+                          required
+                          [(ngModel)]="supplier.description"
+                          placeholder="Mô tả"
+                          [ngClass]="{'card-outline-danger': Summary.errors?.required && (Summary.touched ||f.submitted)}"></textarea>
+                <div class="alert alert-danger" *ngIf="(Summary.touched ||f.submitted) && Summary.errors?.required"> *Bắt buộc* </div>
+
+            </div>
+            
+        </form>
+
+
+
+
+
+
+    </div>
+
+    <div class="  ignorePaddingParent">
+     
+            <button class="btn btn-success w-100" style="color: white" (click)="createSupplier(f)">Thêm</button>
+      
+        
+    </div>
+</div>

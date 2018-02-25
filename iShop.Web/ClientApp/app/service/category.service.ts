@@ -43,7 +43,7 @@ export class CategoryService {
                 ({
                     headers: {
                         //USE credentials mode
-                                                'Content-Type': 'application/json',
+                         'Content-Type': 'application/json',
                         withCredentials: true,
                         'Authorization': 'Bearer ' + token
                     }

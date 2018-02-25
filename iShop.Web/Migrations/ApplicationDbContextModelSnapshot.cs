@@ -163,13 +163,16 @@ namespace iShop.Web.Migrations
 
             modelBuilder.Entity("iShop.Web.Server.Core.Models.Inventory", b =>
                 {
-                    b.Property<Guid>("ProductId");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("SupplierId");
+                    b.Property<Guid>("ProductId");
 
                     b.Property<int>("Stock");
 
-                    b.HasKey("ProductId", "SupplierId");
+                    b.Property<Guid>("SupplierId");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId")
                         .IsUnique();

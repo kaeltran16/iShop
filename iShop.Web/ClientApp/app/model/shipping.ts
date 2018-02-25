@@ -1,4 +1,5 @@
 ﻿export class Shipping {
+    id:string;
     shippingState: number;
     charge: number;
     ward: string;

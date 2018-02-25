@@ -31,4 +31,21 @@ export class ShippingService {
     }
 
 
+    updateShipping(shipping: Shipping,token:string) {
+      
+
+        return this.http.put(this.Url + 'api/Shippings/' + shipping.id, shipping,
+             
+                ({
+                headers: {
+                    //USE credentials mode
+                  
+                    withCredentials: true,
+                    'Authorization': 'Bearer ' + token
+                }
+            }) as any)
+            .map(res => res.json()
+            );
+    }
+
 }

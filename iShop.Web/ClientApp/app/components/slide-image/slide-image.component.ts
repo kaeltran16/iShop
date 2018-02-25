@@ -1,10 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { trigger, transition, state, animate, style, keyframes, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
-
+import { CarouselConfig } from 'ngx-bootstrap/carousel';
 @Component({
     selector: 'slide-image',
     templateUrl: './slide-image.component.html',
     styleUrls: ['./slide-image.component.css'],
+    providers: [
+        { provide: CarouselConfig, useValue: { interval: 1500, noPause: true, showIndicators: true} }
+    ],
     animations: [
         trigger('show', [
 

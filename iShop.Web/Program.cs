@@ -48,7 +48,7 @@ namespace iShop.Web
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
         //Startup.Configuration.GetSection("Debug").GetSection("Url").ToString()
-                .UseUrls("http://localhost:5001/")
+                .UseUrls("http://localhost:58890")
                 // UseNLog
                 .UseNLog()
                 .Build();

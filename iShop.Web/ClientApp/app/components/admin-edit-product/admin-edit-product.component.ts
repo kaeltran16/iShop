@@ -4,6 +4,7 @@ import { RequestOptions,Http } from '@angular/http';
 import { ProductService } from "../../service/product.service";
 import { Product} from "../../model/Product";
 import { Image } from '../../model/Image';
+import { ImageService } from '../../service/image.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class AdminEditProductComponent implements OnInit {
 
         let categories: string[] = [];
         this.product.categories.forEach((t: any) => categories.push(t.id));
-        console.log(this.product.supplierId);
+       
 
 
         this.itemProduct = new Product(
@@ -26,34 +27,52 @@ export class AdminEditProductComponent implements OnInit {
             this.product.price,
             this.product.sku,
             this.product.name,
-            this.product.supplierId,
+            this.product.supplier.id,
             this.product.inventory.stock,
-            this.product.expiredDate);
+            new Date(this.product.expiredDate) );
 
         this.itemProduct.id = this.product.id;
+      
     }
    itemProduct:Product;
-    @Output() onclick = new EventEmitter<boolean>();
+   @Output('onclick') onclick = new EventEmitter<any>();
     @Input('product') product: any;
-    minDate = new Date(2017, 5, 10);
-    maxDate = new Date(2018, 9, 15);
+    minDate = new Date(2018, 2, 1);
+    maxDate = new Date(2020, 12, 30);
     imageEdit:Image;
   
 
-    constructor(private productService: ProductService) {
+    constructor(private productService: ProductService,
+    private  imageService:ImageService) {
      
 
     }
 
     editProduct() {
-        this.onclick.emit(true);
+    
         let token = localStorage.getItem("token");
-        console.log(this.itemProduct);
+    
         token ? this.productService.editProduct(this.itemProduct, token)
-            .subscribe(c => { this.onclick.emit(true); }, err => console.log(err)) : alert("Bạn không đủ quyền để thao tác với việc này");
+            .subscribe(c => {
+                this.onclick.emit(c);
+
+            }, err => console.log(err)) : alert("Bạn không đủ quyền để thao tác với việc này");
       
     }
+    deleteProduct() {
+   
+        let token = localStorage.getItem("token");
+       
+        token ? this.productService.deleteProduct(this.itemProduct.id, token)
+            .subscribe(c => {
+                this.onclick.emit(true);
+                if (token) this.imageService.deleteImage(this.product.images[0].fileName, this.product.id, token)
+                    .subscribe(data => console.log(data),
+                err=>console.log(err));
+            }, err => console.log(err)) 
+              : alert("Bạn không đủ quyền để thao tác với việc này");
 
+    }
    
 
 

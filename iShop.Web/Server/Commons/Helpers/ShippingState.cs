@@ -3,7 +3,7 @@
     public enum ShippingState
     {
         None = 0,
-        Shipped = 1,
-        Processing = 2,
+        Shipped = 2,
+        Processing = 1,
     }
 }

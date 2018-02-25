@@ -1,0 +1,26 @@
+﻿
+<div id="parent">
+   
+    <div class="card text-center " id="container">
+      
+        <h1 >Cập Nhật Trạng Thái Giao Hàng</h1>
+        <div style="font-size: 25px; padding: 10px;">
+            <label ><input type="radio" [(ngModel)]='order.shipping.shippingState' [value]="0"> Chưa giao hàng</label>
+            <label ><input type="radio" class="ml-1" [(ngModel)]='order.shipping.shippingState' [value]="1"> Đang giao hàng</label>
+        <label ><input type="radio" class="ml-1" [(ngModel)]='order.shipping.shippingState' [value]="2"> Đã giao hàng</label>
+        </div>
+      
+
+
+
+
+
+    </div>
+
+    <div class="  ignorePaddingParent text-right d-inline-block badge-danger">
+       
+        
+            <button class="btn btn-outline-success float-right" style="color: white" (click)="editState()">CẬP NHẬT</button>
+            <button class="btn btn-outline-success float-right" style="color: white" (click)="deleteOrder()">XÓA</button>
+    </div>
+</div>
