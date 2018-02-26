@@ -14,7 +14,7 @@ export class ListProductComponent {
     @Input('title') title: string;
     products: Product[]=[];
     bought:boolean=false;
-    start: number = -1;
+    start: number = 0;
     end: number = 3;
     viewProduct: boolean = false;
     product: Product;
@@ -23,28 +23,49 @@ export class ListProductComponent {
 
     constructor(private productService: ProductService) {
         this.productService.getProducts().subscribe(p => {
-            this.products = p;
-            console.log(p);
-        } );
+            this.products = this.transform(p, this.name);
+          
+        });
     }
   
+    transform(items: any[], filter: string): any {
+        if (!items || !filter) {
+            return items;
+        }
 
+        filter = filter.toLowerCase();
+        if (filter === "t" || filter === "o")
+            return items.filter((p, i: any, ps: any) => {
+                let categories = p.categories.filter((c: any) => c.short.toLowerCase().indexOf(filter) !== -1);
+
+                if (categories.length) return true;
+                return false;
+            });
+        return items.filter((p, i: any, ps: any) => {
+            let categories = p.categories.filter((c: any) => c.name.toLowerCase().indexOf(filter) !== -1);
+
+            if (categories.length) return true;
+            return false;
+        });
+    }
    
     //next button
     next() {
-        if (this.end < 10) {
-            this.start += 2;
-            this.end += 2;
-            if (this.end === 9) {
+        if (this.end < this.products.length) {
+            this.end += 1;
+            this.start += 1;
+          
+            if (this.end === this.products.length-1) {
                 this.viewProduct = true;
             }
         }
     }
     //previous button
     pre() {
-        if (this.start > 1) {
-            this.start -= 2;
-            this.end -= 2;
+        if (this.start > -1) {
+            this.start -= 1;
+            this.end -= 1;
+            if (this.end < this.products.length) this.viewProduct = false;
         }
     }
 

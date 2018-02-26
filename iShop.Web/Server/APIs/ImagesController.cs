@@ -125,6 +125,23 @@ namespace iShop.Web.Server.APIs
             _logger.LogMessage(LoggingEvents.Deleted, ApplicationConstants.ControllerName.Category, image.Id);
             return NoContent();
         }
+        // Delete file in folder
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
+        [HttpDelete("{fileName}")]
+        public IActionResult DeleteFile(string fileName)
+        {
+            var uploadFolderPath = Path.Combine(_host.WebRootPath, "images");
+
+
+            var filePath = Path.Combine(uploadFolderPath, fileName);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+                return Ok("success");
+            }
+            else return NotFound(filePath);
+        }
     }
 
 }

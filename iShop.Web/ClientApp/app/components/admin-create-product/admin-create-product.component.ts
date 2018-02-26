@@ -48,7 +48,8 @@ export class AdminCreateProductComponent implements OnInit {
     image = new Image("/images/add_image.png");
     minDate = new Date(2017, 5, 10);
     maxDate = new Date(2018, 9, 15);
-  imageEvent:any;
+    imageEvent: any;
+    choosed:boolean=false ;
     @Output() onclick = new EventEmitter<boolean>();
    
 
@@ -64,23 +65,22 @@ export class AdminCreateProductComponent implements OnInit {
     }
 
 
-    loadImage(event: any, productId: string) {
-        productId = "d71d3b22-18e9-4afa-a9f2-0e5e9bd610ac";
-        let url: string;
+    loadImage(event: any) {
+      
+        
         if (event) this.imageEvent = event;
         if (event.target.files && event.target.files[0]) {
             var reader = new FileReader();
 
             reader.onload = (event: any) => {
                 this.image = new Image(event.target.result);
-                console.log(this.image);
+                this.choosed = true;
             }
 
             reader.readAsDataURL(event.target.files[0]);
         }
-//        let a = ((<HTMLInputElement>document.getElementById("exampleInput")).value);
-        let token = localStorage.getItem("token");
-        token ? this.imageService.createImages(event, productId, token) : alert("bạn chưa đủ quyền vào mục này");
+     
+       
     }
 
  
@@ -94,17 +94,23 @@ export class AdminCreateProductComponent implements OnInit {
         }
     }
     createProduct($event:any) {
-        console.log($event);
+      
         $event._submitted = true;
 
-        if ($event.valid) {
+        if ($event.valid && this.choosed) {
             let token = localStorage.getItem("token");
             token
                 ? this.productService.createProduct(this.itemProduct, token)
-                    .subscribe(c => { this.onclick.emit(true); },
+                    .subscribe(c => {
+                        this.onclick.emit(c); 
+                       
+                        let token = localStorage.getItem("token");
+                        token ? this.imageService.createImages(this.imageEvent, c.id, token) : alert("bạn chưa đủ quyền vào mục này");
+                    },
                     err => console.log(err))
                 : alert("Bạn không đủ quyền để thao tác với việc này");
         }
+
 
     }
 

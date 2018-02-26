@@ -2,79 +2,67 @@
 <div id="parent">
    
     <div class="card " id="container">
+        <form #f="ngForm">
         <div class="row">
             <div class=" col m-1">
-                <a> <img class="card w-100  ml-3 mt-3 " src="{{image.fileName}}"/></a>
-                 <label for="exampleInput" class="btn btn-primary">
-                 Click me
-                 </label>
-                 <input type="file" id="exampleInput" (change)="loadImage($event,itemProduct.id)" style="display: none" accept=".png,.jpg"/>
-<!--                 <input type="file" (change)="loadImage($event)" placeholder="Upload file" accept=".png,.jpg">-->
-
+                <div class=" form-group">
+                    <label for="ChooseFile" class="ml-3 mt-3 w-100">
+                        <a> <img class="card w-100" src="{{image.fileName}}"/></a>
+                    </label>
+                    <input type="file" id="ChooseFile" name="ChooseFile"  (change)="loadImage($event)" style="display: none"  accept=".png,.jpg"/>
+                </div>
+                    <div class="alert alert-danger text-center" *ngIf="!choosed"> *Chọn hình ảnh cho sản phẩm* </div>
             
             </div>
             <div class=" col m-1 mr-2">
                     
 
-                <form #f="ngForm">
+               
 
-                    <div style="text-align: center;" class=" card">
+                <div style="text-align: center;" class=" card">
                         
-                        <div class=" form-group">
-                            <input type="text" class="form-control  text-center font-weight-bold text-capitalize"
-                                   style="font-size: 30px;"
-                                   id="Title"
-                                   name="Title"
-                                   #Title="ngModel"
-                                   [(ngModel)]="itemProduct.name"
+                    <div class=" form-group">
+                        <input type="text" class="form-control  text-center font-weight-bold text-capitalize"
+                               style="font-size: 30px;"
+                               id="Title"
+                               name="Title"
+                               #Title="ngModel"
+                               [(ngModel)]="itemProduct.name"
+                               required
+                               placeholder="Tên sản phẩm"
+                               [ngClass]="{'card-outline-danger': Title.errors?.required && (Title.touched ||f.submitted)}">
+                    </div>
+                    <div class="alert alert-danger" *ngIf="(Title.touched ||f.submitted) && Title.errors?.required"> *Bắt buộc* </div>
+                    <div class="mt-1 h5 text-center form-group  ">
+
+                        <div class="d-inline-block ">
+                            <input type="number" class="form-control w-50 font-weight-bold text-capitalize text-center float-left"
+                                   value={{itemProduct.price}}
+                                   id="Price" placeholder="Giá"
+                                   name="Price"
+                                   #Price="ngModel"
                                    required
-                                   placeholder="Tên sản phẩm"
-                                   [ngClass]="{'card-outline-danger': Title.errors?.required && (Title.touched ||f.submitted)}">
+                                   [(ngModel)]="itemProduct.price"
+                                   [ngClass]="{'card-outline-danger': Price.errors?.required && (Price.touched ||f.submitted)}">
+                            <div class="alert alert-danger" *ngIf="(Price.touched ||f.submitted) && Price.errors?.required"> *Bắt buộc* </div>
+
+                            <div class="float-left mt-2"> Đồng/1Kg</div>
                         </div>
-                        <div class="alert alert-danger" *ngIf="(Title.touched ||f.submitted) && Title.errors?.required"> *Bắt buộc* </div>
-                        
-
-                                 
-                                 
-                                 
-                                 
-                             
-                                 
-                                
-                                   >
-                  
-                  
-
-                        <div class="mt-1 h5 text-center form-group  ">
-
-                            <div class="d-inline-block ">
-                                <input type="number" class="form-control w-50 font-weight-bold text-capitalize text-center float-left"
-                                       value={{itemProduct.price}}
-                                       id="Price" placeholder="Giá"
-                                       name="Price"
-                                       #Price="ngModel"
-                                       required
-                                       [(ngModel)]="itemProduct.price"
-                                       [ngClass]="{'card-outline-danger': Price.errors?.required && (Price.touched ||f.submitted)}">
-                                <div class="alert alert-danger" *ngIf="(Price.touched ||f.submitted) && Price.errors?.required"> *Bắt buộc* </div>
-
-                                <div class="float-left mt-2"> Đồng/1Kg</div>
-                            </div>
-                        </div>
+                    </div>
                     
-                        <div class="card form-group">
-                            <label for="Date" class="font-weight-bold text-left">Ngày hết hạn</label>
-                            <input type="text"
-                                   class="form-control"
-                                   [minDate]="minDate"
-                                   [maxDate]="maxDate"
-                                   name="Date"
-                                   id="Date"
-                                   #dp="bsDatepicker"
-                                   bsDatepicker [(bsValue)]="itemProduct.expiredDate">
-                        </div>
+                    <div class="card form-group">
+                        <label for="Date" class="font-weight-bold text-left">Ngày hết hạn</label>
+                        <input type="text"
+                               class="form-control"
+                               [minDate]="minDate"
+                               [maxDate]="maxDate"
+                               name="Date"
+                               id="Date"
+                               #dp="bsDatepicker"
+                               bsDatepicker [(bsValue)]="itemProduct.expiredDate">
+                    </div>
 
-                        <div class="row">
+                    <div class="row">
                         <div class="form-group text-center font-weight-bold col">
                             <label for="Stock" class="text-left ml-1">Số lượng</label>
                             <input type="number" class="form-control  text-center font-weight-bold"
@@ -138,30 +126,31 @@
 
                         
                       
-                    </div>
+                </div>
 
 
-                    <div class="card p-2 mt-2 form-group ">
+                <div class="card p-2 mt-2 form-group ">
 
-                        <input type="text" class="form-control  "
-                               value={{itemProduct.summary}}
-                               id="Summary"
-                               #Summary="ngModel"
-                               name="Summary"
-                               required
-                               [(ngModel)]="itemProduct.summary"
-                               placeholder="Chi tiết"
-                               [ngClass]="{'card-outline-danger': Summary.errors?.required && (Summary.touched ||f.submitted)}">
-                        <div class="alert alert-danger" *ngIf="(Summary.touched ||f.submitted) && Summary.errors?.required"> *Bắt buộc* </div>
+                    <input type="text" class="form-control  "
+                           value={{itemProduct.summary}}
+                           id="Summary"
+                           #Summary="ngModel"
+                           name="Summary"
+                           required
+                           [(ngModel)]="itemProduct.summary"
+                           placeholder="Chi tiết"
+                           [ngClass]="{'card-outline-danger': Summary.errors?.required && (Summary.touched ||f.submitted)}">
+                    <div class="alert alert-danger" *ngIf="(Summary.touched ||f.submitted) && Summary.errors?.required"> *Bắt buộc* </div>
 
-                    </div>
+                </div>
 
 
 
-                </form>
+               
             </div>
 
         </div>
+             </form>
     </div>
 
     <div class="  ignorePaddingParent">

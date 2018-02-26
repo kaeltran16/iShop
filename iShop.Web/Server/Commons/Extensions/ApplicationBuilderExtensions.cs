@@ -23,6 +23,7 @@ namespace iShop.Web.Server.Commons.Extensions
                 csp.AllowScripts.AllowUnsafeEval().FromSelf();
                 csp.AllowStyles.AllowUnsafeInline().FromSelf();
                 csp.AllowImages.From("data:").FromSelf();
+                csp.AllowStyles.From("https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css");
                 csp.SetReportOnly();
 
             });

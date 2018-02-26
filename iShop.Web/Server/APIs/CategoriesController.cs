@@ -92,7 +92,8 @@ namespace iShop.Web.Server.APIs
         }
 
         // DELETE
-        [Authorize(Roles = ApplicationConstants.RoleName.SuperUser)]
+        //        [Authorize(Roles = ApplicationConstants.RoleName.SuperUser)]
+        [Authorize(Policy = ApplicationConstants.PolicyName.SuperUsers)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

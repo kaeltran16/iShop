@@ -20,18 +20,18 @@
             <div class="card p-2 " (click)="chooseAddress(true);" [class.card-outline-success]="outline">
                 <div> Tên khách hàng : 
                 <span class="h5 firstUpperCase">
-                    <span>{{user?.firstName}}</span>
-                    <span class="ml-1 ">{{ user?.lastName }}</span>
+                    <span>{{user?.userInfo.firstName}}</span>
+                    <span class="ml-1 ">{{ user?.userInfo.lastName }}</span>
                 </span></div>
                 <div> Địa chỉ :
                     <span  class="firstUpperCase" >
-                        <span>{{user?.ward}}</span>
-                        <span class="ml-1">{{user?.district}}</span>
-                        <span class="ml-1">{{user?.city}}</span>
+                        <span>{{user?.userInfo.ward}}</span>
+                        <span class="ml-1">{{user?.userInfo.district}}</span>
+                        <span class="ml-1">{{user?.userInfo.city}}</span>
                     </span>
                 </div>
                 <div> Điện thoại liên lạc :
-                    <span>{{user?.phoneNumber}} </span>
+                    <span>{{user?.userInfo.phoneNumber}} </span>
                 </div>
             </div>
             </div>

@@ -11,6 +11,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DatePipe } from '@angular/common';
+
 //service 
 import { ProductService } from "./service/product.service";
 import { UserService } from "./service/user.service";
@@ -54,6 +55,9 @@ import { AdminCategoryComponent } from './components/admin-category/admin-catego
 import { AdminEditcCategoryComponent } from './components/admin-edit-category/admin-edit-category.component';
 import { AdminOrderComponent } from './components/admin-order/admin-order.component';
 import { AdminSupplierComponent } from './components/admin-supplier/admin-supplier.component';
+import { AdminDetailOrderComponent } from './components/admin-detail-order/admin-detail-order.component';
+import { AdminCreateSupplierComponent } from './components/admin-create-supplier/admin-create-supplier.component';
+import { AdminEditSupplierComponent } from './components/admin-edit-supplier/admin-edit-supplier.component';
 
 // custom validation 
 import { EqualValidator } from './components/register/custom-validation';
@@ -104,7 +108,10 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         AdminCategoryComponent,
         AdminEditcCategoryComponent,
         AdminOrderComponent,
-        AdminSupplierComponent
+        AdminSupplierComponent,
+        AdminDetailOrderComponent,
+        AdminCreateSupplierComponent,
+        AdminEditSupplierComponent
        
     ],
     imports: [
@@ -116,7 +123,7 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
         PopoverModule.forRoot(),
         TabsModule.forRoot(),
         BsDatepickerModule.forRoot(),
-
+       
         //angular 
         BrowserAnimationsModule,
         CommonModule,
@@ -133,7 +140,7 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
                     { path: 'admin-product', component: AdminProductComponent, canActivate: [AdminAuthGuardService] },
                     { path: 'admin-category', component: AdminCategoryComponent, canActivate: [AdminAuthGuardService] },
                     { path: 'admin-order', component: AdminOrderComponent, canActivate: [AdminAuthGuardService] },
-                    { path: 'admin-supplier', component: AdminOrderComponent, canActivate: [AdminAuthGuardService] },
+                    { path: 'admin-supplier', component: AdminSupplierComponent, canActivate: [AdminAuthGuardService] },
                     { path: '**', redirectTo: 'dashbroad', canActivate: [AdminAuthGuardService] }
                 ]
             },
@@ -174,4 +181,5 @@ import { FilterCategoryPipe } from './components/custom-pipe/filter-category-pip
     ]
 })
 export class AppModuleShared {
+
 }

@@ -164,12 +164,12 @@
     "@types/jquery": {
       "version": "3.2.18",
       "resolved": "https://registry.npmjs.org/@types/jquery/-/jquery-3.2.18.tgz",
-      "integrity": "sha512-8dsVAEAbK73GBbQjXUEBhaCXX6A+gEp7+bM7CI7n/850ES6NFObYvJID2F4mGAahLUosKHiJI1QkLS8bV+9VGA=="
+      "integrity": "sha1-oc0mIDTNjHn6TZsqQJ2PdHrC9y8="
     },
     "@types/underscore": {
       "version": "1.8.7",
       "resolved": "https://registry.npmjs.org/@types/underscore/-/underscore-1.8.7.tgz",
-      "integrity": "sha512-vMSV6VOWFVBcud1bBUKJVVhXmmx136Run3p1xK00XViC2pQnXXrveU79S13h2+Im/TBhtMtTufid+dbysd3m/g=="
+      "integrity": "sha1-Xk/l0YN2ZH+4of4z+N7Q2Mz6eDw="
     },
     "@types/webpack-env": {
       "version": "1.13.0",

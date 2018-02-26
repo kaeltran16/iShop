@@ -1,6 +1,6 @@
-﻿<div   class="card parent " (mouseenter)="hovering()" (mouseleave)="leaving()"  (click)="openModal(detailproduct)" >
+﻿<div [class.d-none]="isDelete"  class="card parent"  (mouseenter)="hovering()" (mouseleave)="leaving()"  (click)="openModal(detailproduct)" >
    <div >
-    <img class="card-img-top w-100 " style="height: 250px;"  src="/images/{{product?.images[0].fileName}}" alt="Card image cap">
+    <img class="card-img-top w-100 " style="height: 250px;"  src="/images/{{product?.images[0]?.fileName}}" alt="Card image cap">
        <div class="card-body text-center" style="background-color:beige">
            <h3  class="card-title mt-2">{{product?.name}}</h3>
            <h3 class="card-text">*****</h3>

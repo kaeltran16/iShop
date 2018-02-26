@@ -6,15 +6,15 @@
     </div>
 
     <div style="display: inline-block;">
-        <div *ngFor="let item of products |filter:name  |fill:start:end "
+        <div *ngFor="let item of products   |slice:start:end "
              class="product">
 
             <card   [product]="item"></card>
             
         </div>
-<!--        <a *ngIf="!viewProduct" (click)="nextPopular();"> <img src="" style="position: absolute; width: 100px; top: 40%; right: -20px;" /></a>-->
-<!--        <a *ngIf="startPopular!=1" (click)="prePopular();"> <img src="" style="position: absolute; width: 100px; top: 40%; left: -20px;" /></a>-->
-<!--        <a *ngIf="viewProduct"> <img src="" style="position: absolute; top: 50%; right: 10px;" /></a>-->
+        <a *ngIf="!viewProduct" (click)="next();"> <img src="/icon/next.png" style="position: absolute; width: 30px;  top: 40%; right: 0px;" /></a>
+        <a *ngIf="start!=0" (click)="pre()"> <img src="/icon/pre.png" style="position: absolute; width: 30px; top: 40%; left: 0px;" /></a>
+        <a *ngIf="viewProduct" [routerLink]="['/more-product',name]"> <img src="/icon/xemhet1.png" style="position: absolute; top: 40%; right: 10px;" /></a>
     </div>
 
 </div>

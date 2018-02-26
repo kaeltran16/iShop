@@ -1,6 +1,6 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Inject } from '@angular/core';
 import { UserService } from '../../service/user.service';
-import { User } from "../../model/User";
+import { DOCUMENT } from '@angular/platform-browser';
 import { ProductService } from '../../service/product.service';
 import { Shipping } from "../../model/shipping";
 import { SharedService } from '../../service/shared-service';
@@ -23,7 +23,7 @@ export class OrderComponent implements OnInit {
                 this.user = u;
                 this.logged = true;
                 this.outline = true;
-         
+       
             },
             err => this.logged = false
 
@@ -56,7 +56,7 @@ export class OrderComponent implements OnInit {
     }
     totalPrice:number=0;
     logged:boolean=false;
-    user:User;
+    user:any;
     outline: boolean = false;
     city: string = "Đà Lạt";
     ward: string = "";
@@ -75,6 +75,7 @@ export class OrderComponent implements OnInit {
         private orderService: OrderService,
         private shippingService: ShippingService,
         private router: Router,
+        @Inject(DOCUMENT) private document: Document
 
     ) {
        
@@ -84,23 +85,23 @@ export class OrderComponent implements OnInit {
     book($event: any) {
         $event._submitted = true;
 
-
-        if ($event.valid&&this.outline===false) {
+        if ($event.invalid&&this.outline===false) {
             return;
         }
 
-
+       
         if (this.logged) {
-             this.orderService.createOrder(this.user.id).subscribe(o => {
-                 let shipping: Shipping;;
+          
+            this.orderService.createOrder(this.user.userInfo.id).subscribe(o => {
+                 let shipping: Shipping;
                  if (this.outline)
                      shipping = new Shipping(0,
                          this.totalPrice,
-                         this.user.ward,
-                         this.user.district,
-                         "Đà Lạt",
-                         this.user.firstName + " " + this.user.lastName,
-                         this.user.phoneNumber,
+                         this.user.userInfo.ward,
+                         this.user.userInfo.district,
+                         this.user.userInfo.city,
+                         this.user.userInfo.firstName + " " + this.user.userInfo.lastName,
+                         this.user.userInfo.phoneNumber,
                          o.id);
                  else {
                      shipping = new Shipping(0,
@@ -112,21 +113,23 @@ export class OrderComponent implements OnInit {
                          this.telephone,
                          o.id);
                  }
-                 this.shippingService.createShipping(shipping).subscribe(p => { this.router.navigate(['/home']);},
+                 this.shippingService.createShipping(shipping).subscribe(p => { this.router.navigate(['/home']); }
+                     ,
                      err => console.log(err));
-             });
+             },
+                 (err: any) => console.log(err));
           
             } else {
                 this.orderService.createOrder().subscribe(o => {
-                    let shipping: Shipping;;
+                    let shipping: Shipping;
                         if (this.outline)
                             shipping = new Shipping(0,
                                 this.totalPrice,
-                                this.user.ward,
-                                this.user.district,
-                                "Đà Lạt",
-                                this.user.firstName + " " + this.user.lastName,
-                                this.user.phoneNumber,
+                                this.user.userInfo.ward,
+                                this.user.userInfo.district,
+                                this.user.userInfo.city,
+                                this.user.userInfo.firstName + " " + this.user.userInfo.lastName,
+                                this.user.userInfo.phoneNumber,
                                o.id);
                         else {
                             shipping = new Shipping(0,
@@ -145,7 +148,7 @@ export class OrderComponent implements OnInit {
             
          
           
-
+            this.document.body.scrollTop = 0;
 
         }
 

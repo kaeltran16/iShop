@@ -1,14 +1,14 @@
 ﻿<div class="card" style=" height: 430px; margin-top: 30px;">
     <div class="card" style="height: 45px;">
         <div style="padding-left: 10px; font-size: 20px; font-weight: bold;">{{title}}</div>
-
+        <button  (click)="toggleShowDiv('divA')">tongle</button>
     </div>
 
     <div style="display: inline-block;">
-        <div *ngFor="let item of products  |fill:start:end "
+        <div *ngFor="let item of products  |slice:start:end "
              class="product">
 
-            <card   [product]="item"></card>
+            <card [@slideInOut]="animationState"  [product]="item"></card>
             
         </div>
 <!--        <a *ngIf="!viewProduct" (click)="nextPopular();"> <img src="" style="position: absolute; width: 100px; top: 40%; right: -20px;" /></a>-->

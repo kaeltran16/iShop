@@ -57,7 +57,7 @@
                                    name="Date"
                                    id="Date"
                                    #dp="bsDatepicker"
-                                   bsDatepicker [(bsValue)]="itemProduct.expiredDate">
+                                   bsDatepicker [(bsValue)]="itemProduct.expiredDate">  
                         </div>
 
                         <div class="row">
@@ -114,7 +114,7 @@
         </div>
         <div class="text-right d-inline-block fixed-bottom badge-danger ignorePaddingParent">
             <button class="btn btn-outline-success float-right" style="color: white" (click)="editProduct()">CẬP NHẬT</button>
-            <button class="btn btn-outline-success float-right" style="color: white">XÓA</button>
+            <button class="btn btn-outline-success float-right" style="color: white" (click)="deleteProduct()">XÓA</button>
         </div>
     </div>
 

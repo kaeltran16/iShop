@@ -19,6 +19,7 @@ namespace iShop.Web.Server.Core.Models
         public Shipping()
         {
             ShippingState = ShippingState.None;
+          
         }
     }
 }

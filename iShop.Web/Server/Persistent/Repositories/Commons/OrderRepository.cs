@@ -21,6 +21,7 @@ namespace iShop.Web.Server.Persistent.Repositories.Commons
             return isIncludeRelative
                 ? await GetAllAsync(includeProperties: source => source
                     .Include(o => o.OrderedItems)
+                    .ThenInclude(p=>p.Product)
                     .Include(o => o.Shipping)
                     .Include(o => o.Invoice)
                     .Include(o => o.User))

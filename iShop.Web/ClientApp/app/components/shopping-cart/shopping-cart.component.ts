@@ -41,6 +41,9 @@ export class ShoppingCartComponent {
     checkOut() {
         this.router.navigate(['/order']);
     }
+
+
+
     deleteItemCart(cart: any) {
 
         localStorage.removeItem(cart.product.id);
